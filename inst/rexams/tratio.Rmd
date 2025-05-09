@@ -1,0 +1,108 @@
+---
+title: "Phase II clinical study"
+---
+
+```{r, include=FALSE}
+library(exams)
+library(mistakes)
+
+## DATA GENERATION
+repeat
+{
+  n      <- as.integer(round(runif(1, min=20, max=45)))
+  Id     <- 1:n
+  T0     <- round(runif(n, min=15, max=40))
+  EOT    <- round(T0 + runif(n, min=-10, max=2))
+  mu     <- round(runif(1, min=2, max=5), 1)
+
+  data   <- data.frame(Id, T0, EOT)
+  t0     <- mean(data$T0)
+  s_t0   <- sd(data$T0)
+  eot    <- mean(data$EOT)
+  s_eot  <- sd(data$EOT)
+
+  d      <- mean(data$T0 - data$EOT)
+  s_d    <- sd(data$T0 - data$EOT)
+
+  tratio <- (d - mu) / (s_d / sqrt(n))
+  if(abs(tratio) < 0.1)
+    next
+  if(abs(tratio) > 3.0)
+    next
+
+  tails  <- "two-tailed"
+  alpha  <- 0.05
+  break
+}
+
+
+rolog::consult(system.file("pl/tratio.pl", package="mistakes"))
+
+Q <- quote(search(tratio(d, mu, s_d, n), .S, .P))
+S <- findall(Q, options=list(preproc=as.rolog))
+
+frac <- `/`
+
+questions <- character(length(S))
+solutions <- logical(length(S))
+explanations <- character(length(S))
+
+for(i in 1:length(S))
+{
+  Si <- S[[i]]$S
+  Pi <- S[[i]]$P
+
+  questions[i] = sprintf("%.2f", eval(Si))
+  solutions[i] = all(Pi == "expert")
+  explanations[i] = paste(Pi, collapse=", ")
+}
+
+o <- sample(1:length(S))
+questions <- questions[o]
+solutions <- solutions[o]
+explanations <- explanations[o]
+```
+
+Question
+========
+Consider a clinical study on rumination-focused Cognitive Behavioral
+Therapy (rfCBT) with `r n` patients. The primary outcome is the score on the
+Hamilton Rating Scale for Depression (HDRS, range from best = 0 to worst = 42).
+The significance level is set to $\alpha = 5\%$ two-tailed.
+
+````{r, echo=FALSE}
+Tab <- rbind(
+  c(T0=t0, EOT=eot, `$D$`=d),
+  c(T0=s_t0, EOT=s_eot, `$D$`=s_d))
+  
+knitr::kable(Tab, digits=1)
+````
+
+Does rfCBT lead to a relevant reduction (i.e., more than `r mu` units) in mean
+HDRS scores between baseline (T0) and End of Treatment (EOT)? Please report
+the $t$-ratio.
+
+```{r questionlist, echo = FALSE, results = "asis"}
+answerlist(questions, markup="markdown")
+```
+
+Solution
+========
+The $t$-statistic is calculated by:
+$$
+\begin{aligned}
+  t & = & \frac{\bar d - \mu}{s_d/\sqrt{n}}
+  = \frac{`r fmt(d, 2)` - `r mu`}{`r fmt(s_d, 2)`/\sqrt{`r n`}}
+  = `r questions[solutions][1]`.
+\end{aligned}
+$$
+
+```{r solutionlist, echo = FALSE, results = "asis"}
+answerlist(ifelse(solutions, "True", "False"), explanations, markup = "markdown")
+```
+
+Meta-information
+================
+extype: schoice
+exsolution: `r mchoice2string(solutions, single=TRUE)`
+exname: t-ratio

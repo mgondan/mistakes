@@ -8,9 +8,3 @@
 
   rolog::consult(system.file("pl/mistakes.pl", package=pkgname))
 }
-
-tratio <- function()
-{
-  Q <- quote(search(tratio(x, mu, s, n), .S))
-  unlist(findall(Q, options=list(preproc=as.rolog)))
-}

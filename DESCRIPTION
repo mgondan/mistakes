@@ -16,5 +16,6 @@ Encoding: UTF-8
 Depends:
     R (>= 4.4),
     rolog (>= 0.9.14),
-    exams
+    exams,
+    fastmap
 LinkingTo: Rcpp
