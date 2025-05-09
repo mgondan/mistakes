@@ -1,0 +1,20 @@
+Package: mistakes
+Type: Package
+Title: Generate single-choice questions for exams based on buggy rules
+Version: 0.1
+Date: 2025-05-09
+Author: c(person("Matthias", "Gondan", role=c("aut", "cre", "cph"),
+  email="Matthias.Gondan-Rochon@uibk.ac.at", comment="Universität Innsbruck"),
+  person("Irene", "Alfarone", role="aut",
+  email="Irene.Alfarone@uibk.ac.at", comment="Universität Innsbruck"))
+Maintainer: Matthias Gondan <Matthias.Gondan-Rochon@uibk.ac.at>
+Description: This package generates meaningful incorrect responses to
+    single-choice questions for statistics exams based on a set of expert
+    rules and buggy rules for the intermediate steps.
+License: FreeBSD
+Encoding: UTF-8
+Depends:
+    R (>= 4.4),
+    rolog (>= 0.9.14),
+    exams
+LinkingTo: Rcpp
