@@ -5,6 +5,12 @@ title: "Phase II clinical study"
 ```{r, include=FALSE}
 library(exams)
 library(mistakes)
+library(mathml)
+
+hook(d, mean(D))
+hook(s_d, subscript(s, D))
+hook(mu_d, subscript(mu, D))
+hook(n, N)
 
 ## DATA GENERATION
 repeat
@@ -13,7 +19,7 @@ repeat
   Id     <- 1:n
   T0     <- round(runif(n, min=15, max=40))
   EOT    <- round(T0 + runif(n, min=-10, max=2))
-  mu     <- round(runif(1, min=2, max=5), 1)
+  mu_d   <- round(runif(1, min=2, max=5), 1)
 
   data   <- data.frame(Id, T0, EOT)
   t0     <- mean(data$T0)
@@ -24,7 +30,7 @@ repeat
   d      <- mean(data$T0 - data$EOT)
   s_d    <- sd(data$T0 - data$EOT)
 
-  tratio <- (d - mu) / (s_d / sqrt(n))
+  tratio <- (d - mu_d) / (s_d / sqrt(n))
   if(abs(tratio) < 0.1)
     next
   if(abs(tratio) > 3.0)
@@ -37,7 +43,7 @@ repeat
 
 rolog::consult(system.file("rexams/tratio.pl", package="mistakes"))
 
-Q <- quote(search(tratio(d, mu, s_d, n), .S, .P))
+Q <- quote(search(tratio(d, mu_d, s_d, n), .S, .P))
 S <- findall(Q, options=list(preproc=as.rolog))
 
 frac <- `/`
@@ -53,7 +59,7 @@ for(i in 1:length(S))
 
   questions[i] = sprintf("%.2f", eval(Si))
   solutions[i] = all(expert(Pi))
-  explanations[i] = paste(Pi, collapse=", ")
+  explanations[i] = paste(mathml(Si), paste(Pi, collapse=", "))
 }
 
 o <- sample(1:length(S))
@@ -66,18 +72,19 @@ Question
 ========
 Consider a clinical study on rumination-focused Cognitive Behavioral
 Therapy (rfCBT) with `r n` patients. The primary outcome is the score on the
-Hamilton Rating Scale for Depression (HDRS, range from best = 0 to worst = 42).
+Hamilton Rating Scale for Depression (HRSD, range from best = 0 to worst = 42).
 The significance level is set to $\alpha = 5\%$ two-tailed.
 
 ````{r, echo=FALSE}
 Tab <- rbind(
-  c(T0=t0, EOT=eot, `$D$`=d),
-  c(T0=s_t0, EOT=s_eot, `$D$`=s_d))
+  Average=c(T0=t0, EOT=eot, `$D$`=d),
+  SD=c(T0=s_t0, EOT=s_eot, `$D$`=s_d))
   
-knitr::kable(Tab, digits=1, align = c("l", "c", "c"))
+knitr::kable(Tab, digits=1, align = c("l", "c", "c"), 
+  caption="_Table 1._ HRSD scores.")
 ````
 
-Does rfCBT lead to a relevant reduction (i.e., more than `r mu` units) in mean
+Does rfCBT lead to a relevant reduction (i.e., more than `r mu_d` units) in mean
 HDRS scores between baseline (T0) and End of Treatment (EOT)? Please report
 the $t$-ratio.
 
@@ -87,14 +94,7 @@ answerlist(questions, markup="markdown")
 
 Solution
 ========
-The $t$-statistic is calculated by:
-$$
-\begin{aligned}
-  t & = & \frac{\bar d - \mu}{s_d/\sqrt{n}}
-  = \frac{`r fmt(d, 2)` - `r mu`}{`r fmt(s_d, 2)`/\sqrt{`r n`}}
-  = `r questions[solutions][1]`.
-\end{aligned}
-$$
+The $t$-statistic is calculated by: `r mathml(S[[which(solutions)[1]]]$S)`
 
 ```{r solutionlist, echo = FALSE, results = "asis"}
 answerlist(ifelse(solutions, "True", "False"), explanations, markup = "markdown")

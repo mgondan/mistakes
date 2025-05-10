@@ -15,7 +15,9 @@ License: FreeBSD
 Encoding: UTF-8
 Depends:
     R (>= 4.4),
-    rolog (>= 0.9.14),
+    rolog (>= 0.9.14)
+Imports:
     exams,
-    fastmap
+    fastmap,
+    mathml
 LinkingTo: Rcpp
