@@ -52,7 +52,7 @@ for(i in 1:length(S))
   Pi <- S[[i]]$P
 
   questions[i] = sprintf("%.2f", eval(Si))
-  solutions[i] = all(Pi == "expert")
+  solutions[i] = all(expert(Pi))
   explanations[i] = paste(Pi, collapse=", ")
 }
 
@@ -74,7 +74,7 @@ Tab <- rbind(
   c(T0=t0, EOT=eot, `$D$`=d),
   c(T0=s_t0, EOT=s_eot, `$D$`=s_d))
   
-knitr::kable(Tab, digits=1)
+knitr::kable(Tab, digits=1, align = c("l", "c", "c"))
 ````
 
 Does rfCBT lead to a relevant reduction (i.e., more than `r mu` units) in mean

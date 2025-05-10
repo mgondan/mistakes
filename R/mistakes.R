@@ -8,3 +8,13 @@
 
   rolog::consult(system.file("pl/mistakes.pl", package=pkgname))
 }
+
+expert1 <- function(expr)
+{
+  if(!is.call(expr))
+    stop("expert: expression is not a call")
+  
+  expr[[1]] == "expert"
+}
+
+expert <- Vectorize(expert1)

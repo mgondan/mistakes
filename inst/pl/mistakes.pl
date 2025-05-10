@@ -1,10 +1,10 @@
 :- use_module(library(http/html_write)).
 
 % Apply expert and buggy rules
-step(X, Y, [Step]) :-
+step(X, Y, [expert(Step)]) :-
     expert(X, Y, Step).
 
-step(X, Y, [Step]) :-
+step(X, Y, [buggy(Step)]) :-
     buggy(X, Y, Step).
 
 % Enter expressions
