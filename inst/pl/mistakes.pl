@@ -1,28 +1,28 @@
-:- use_module(library(http/html_write)).
+:- use_module(intermediate).
 
 % Apply expert and buggy rules
-step(X, Y, [expert(Step)]) :-
+step(X, Y, expert(Step)) :-
     expert(X, Y, Step).
 
-step(X, Y, [buggy(Step)]) :-
+step(X, Y, buggy(Step)) :-
     buggy(X, Y, Step).
 
 % Enter expressions
-step(X, Y, Path) :-
+step(X, Y, Step) :-
     compound(X),
     compound_name_arguments(X, Name, XArgs),
     nth1(Index, XArgs, Arg, Rest),
-    search(Arg, New, Path),
+    search_(Arg, New, [Step]),
     nth1(Index, YArgs, New, Rest),
     compound_name_arguments(Y, Name, YArgs).
     
 % Search through problem space
 search_(X, X, []).
 
-search_(X, Z, Path) :-
+search_(X, Z, [Step | Path]) :-
     step(X, Y, Step),
-    search_(Y, Z, Path0),
-    append(Step, Path0, Path).
+    search_(Y, Z, Path).
 
-search(X, Y, [H | Path]) :-
-    search_(X, Y, [H | Path]).
+search(X, Y, Path) :-
+    search_(X, Y, Path),
+    complete(Y).

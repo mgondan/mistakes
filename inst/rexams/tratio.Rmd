@@ -5,8 +5,8 @@ title: "Phase II clinical study"
 ```{r, include=FALSE}
 library(exams)
 library(mistakes)
-library(mathml)
 
+library(mathml)
 hook(d, mean(D))
 hook(s_d, subscript(s, D))
 hook(mu_d, subscript(mu, D))
@@ -45,8 +45,6 @@ rolog::consult(system.file("rexams/tratio.pl", package="mistakes"))
 
 Q <- quote(search(tratio(d, mu_d, s_d, n), .S, .P))
 S <- findall(Q, options=list(preproc=as.rolog))
-
-frac <- `/`
 
 questions <- character(length(S))
 solutions <- logical(length(S))
