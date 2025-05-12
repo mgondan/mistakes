@@ -26,3 +26,14 @@ search_(X, Z, [Step | Path]) :-
 search(X, Y, Path) :-
     search_(X, Y, Path),
     complete(Y).
+
+% Remove duplicates due to permutation of steps
+search_(X, Y, Path, Sorted, Res) :-
+    search(X, Y, Path),
+    sort(Path, Sorted),
+    r_eval(Y, Res).
+
+search(X, Y, Path, Res) :-
+    findall((Y0 - P0) - (S0 - R0), search_(X, Y0, P0, S0, R0), All),
+    sort(2, @<, All, Unique),
+    member((Y - Path) - (_ - Res), Unique).

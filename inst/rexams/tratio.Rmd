@@ -43,7 +43,7 @@ repeat
 
 rolog::consult(system.file("rexams/tratio.pl", package="mistakes"))
 
-Q <- quote(search(tratio(d, mu_d, s_d, n), .S, .P))
+Q <- quote(search(tratio(d, mu_d, s_d, n), .S, .P, .R))
 S <- findall(Q, options=list(preproc=as.rolog))
 
 questions <- character(length(S))
@@ -54,8 +54,9 @@ for(i in 1:length(S))
 {
   Si <- S[[i]]$S
   Pi <- S[[i]]$P
+  Ri <- S[[i]]$R
 
-  questions[i] = sprintf("%.2f", eval(Si))
+  questions[i] = sprintf("%.2f", Ri)
   solutions[i] = all(expert(Pi))
   explanations[i] = paste(mathml(Si), paste(Pi, collapse=", "))
 }
