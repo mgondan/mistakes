@@ -18,3 +18,19 @@ expert1 <- function(expr)
 }
 
 expert <- Vectorize(expert1)
+
+feedback1 <- function(expr)
+{
+  if(!is.call(expr))
+    stop("feedback: expression is not a call")
+  
+  if(expr[[1]] == "expert")
+    return(expr[[2]])
+  
+  if(expr[[1]] == "buggy")
+    return(expr[[2]])
+  
+  stop("feedback: expression should be expert/1 or buggy/1")
+}
+
+feedback <- Vectorize(feedback1)

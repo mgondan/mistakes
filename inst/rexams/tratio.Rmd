@@ -56,9 +56,11 @@ for(i in 1:length(S))
   Pi <- S[[i]]$P
   Ri <- S[[i]]$R
 
-  questions[i] = sprintf("%.2f", Ri)
-  solutions[i] = all(expert(Pi))
-  explanations[i] = paste(mathml(Si), paste(Pi, collapse=", "))
+  questions[i] <- sprintf("%.2f", Ri)
+  solutions[i] <- all(expert(Pi))
+  e1 <- sprintf("The result matches the following expression: %s\n", mathml(Si))
+  e2 <- paste(feedback(Pi), collapse=" ")
+  explanations[i] <- paste(e1, e2)
 }
 
 o <- sample(1:length(S))
