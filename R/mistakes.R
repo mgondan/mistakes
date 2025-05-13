@@ -25,10 +25,16 @@ feedback1 <- function(expr)
     stop("feedback: expression is not a call")
   
   if(expr[[1]] == "expert")
-    return(expr[[2]])
-  
+  {
+    X <- once(call("message", expr[[2]], expression(X)))
+    return(X$X)
+  }
+
   if(expr[[1]] == "buggy")
-    return(expr[[2]])
+  {
+    X <- once(call("message", expr[[2]], expression(X)))
+    return(X$X)
+  }
   
   stop("feedback: expression should be expert/1 or buggy/1")
 }

@@ -1,4 +1,5 @@
 :- use_module(intermediate).
+:- use_module(message).
 
 % Apply expert and buggy rules
 step(X, Y, expert(Step)) :-
