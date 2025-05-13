@@ -26,17 +26,16 @@ repeat
   s_t0   <- sd(data$T0)
   eot    <- mean(data$EOT)
   s_eot  <- sd(data$EOT)
-
   d      <- mean(data$T0 - data$EOT)
   s_d    <- sd(data$T0 - data$EOT)
-
   tratio <- (d - mu_d) / (s_d / sqrt(n))
+    
   if(abs(tratio) < 0.1)
     next
   if(abs(tratio) > 3.0)
     next
-
   tails  <- "two-tailed"
+    
   alpha  <- 0.05
   break
 }
@@ -44,7 +43,7 @@ repeat
 rolog::consult(system.file("rexams/tratio.pl", package="mistakes"))
 
 Q <- quote(search(tratio(d, mu_d, s_d, n), .S, .P, .R))
-S <- findall(Q, options=list(preproc=as.rolog))
+S <- findall(Q, options=list(preproc=as.rolog), env=.GlobalEnv)
 
 questions <- character(length(S))
 solutions <- logical(length(S))
