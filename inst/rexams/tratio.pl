@@ -6,7 +6,7 @@ intermediate(tratio/4).
 % Mistakes
 buggy(dfrac(X - Mu, S / SQRTN), X - dfrac(Mu, S) / SQRTN, paren).
 
-buggy(sqrt(N), N, sqrt(N)).
+buggy(sqrt(N), error(instead(N, sqrt(N))), sqrt(N)).
 
 % Feedback
 msg(tratio, "Correctly identified the expression for the $t$-ratio.").

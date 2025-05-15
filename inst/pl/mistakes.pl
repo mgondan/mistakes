@@ -8,6 +8,11 @@ step(X, Y, expert(Step)) :-
 step(X, Y, buggy(Step)) :-
     buggy(X, Y, Step).
 
+step(error(instead(X, Correct)), Y, Step) :-
+    !,
+    search_(X, Y0, [Step]),
+    Y = error(instead(Y0, Correct)).
+
 % Enter expressions
 step(X, Y, Step) :-
     compound(X),

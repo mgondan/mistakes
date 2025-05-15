@@ -7,6 +7,8 @@
     stop("Could not attach R package rolog.")
 
   rolog::consult(system.file("pl/mistakes.pl", package=pkgname))
+  
+  mathml::hook(error(.X), .X)
 }
 
 expert1 <- function(expr)
@@ -40,3 +42,9 @@ feedback1 <- function(expr)
 }
 
 feedback <- Vectorize(feedback1)
+
+error <- function(expr)
+  return(expr)
+
+instead <- function(wrong, correct)
+  return(wrong)
