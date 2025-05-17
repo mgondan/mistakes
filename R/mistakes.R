@@ -41,7 +41,8 @@ feedback1 <- function(expr)
   stop("feedback: expression should be expert/1 or buggy/1")
 }
 
-feedback <- Vectorize(feedback1)
+feedback <- function(expr)
+  Vectorize(feedback1)(hooked(expr))
 
 error <- function(expr)
   return(expr)

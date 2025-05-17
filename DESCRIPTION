@@ -2,7 +2,7 @@ Package: mistakes
 Type: Package
 Title: Generate single-choice questions for exams based on buggy rules
 Version: 0.1
-Date: 2025-05-09
+Date: 2025-05-17
 Author: c(person("Matthias", "Gondan", role=c("aut", "cre", "cph"),
   email="Matthias.Gondan-Rochon@uibk.ac.at", comment="Universität Innsbruck"),
   person("Irene", "Alfarone", role="aut",
@@ -19,5 +19,5 @@ Depends:
 Imports:
     exams,
     fastmap,
-    mathml
+    mathml (>= 1.4)
 LinkingTo: Rcpp
