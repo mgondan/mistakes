@@ -47,5 +47,5 @@ feedback <- function(expr)
 error <- function(expr)
   return(expr)
 
-instead <- function(wrong, correct)
-  return(wrong)
+omit_right <- function(expr)
+  substitute(expr)[[3]]

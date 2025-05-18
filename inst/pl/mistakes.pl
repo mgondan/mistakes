@@ -13,6 +13,13 @@ step(error(instead(X, Correct)), Y, Step) :-
     search_(X, Y0, [Step]),
     Y = error(instead(Y0, Correct)).
 
+step(error(omit_right(X)), Y, Step) :-
+    !,
+    X =.. [Op, A, B],
+    search_(A, A1, [Step]),
+    Y0 =.. [Op, A1, B],
+    Y = error(omit_right(Y0)).
+
 % Enter expressions
 step(X, Y, Step) :-
     compound(X),
