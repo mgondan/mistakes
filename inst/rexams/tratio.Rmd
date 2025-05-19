@@ -19,8 +19,6 @@ hook(s_t0, subscript(s, "T0"))
 hook(eot, mean("EOT"))
 hook(s_eot, subscript(s, "EOT"))
 hook(s_pool, subscript(s, "pool"))
-
-# Will be simplified to
 hook("var_pool"(.NA, .VA, .NB, .VB), frac((.NA - 1L) * .VA + (.NB - 1L) * .VB, .NA + .NB - 2L))
 
 ## DATA GENERATION

@@ -5,8 +5,8 @@
 :- format_predicate(m, format_mathjax(_, _Symbol)).
 
 format_mathjax(_, Symbol) :-
-  mathml:mathjax(Symbol, M, []),
-  format("~w", [M]).
+  mathml:jax(Symbol, M, []),
+  format("$~w$", [M]).
 
 message(Code, Res) :-
     msg(Code, Mask_Format),
