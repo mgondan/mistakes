@@ -9,7 +9,7 @@ expert(tpaired(X, Mu, S, N), dfrac(X - Mu, S / sqrt(N)), tratio).
 intermediate(tindep/5).
 expert(tindep(T0, S_T0, EOT, S_EOT, N), 
     dfrac(T0 - EOT, 
-      sqrt(denote(s_pool^2, var_pool(S_T0^2, N, S_EOT^2, N), "the pooled variance") * (1/N + 1/N))), 
+      sqrt(denote(s_pool^2, var_pool(N, S_T0^2, N, S_EOT^2), "the pooled variance") * (1/N + 1/N))), 
     twosample).
 
 % Mistakes
