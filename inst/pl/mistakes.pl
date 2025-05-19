@@ -1,6 +1,8 @@
 :- use_module(intermediate).
 :- use_module(message).
 
+:- discontiguous expert/3, buggy/3, intermediate/1.
+
 % Apply expert and buggy rules
 step(X, Y, expert(Step)) :-
     expert(X, Y, Step).

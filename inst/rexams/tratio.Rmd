@@ -42,7 +42,7 @@ repeat
 
 rolog::consult(system.file("rexams/tratio.pl", package="mistakes"))
 
-Q <- quote(search(tratio(d, mu_d, s_d, n), .S, .P, .R))
+Q <- quote(search(tpaired(t0, s_t0, eot, s_eot, d, mu_d, s_d, n), .S, .P, .R))
 S <- findall(Q, options=list(preproc=as.rolog), env=.GlobalEnv)
 
 questions <- character(length(S))
