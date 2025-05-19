@@ -58,6 +58,9 @@ questions <- character(length(S))
 solutions <- logical(length(S))
 explanations <- character(length(S))
 
+if(length(S) == 0)
+  stop("No solutions found.")
+
 for(i in 1:length(S))
 {
   Si <- S[[i]]$S

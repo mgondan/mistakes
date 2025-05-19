@@ -1,37 +1,36 @@
 % Solution of the problem
 intermediate(tratio/8).
-expert(tratio(_, _, _, _, X, Mu, S, N), tpaired(X, Mu, S, N), paired).
+expert(tratio(_, _, _, _, X, Mu, S, N), tpaired(X, Mu, S, N), paired, []).
 
 intermediate(tpaired/4).
-expert(tpaired(X, Mu, S, N), dfrac(X - Mu, S / sqrt(N)), tratio).
+expert(tpaired(X, Mu, S, N), dfrac(X - Mu, S / sqrt(N)), tratio, []).
 
 % Other steps
 intermediate(tindep/5).
-expert(tindep(T0, S_T0, EOT, S_EOT, N), 
-    dfrac(T0 - EOT, 
-      sqrt(denote(s_pool^2, var_pool(N, S_T0^2, N, S_EOT^2), "the pooled variance") * (1/N + 1/N))), 
-    twosample).
+expert(X, Y, twosample, []) :-
+    X = tindep(T0, S_T0, EOT, S_EOT, N), 
+    V = var_pool(N, S_T0^2, N, S_EOT^2),
+    P = denote(s_pool^2, V, "the pooled variance"),
+    Y = dfrac(T0 - EOT, sqrt(P * (1/N + 1/N))).
 
 % Mistakes
-buggy(tratio(T0, S_T0, EOT, S_EOT, _, _, _, N), tindep(T0, S_T0, EOT, S_EOT, N), indep).
+buggy(X, Y, indep, []) :-
+    X = tratio(T0, S_T0, EOT, S_EOT, _, _, _, N),
+    Y = tindep(T0, S_T0, EOT, S_EOT, N).
 
-buggy(dfrac(X - Mu, S / SQRTN), X - dfrac(Mu, S) / SQRTN, paren).
+buggy(dfrac(X - Mu, S / SQRTN), X - dfrac(Mu, S) / SQRTN, paren, []).
 
-buggy(sqrt(N), error(instead(N, sqrt(N))), sqrt(N)).
+buggy(sqrt(N), error(instead(N, sqrt(N))), sqrt(N), [depends(paired)]).
 
-buggy(tratio(X, Mu, S, N), 
-    dfrac(error(omit_right(X - Mu)), S / sqrt(N)), mu(Mu)).
-
-buggy(tratio(X, Mu, S, N), 
-    dfrac(error(omit_right(X - Mu)), S / sqrt(N)), mu(Mu)).
-
-buggy(tratio(X, Mu, S, N), 
-    dfrac(error(omit_right(X - Mu)), S / sqrt(N)), mu(Mu)).
+buggy(X, Y, mu(Mu), []) :-
+    X = tratio(D, Mu, S, N),
+    Y = dfrac(error(omit_right(D - Mu)), S / sqrt(N)).
 
 % Feedback
 msg(indep, "This is not a two-sample problem.").
 
-msg(twosample, "(irrelevant) Correctly determined the expression for the two-sample ~m-test."-[t]).
+msg(twosample, "(irrelevant) Correctly determined the expression for the 
+    two-sample ~m-test."-[t]).
 
 msg(paired, "This is indeed a problem with paired samples.").
 

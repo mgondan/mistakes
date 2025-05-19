@@ -1,14 +1,15 @@
 :- use_module(intermediate).
 :- use_module(message).
+:- use_module(depends).
 
-:- discontiguous expert/3, buggy/3, intermediate/1.
+:- discontiguous expert/4, buggy/4, intermediate/1.
 
 % Apply expert and buggy rules
-step(X, Y, expert(Step)) :-
-    expert(X, Y, Step).
+step(X, Y, expert(Step, Flags)) :-
+    expert(X, Y, Step, Flags).
 
-step(X, Y, buggy(Step)) :-
-    buggy(X, Y, Step).
+step(X, Y, buggy(Step, Flags)) :-
+    buggy(X, Y, Step, Flags).
 
 step(error(instead(X, Correct)), Y, Step) :-
     !,
@@ -34,13 +35,14 @@ step(X, Y, Step) :-
 % Search through problem space
 search_(X, X, []).
 
-search_(X, Z, [Step | Path]) :-
-    step(X, Y, Step),
-    search_(Y, Z, Path).
+search_(X, Z, [S | Steps]) :-
+    step(X, Y, S),
+    search_(Y, Z, Steps).
 
 search(X, Y, Path) :-
     search_(X, Y, Path),
-    complete(Y).
+    complete(Y),
+    depends(Path).
 
 % Remove duplicates due to permutation of steps
 search_(X, Y, Path, Sorted, Res) :-
