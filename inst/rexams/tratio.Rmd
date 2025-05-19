@@ -12,6 +12,9 @@ hook(s_d, subscript(s, D))
 hook(mu_d, subscript(mu, D))
 hook(n, N)
 
+var_pool <- function(v1, n1, v2, n2)
+  ((n1 - 1) * v1 + (n2 - 1) * v2) / (n1 + n2 - 2)
+
 ## DATA GENERATION
 repeat
 {
@@ -42,7 +45,7 @@ repeat
 
 rolog::consult(system.file("rexams/tratio.pl", package="mistakes"))
 
-Q <- quote(search(tpaired(t0, s_t0, eot, s_eot, d, mu_d, s_d, n), .S, .P, .R))
+Q <- quote(search(tratio(t0, s_t0, eot, s_eot, d, mu_d, s_d, n), .S, .P, .R))
 S <- findall(Q, options=list(preproc=as.rolog), env=.GlobalEnv)
 
 questions <- character(length(S))
