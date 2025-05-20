@@ -6,8 +6,18 @@ title: "Phase II clinical study"
 library(exams)
 library(mistakes)
 
-var_pool <- function(n1, v1, n2, v2)
-  ((n1 - 1) * v1 + (n2 - 1) * v2) / (n1 + n2 - 2)
+# todo: move to mathml
+hook1 <- function(fn)
+{
+  name <- as.character(substitute(fn))
+  args <- names(formals(fn))
+  dotargs <- sprintf(".%s", args)
+  subst <- lapply(dotargs, as.name)
+  arg1 <- as.call(c(as.name(name), subst))
+  names(subst) <- args
+  arg2 <- do.call(substitute, list(body(fn), subst))
+  eval(call("hook", arg1, arg2))
+}
 
 library(mathml)
 hook(d, mean(D))
@@ -19,7 +29,10 @@ hook(s_t0, subscript(s, "T0"))
 hook(eot, mean("EOT"))
 hook(s_eot, subscript(s, "EOT"))
 hook(s_pool, subscript(s, "pool"))
-hook("var_pool"(.NA, .VA, .NB, .VB), frac((.NA - 1L) * .VA + (.NB - 1L) * .VB, .NA + .NB - 2L))
+
+var_pool <- function(n1, v1, n2, v2)
+  frac((n1 - 1L) * v1 + (n2 - 1L) * v2, n1 + n2 - 2L)
+hook1(var_pool)
 
 ## DATA GENERATION
 repeat
