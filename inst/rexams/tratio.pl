@@ -26,10 +26,19 @@ buggy(X, Y, mu(Mu), []) :-
     X = tratio(D, Mu, S, N),
     Y = dfrac(error(omit_right(D - Mu)), S / sqrt(N)).
 
+buggy(X, Y, school(N1, N2), []) :-
+    X = 1/N1 + 1/N2,
+    dif(N1, N2),
+    Y = frac(1, N1 + N2).
+
+buggy(X, Y, school(N), []) :-
+    X = 1/N + 1/N,
+    Y = frac(1, 2*N).
+
 % Feedback
 msg(indep, "This is not a two-sample problem.").
 
-msg(twosample, "(irrelevant) Correctly determined the expression for the 
+msg(twosample, "Correctly determined the expression for the
     two-sample ~m-test."-[t]).
 
 msg(paired, "This is indeed a problem with paired samples.").
@@ -42,3 +51,13 @@ msg(paren, "Please do not forget the parentheses around the numerator and
 msg(sqrt(X), "Please do not omit the square root around ~m."-[X]).
 
 msg(mu(Mu), "Do not omit the null hypothesis ~m in the ~m-ratio."-[Mu, t]).
+
+msg(school(A, B), M) :-
+    M = "The result matches the expression for the ~m-ratio for independent 
+    samples with ~m under the square root. Please keep in mind that ~m."
+    - [t, frac(1, A + B), frac(1, A) + frac(1, B) \= frac(1, A + B)].
+
+msg(school(N), M) :-
+    M = "The result matches the expression for the ~m-ratio for independent 
+    samples with ~m under the square root. Please keep in mind that ~m."
+    - [t, frac(1, 2*N), frac(1, N) + frac(1, N) = frac(2, N)].
