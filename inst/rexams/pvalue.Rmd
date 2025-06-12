@@ -1,0 +1,135 @@
+---
+title: "Phase II clinical study"
+---
+
+```{r, include=FALSE}
+library(exams)
+library(mistakes)
+
+# todo: move to mathml
+hook1 <- function(fn)
+{
+  name <- as.character(substitute(fn))
+  args <- names(formals(fn))
+  dotargs <- sprintf(".%s", args)
+  subst <- lapply(dotargs, as.name)
+  arg1 <- as.call(c(as.name(name), subst))
+  names(subst) <- args
+  arg2 <- do.call(substitute, list(body(fn), subst))
+  eval(call("hook", arg1, arg2))
+}
+
+library(mathml)
+hook(d, mean(D))
+hook(s_d, subscript(s, D))
+hook(mu_d, subscript(mu, D))
+hook(n, N)
+hook(t0, mean("T0"))
+hook(s_t0, subscript(s, "T0"))
+hook(eot, mean("EOT"))
+hook(s_eot, subscript(s, "EOT"))
+hook(s_pool, subscript(s, "pool"))
+
+var_pool <- function(n1, v1, n2, v2)
+  frac((n1 - 1L) * v1 + (n2 - 1L) * v2, n1 + n2 - 2L)
+hook1(var_pool)
+
+## DATA GENERATION
+repeat
+{
+  n      <- as.integer(round(runif(1, min=20, max=45)))
+  Id     <- 1:n
+  T0     <- round(runif(n, min=15, max=40))
+  EOT    <- round(T0 + runif(n, min=-10, max=2))
+  mu_d   <- round(runif(1, min=2, max=5), 1)
+
+  data   <- data.frame(Id, T0, EOT)
+  t0     <- mean(data$T0)
+  s_t0   <- sd(data$T0)
+  eot    <- mean(data$EOT)
+  s_eot  <- sd(data$EOT)
+  d      <- mean(data$T0 - data$EOT)
+  s_d    <- sd(data$T0 - data$EOT)
+  tratio <- (d - mu_d) / (s_d / sqrt(n))
+    
+  if(abs(tratio) < 0.1)
+    next
+  if(abs(tratio) > 3.0)
+    next
+  tails  <- "two-tailed"
+    
+  alpha  <- 0.05
+  break
+}
+
+rolog::consult(system.file("rexams/pvalue.pl", package="mistakes"))
+
+Q <- quote(search(pvalue(d, mu_d, s_d, n, alpha), .S, .R, .P, .E))
+S <- findall(Q, options=list(preproc=as.rolog), env=.GlobalEnv)
+
+questions <- character(length(S))
+solutions <- logical(length(S))
+explanations <- character(length(S))
+
+if(length(S) == 0)
+  stop("No solutions found.")
+
+for(i in 1:length(S))
+{
+  Si <- S[[i]]$S
+  Ri <- S[[i]]$R
+  Pi <- S[[i]]$P
+  Ei <- S[[i]]$E
+
+  questions[i] <- sprintf("%.2f", Ri)
+  solutions[i] <- all(expert(Pi))
+  e1 <- sprintf("The result matches the following expression: %s\n", mathml(Si))
+  e2 <- paste(feedback(Pi), collapse=" ")
+  e3 <- paste(feedback(Ei), collapse=" ")
+  explanations[i] <- paste(e1, e2, "Extra information:", e3)
+}
+
+o <- sample(1:length(S))
+questions <- questions[o]
+solutions <- solutions[o]
+explanations <- explanations[o]
+S <- S[o]
+```
+
+Question
+========
+Consider a clinical study on rumination-focused Cognitive Behavioral
+Therapy (rfCBT) with `r n` patients. The primary outcome is the score on the
+Hamilton Rating Scale for Depression (HRSD, range from best = 0 to worst = 42).
+The significance level is set to $\alpha = 5\%$ two-tailed.
+
+````{r, echo=FALSE}
+Tab <- rbind(
+  Average=c(T0=t0, EOT=eot, `$D$`=d),
+  SD=c(T0=s_t0, EOT=s_eot, `$D$`=s_d))
+  
+knitr::kable(Tab, digits=1, align = c("l", "c", "c"), 
+  caption="_Table 1._ HRSD scores.")
+````
+
+Does rfCBT lead to a relevant reduction (i.e., more than `r mu_d` units) in mean
+HDRS scores between baseline (T0) and End of Treatment (EOT)? Please report
+the $p$-value.
+
+```{r questionlist, echo = FALSE, results = "asis"}
+answerlist(questions, markup="markdown")
+```
+
+Solution
+========
+The $t$-statistic is calculated by: `r mathml(S[[which(solutions)[1]]]$S)`
+
+```{r solutionlist, echo = FALSE, results = "asis"}
+answerlist(ifelse(solutions, "True", "False"), explanations, markup = "markdown")
+```
+
+Meta-information
+================
+extype: schoice
+exsolution: `r mchoice2string(solutions, single=TRUE)`
+exname: p-value
