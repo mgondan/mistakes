@@ -1,3 +1,5 @@
 exportPattern("^[[:alpha:]]+")
 exportPattern("^%.+%$")
+export("{}")
+export(";")
 import(rolog)

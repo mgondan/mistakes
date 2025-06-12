@@ -49,3 +49,26 @@ error <- function(expr)
 
 omit_right <- function(expr)
   substitute(expr)[[3]]
+
+`{}` <- function(expr)
+  return(expr)
+
+`;` <- function(expr1, expr2)
+{
+  expr1
+  return(expr2)
+}
+
+pvalue <- function(x)
+{
+  if(x > 0.995)
+    return("1.0")
+  
+  if(x < 0.001)
+    return("< 0.001")
+
+  if(x < 0.10)
+    return(sprintf("%.3f", x))
+  
+  return(sprintf("%.2f", x))
+}
