@@ -64,7 +64,7 @@ repeat
 
 rolog::consult(system.file("rexams/tratio.pl", package="mistakes"))
 
-Q <- quote(search(tratio(t0, s_t0, eot, s_eot, d, mu_d, s_d, n), .S, .P, .R))
+Q <- quote(search(tratio(t0, s_t0, eot, s_eot, d, mu_d, s_d, n), .S, .R, .P, .E))
 S <- findall(Q, options=list(preproc=as.rolog), env=.GlobalEnv)
 
 questions <- character(length(S))
@@ -77,14 +77,16 @@ if(length(S) == 0)
 for(i in 1:length(S))
 {
   Si <- S[[i]]$S
-  Pi <- S[[i]]$P
   Ri <- S[[i]]$R
+  Pi <- S[[i]]$P
+  Ei <- S[[i]]$E
 
   questions[i] <- sprintf("%.2f", Ri)
   solutions[i] <- all(expert(Pi))
   e1 <- sprintf("The result matches the following expression: %s\n", mathml(Si))
   e2 <- paste(feedback(Pi), collapse=" ")
-  explanations[i] <- paste(e1, e2)
+  e3 <- paste(feedback(Ei), collapse=" ")
+  explanations[i] <- paste(e1, e2, "Extra information:", e3)
 }
 
 o <- sample(1:length(S))

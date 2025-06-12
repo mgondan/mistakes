@@ -51,9 +51,10 @@ search_(X, Y, Path, Sorted, Res) :-
     sort(Path, Sorted),
     r_eval(Y, Res).
 
-search(X, Y, Feedback, Res) :-
+search(X, Y, Res, Feedback, Extra) :-
     relevant(X, Relevant),
     findall((Y0 - P0) - (S0 - R0), search_(X, Y0, P0, S0, R0), All),
     sort(2, @<, All, Unique),
     member((Y - Path) - (_ - Res), Unique),
-    intersection(Path, Relevant, Feedback).
+    intersection(Path, Relevant, Feedback),
+    subtract(Path, Relevant, Extra).
