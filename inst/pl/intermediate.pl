@@ -1,5 +1,7 @@
 :- module(intermediate, [complete/1]).
 
+:- multifile user:intermediate/1.
+
 % Atoms (e.g. s_t0) are always complete
 complete(X) :-
     atomic(X),

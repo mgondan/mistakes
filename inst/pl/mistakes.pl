@@ -3,7 +3,7 @@
 :- use_module(depends).
 :- use_module(relevant).
 
-:- discontiguous expert/4, buggy/4, intermediate/1.
+:- multifile expert/4, buggy/4.
 
 % Apply expert and buggy rules
 step(X, Y, expert(Step, Flags)) :-

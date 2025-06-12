@@ -8,3 +8,6 @@ exams2openolat(myexam,
   solutionswitch = TRUE,
   envir=.GlobalEnv
 )
+
+library(exams2forms)
+exams2webquiz("tratio.Rmd")
