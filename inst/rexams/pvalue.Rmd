@@ -4,13 +4,31 @@ title: "Phase II clinical study"
 
 ```{r, include=FALSE}
 library(exams)
+library(mathml)
 library(mistakes)
 
-library(mathml)
 hook(d, mean(D))
 hook(s_d, subscript(s, D))
 hook(mu_d, subscript(mu, D))
 hook(n, N)
+hook(pvalue(.P), .P)
+
+dist <- function(Symb, X, Tail)
+  return(X)
+
+tail <- function(Tail)
+{
+  if(Tail == "upper")
+    return(FALSE)
+
+  if(Tail == "both")
+    return(FALSE)
+  
+  if(Tail == "lower")
+    return(TRUE)
+  
+  stop("Tail must bei either upper, lower or both")
+}
 
 ## DATA GENERATION
 repeat

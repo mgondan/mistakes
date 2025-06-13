@@ -1,6 +1,6 @@
 :- module(message, [message/2]).
 
-:- use_module(library(mathml)).
+% :- use_module(library(mathml)).
 
 :- format_predicate(m, format_mathjax(_, _Symbol)).
 

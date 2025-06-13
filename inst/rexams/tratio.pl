@@ -1,3 +1,5 @@
+:- discontiguous intermediate/1.
+
 % Solution of the problem
 intermediate(tratio/8).
 expert(tratio(_, _, _, _, X, Mu, S, N), tpaired(X, Mu, S, N), paired, []).
