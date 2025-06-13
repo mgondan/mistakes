@@ -21,13 +21,13 @@ tail <- function(Tail)
   if(Tail == "upper")
     return(FALSE)
 
-  if(Tail == "both")
+  if(Tail == "two.sided")
     return(FALSE)
   
   if(Tail == "lower")
     return(TRUE)
   
-  stop("Tail must bei either upper, lower or both")
+  stop("Tail must bei either upper, lower or two.sided")
 }
 
 ## DATA GENERATION
