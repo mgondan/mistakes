@@ -12,21 +12,25 @@ hook(s_d, subscript(s, D))
 hook(mu_d, subscript(mu, D))
 hook(n, N)
 hook(pvalue(.P), .P)
+hook(pt1(.X, .DF, .Tail), pt(.X, .DF, .Tail))
 
 dist <- function(Symb, X, Tail)
   return(X)
 
 tail <- function(Tail)
+  return(Tail)
+
+pt1 <- function(X, DF, Tail)
 {
+  if(Tail == "lower")
+    return(pt(X, DF, lower.tail=TRUE))
+
   if(Tail == "upper")
-    return(FALSE)
+    return(pt(X, DF, lower.tail=FALSE))
 
   if(Tail == "two.sided")
-    return(FALSE)
-  
-  if(Tail == "lower")
-    return(TRUE)
-  
+    return(2 * pt(abs(X), DF, lower.tail=FALSE))
+
   stop("Tail must bei either upper, lower or two.sided")
 }
 
