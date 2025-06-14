@@ -19,5 +19,5 @@ Depends:
 Imports:
     exams,
     fastmap,
-    mathml (>= 1.4)
+    mathml (>= 1.5)
 LinkingTo: Rcpp
