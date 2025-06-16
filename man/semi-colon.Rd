@@ -8,8 +8,11 @@
 `;`(expr1, expr2)
 }
 \arguments{
+<<<<<<< HEAD
 \item{expr1}{R call}
 
+=======
+>>>>>>> f658206cfd658c24c136a409a5c638266684f7d7
 \item{expr2}{R calls}
 }
 \description{
