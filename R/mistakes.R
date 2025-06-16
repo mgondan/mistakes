@@ -58,7 +58,7 @@ expert <- Vectorize(.expert1)
 #' list of R calls of the form expert/3 or buggy/3
 #'
 feedback <- function(expr)
-  Vectorize(.feedback1)(mathml::hooked(expr))
+  Vectorize(.feedback1)(hooked(expr))
 
 #' Evaluate argument of error/1
 #' (for internal use)

@@ -1,3 +1,5 @@
+:- discontiguous intermediate/1, expert/4.
+
 % Solution of the problem
 intermediate(pvalue/5).
 expert(X, Y, paired, []) :-
