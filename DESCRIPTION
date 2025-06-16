@@ -1,16 +1,16 @@
 Package: mistakes
 Type: Package
-Title: Generate single-choice questions for exams based on buggy rules
+Title: Generate Single-Choice Questions for Exams Based on Buggy Rules
 Version: 0.1
-Date: 2025-05-17
-Author: c(person("Matthias", "Gondan", role=c("aut", "cre", "cph"),
+Date: 2025-06-16
+Authors@R: c(person("Matthias", "Gondan", role=c("aut", "cre", "cph"),
   email="Matthias.Gondan-Rochon@uibk.ac.at", comment="Universität Innsbruck"),
   person("Irene", "Alfarone", role="aut",
   email="Irene.Alfarone@uibk.ac.at", comment="Universität Innsbruck"))
 Maintainer: Matthias Gondan <Matthias.Gondan-Rochon@uibk.ac.at>
-Description: This package generates meaningful incorrect responses to
-    single-choice questions for statistics exams based on a set of expert
-    rules and buggy rules for the intermediate steps.
+Description: Meaningful incorrect responses to single-choice questions for
+    statistics exams based on a set of expert rules and buggy rules for the
+    intermediate steps.
 License: FreeBSD
 Encoding: UTF-8
 Depends:
