@@ -21,4 +21,10 @@ Imports:
 RoxygenNote: 7.3.2
 Suggests:
     exams,
-    fastmap
+    fastmap,
+    rmarkdown
+URL: https://github.com/mgondan/mistakes
+URL: https://github.com/mgondan/mistakes
+VignetteBuilder:
+    knitr,
+    rmarkdown
