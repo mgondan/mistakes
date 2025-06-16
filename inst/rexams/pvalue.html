@@ -356,7 +356,7 @@ display: none;
 <div id="question" class="section level1">
 <h1>Question</h1>
 <p>Consider a clinical study on rumination-focused Cognitive Behavioral
-Therapy (rfCBT) with 21 patients. The primary outcome is the score on
+Therapy (rfCBT) with 22 patients. The primary outcome is the score on
 the Hamilton Rating Scale for Depression (HRSD, range from best = 0 to
 worst = 42). The significance level is set to <span class="math inline">\(\alpha = 5\%\)</span> two-tailed.</p>
 <table>
@@ -372,27 +372,27 @@ worst = 42). The significance level is set to <span class="math inline">\(\alpha
 <tbody>
 <tr class="odd">
 <td align="left">Average</td>
-<td align="left">23.7</td>
-<td align="center">20.3</td>
-<td align="center">3.4</td>
+<td align="left">27.7</td>
+<td align="center">23.0</td>
+<td align="center">4.7</td>
 </tr>
 <tr class="even">
 <td align="left">SD</td>
-<td align="left">6.0</td>
-<td align="center">6.9</td>
-<td align="center">3.9</td>
+<td align="left">7.3</td>
+<td align="center">8.3</td>
+<td align="center">4.0</td>
 </tr>
 </tbody>
 </table>
-<p>Does rfCBT lead to a relevant reduction (i.e., more than 3.6 units)
+<p>Does rfCBT lead to a relevant reduction (i.e., more than 2.9 units)
 in mean HDRS scores between baseline (T0) and End of Treatment (EOT)?
 Please report the <span class="math inline">\(p\)</span>-value.</p>
 <div id="answerlist" class="section level2">
 <h2>Answerlist</h2>
 <ul>
-<li>0.40</li>
-<li>0.60</li>
-<li>0.80</li>
+<li>0.025</li>
+<li>0.049</li>
+<li>0.98</li>
 </ul>
 </div>
 </div>
@@ -405,28 +405,26 @@ by:
 <h2>Answerlist</h2>
 <ul>
 <li>False. The result matches the following expression:
-<math><mrow><mrow><mi>t</mi><mo>=</mo><mstyle displaystyle="true"><mfrac><mrow><mover accent="true"><mi>D</mi><mo>¯</mo></mover><mo>-</mo><msub><mi>μ</mi><mi>D</mi></msub></mrow><mrow><msub><mi>s</mi><mi>D</mi></msub><mo>/</mo><msqrt><mi>N</mi></msqrt></mrow></mfrac></mstyle></mrow><mo>;</mo><mrow><mi>p</mi><mo>=</mo><mrow><mi>P</mi><mo>⁡</mo><mrow><mo>(</mo><mrow><munder><munder accentunder="true"><mrow><mi>T</mi><mo>≤</mo><mi>t</mi></mrow><mo stretchy="true">⏟</mo></munder><mrow><mtext>instead</mtext><mspace width="thinmathspace"></mspace><mtext>of</mtext><mspace width="thinmathspace"></mspace><mrow><mrow><mo>|</mo><mi>T</mi><mo>|</mo></mrow><mo>&gt;</mo><mrow><mo>|</mo><mi>t</mi><mo>|</mo></mrow></mrow></mrow></munder><mo>;</mo><mrow><mrow><mi>N</mi><mo>-</mo><mn>1</mn></mrow><mspace width="thinmathspace"></mspace><mtext>df</mtext></mrow></mrow><mo>)</mo></mrow></mrow></mrow></mrow></math>
-Correctly recognised the problem as a <span class="math inline">\(t\)</span>-test for paired samples. Correctly
-identified the expression for the <span class="math inline">\(t\)</span>-ratio. The result matches the lower
-one-tailed <span class="math inline">\(p\)</span>-value. Extra
-information:</li>
-<li>False. The result matches the following expression:
 <math><mrow><mrow><mi>t</mi><mo>=</mo><mstyle displaystyle="true"><mfrac><mrow><mover accent="true"><mi>D</mi><mo>¯</mo></mover><mo>-</mo><msub><mi>μ</mi><mi>D</mi></msub></mrow><mrow><msub><mi>s</mi><mi>D</mi></msub><mo>/</mo><msqrt><mi>N</mi></msqrt></mrow></mfrac></mstyle></mrow><mo>;</mo><mrow><mi>p</mi><mo>=</mo><mrow><mi>P</mi><mo>⁡</mo><mrow><mo>(</mo><mrow><munder><munder accentunder="true"><mrow><mi>T</mi><mo>&gt;</mo><mi>t</mi></mrow><mo stretchy="true">⏟</mo></munder><mrow><mtext>instead</mtext><mspace width="thinmathspace"></mspace><mtext>of</mtext><mspace width="thinmathspace"></mspace><mrow><mrow><mo>|</mo><mi>T</mi><mo>|</mo></mrow><mo>&gt;</mo><mrow><mo>|</mo><mi>t</mi><mo>|</mo></mrow></mrow></mrow></munder><mo>;</mo><mrow><mrow><mi>N</mi><mo>-</mo><mn>1</mn></mrow><mspace width="thinmathspace"></mspace><mtext>df</mtext></mrow></mrow><mo>)</mo></mrow></mrow></mrow></mrow></math>
 Correctly recognised the problem as a <span class="math inline">\(t\)</span>-test for paired samples. Correctly
 identified the expression for the <span class="math inline">\(t\)</span>-ratio. The result matches the upper
-one-tailed <span class="math inline">\(p\)</span>-value. Extra
-information:</li>
+one-tailed <span class="math inline">\(p\)</span>-value.</li>
 <li>True. The result matches the following expression:
 <math><mrow><mrow><mi>t</mi><mo>=</mo><mstyle displaystyle="true"><mfrac><mrow><mover accent="true"><mi>D</mi><mo>¯</mo></mover><mo>-</mo><msub><mi>μ</mi><mi>D</mi></msub></mrow><mrow><msub><mi>s</mi><mi>D</mi></msub><mo>/</mo><msqrt><mi>N</mi></msqrt></mrow></mfrac></mstyle></mrow><mo>;</mo><mrow><mi>p</mi><mo>=</mo><mrow><mi>P</mi><mo>⁡</mo><mrow><mo>(</mo><mrow><mrow><mrow><mo>|</mo><mi>T</mi><mo>|</mo></mrow><mo>&gt;</mo><mrow><mo>|</mo><mi>t</mi><mo>|</mo></mrow></mrow><mo>;</mo><mrow><mrow><mi>N</mi><mo>-</mo><mn>1</mn></mrow><mspace width="thinmathspace"></mspace><mtext>df</mtext></mrow></mrow><mo>)</mo></mrow></mrow></mrow></mrow></math>
 Correctly recognised the problem as a <span class="math inline">\(t\)</span>-test for paired samples. Correctly
-identified the expression for the <span class="math inline">\(t\)</span>-ratio. Extra information: Correctly
-determined the two-tailed <span class="math inline">\(p\)</span>-value.</li>
+identified the expression for the <span class="math inline">\(t\)</span>-ratio. Correctly determined the
+two-tailed <span class="math inline">\(p\)</span>-value.</li>
+<li>False. The result matches the following expression:
+<math><mrow><mrow><mi>t</mi><mo>=</mo><mstyle displaystyle="true"><mfrac><mrow><mover accent="true"><mi>D</mi><mo>¯</mo></mover><mo>-</mo><msub><mi>μ</mi><mi>D</mi></msub></mrow><mrow><msub><mi>s</mi><mi>D</mi></msub><mo>/</mo><msqrt><mi>N</mi></msqrt></mrow></mfrac></mstyle></mrow><mo>;</mo><mrow><mi>p</mi><mo>=</mo><mrow><mi>P</mi><mo>⁡</mo><mrow><mo>(</mo><mrow><munder><munder accentunder="true"><mrow><mi>T</mi><mo>≤</mo><mi>t</mi></mrow><mo stretchy="true">⏟</mo></munder><mrow><mtext>instead</mtext><mspace width="thinmathspace"></mspace><mtext>of</mtext><mspace width="thinmathspace"></mspace><mrow><mrow><mo>|</mo><mi>T</mi><mo>|</mo></mrow><mo>&gt;</mo><mrow><mo>|</mo><mi>t</mi><mo>|</mo></mrow></mrow></mrow></munder><mo>;</mo><mrow><mrow><mi>N</mi><mo>-</mo><mn>1</mn></mrow><mspace width="thinmathspace"></mspace><mtext>df</mtext></mrow></mrow><mo>)</mo></mrow></mrow></mrow></mrow></math>
+Correctly recognised the problem as a <span class="math inline">\(t\)</span>-test for paired samples. Correctly
+identified the expression for the <span class="math inline">\(t\)</span>-ratio. The result matches the lower
+one-tailed <span class="math inline">\(p\)</span>-value.</li>
 </ul>
 </div>
 </div>
 <div id="meta-information" class="section level1">
 <h1>Meta-information</h1>
-<p>extype: schoice exsolution: 001 exname: p-value</p>
+<p>extype: schoice exsolution: 010 exname: p-value</p>
 </div>
 
 

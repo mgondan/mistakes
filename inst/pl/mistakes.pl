@@ -52,7 +52,9 @@ search_(X, Y, Path, Sorted, Res) :-
     r_eval(Y, Res).
 
 search(X, Y, Res, Feedback, Extra) :-
-    relevant(X, Relevant),
+    relevant_exp(X, Expert),
+    relevant_bug(X, Buggy),
+    append(Expert, Buggy, Relevant),
     findall((Y0 - P0) - (S0 - R0), search_(X, Y0, P0, S0, R0), All),
     sort(2, @<, All, Unique),
     member((Y - Path) - (_ - Res), Unique),

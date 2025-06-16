@@ -74,7 +74,9 @@ for(i in 1:length(S))
   e1 <- sprintf("The result matches the following expression: %s\n", mathml(Si))
   e2 <- paste(feedback(Pi), collapse=" ")
   e3 <- paste(feedback(Ei), collapse=" ")
-  explanations[i] <- paste(e1, e2, "Extra information:", e3)
+  if(e3 != "")
+    e3 <- paste("Extra information: ", e3)
+  explanations[i] <- paste(e1, e2, e3)
 }
 
 o <- sample(1:length(S))
@@ -113,7 +115,7 @@ Solution
 The $t$-statistic is calculated by: `r mathml(S[[which(solutions)[1]]]$S)`
 
 ```{r solutionlist, echo = FALSE, results = "asis"}
-answerlist(ifelse(solutions, "True", "False"), explanations, markup = "markdown")
+answerlist(ifelse(solutions, "True", "False"), explanations, markup="markdown")
 ```
 
 Meta-information
