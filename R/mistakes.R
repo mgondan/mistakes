@@ -1,6 +1,6 @@
 .onAttach <- function(libname, pkgname)
 {
-  if(!requireNamespace("rolog", quiet=TRUE))
+  if(!requireNamespace("rolog", quietly=TRUE))
     stop("Could not load R package rolog.")
 
   if(!rolog::rolog_ok())
