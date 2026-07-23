@@ -18,9 +18,9 @@ Depends:
     rolog (>= 0.9.23)
 Imports:
     mathml (>= 1.5)
-RoxygenNote: 7.3.2
 Suggests:
     exams,
     rmarkdown
 URL: https://github.com/mgondan/mistakes
 BugReports: https://github.com/mgondan/mistakes/issues
+Config/roxygen2/version: 8.0.0
