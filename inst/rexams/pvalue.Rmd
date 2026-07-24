@@ -124,10 +124,10 @@ answerlist(questions, markup="markdown")
 
 Solution
 ========
-The $t$-statistic is calculated by: `r mathml(S[[which(solutions)[1]]]$S)`
+The $p$-value is calculated by: `r mathml(S[[which(solutions)[1]]]$S)`
 
 ```{r solutionlist, echo = FALSE, results = "asis"}
-answerlist(ifelse(solutions, "True", "False"), explanations, markup = "markdown")
+answerlist(ifelse(solutions, "True", "False"), explanations, markup="markdown")
 ```
 
 Meta-information

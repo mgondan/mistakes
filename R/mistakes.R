@@ -79,8 +79,8 @@ error <- function(expr)
 #' @param expr
 #' R call of the form omit_right/3
 #'
-omit_right <- function(expr)
-  substitute(expr)[[3]]
+# omit_right <- function(expr)
+#   substitute(expr)[[3]]
 
 #' Evaluate argument of {}/1
 #' (for internal use)

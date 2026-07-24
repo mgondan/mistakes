@@ -20,7 +20,7 @@ hook(s_pool, subscript(s, "pool"))
 var_pool <- function(n1, v1, n2, v2)
   frac((n1 - 1L) * v1 + (n2 - 1L) * v2, n1 + n2 - 2L)
 
-hook_fn(var_pool)
+hook(var_pool)
 
 ## DATA GENERATION
 repeat
@@ -53,7 +53,7 @@ repeat
 rolog::consult(system.file("rexams/tratio.pl", package="mistakes"))
 
 Q <- quote(search(tratio(t0, s_t0, eot, s_eot, d, mu_d, s_d, n), .S, .R, .P, .E))
-S <- findall(Q, options=list(preproc=as.rolog), env=.GlobalEnv)
+S <- findall(Q, options=list(preproc=as.rolog))
 
 questions <- character(length(S))
 solutions <- logical(length(S))

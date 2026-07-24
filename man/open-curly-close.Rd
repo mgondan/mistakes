@@ -2,7 +2,7 @@
 % Please edit documentation in R/mistakes.R
 \name{{}}
 \alias{{}}
-\title{Evaluate argument of {}/1
+\title{Evaluate argument 2 of omit_right/3
 (for internal use)}
 \usage{
 `{}`(expr)
@@ -11,6 +11,6 @@
 \item{expr}{R call}
 }
 \description{
-Evaluate argument of {}/1
+Evaluate argument 2 of omit_right/3
 (for internal use)
 }
