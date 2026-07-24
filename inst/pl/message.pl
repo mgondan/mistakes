@@ -1,6 +1,4 @@
-:- module(message, [message/2]).
-
-% :- use_module(library(mathml)).
+:- module(message, [message/3]).
 
 :- format_predicate(m, format_mathjax(_, _Symbol)).
 
@@ -8,8 +6,8 @@ format_mathjax(_, Symbol) :-
   mathml:jax(Symbol, M, []),
   format("$~w$", [M]).
 
-message(Code, Res) :-
-    msg(Code, Mask_Format),
+message(M, Code, Res) :-
+    M:msg(Code, Mask_Format),
     message_(Mask_Format, Res).
 
 message_(Mask-Format, Res) :-
