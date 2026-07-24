@@ -1,3 +1,5 @@
+:- module(pvalue, []).
+
 :- discontiguous intermediate/1, expert/4.
 
 % Solution of the problem
@@ -36,3 +38,6 @@ msg(twotailed, "Correctly determined the two-tailed ~m-value."-[p]).
 msg(lower, "The result matches the lower one-tailed ~m-value."-[p]).
 
 msg(upper, "The result matches the upper one-tailed ~m-value."-[p]).
+
+
+

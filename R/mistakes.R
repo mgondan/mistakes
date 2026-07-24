@@ -29,20 +29,20 @@
 #' list of R calls of the form expert/3 or buggy/3
 expert <- Vectorize(.expert1)
 
-.feedback1 <- function(expr)
+.feedback1 <- function(module, expr)
 {
   if(!is.call(expr))
     stop("feedback: expression is not a call")
   
   if(expr[[1]] == "expert")
   {
-    X <- once(call("message", expr[[2]], expression(X)))
+    X <- once(call("message", as.symbol(module), expr[[2]], expression(X)))
     return(X$X)
   }
 
   if(expr[[1]] == "buggy")
   {
-    X <- once(call("message", expr[[2]], expression(X)))
+    X <- once(call("message", as.symbol(module), expr[[2]], expression(X)))
     return(X$X)
   }
   
@@ -54,11 +54,12 @@ expert <- Vectorize(.expert1)
 #'
 #' @md
 #' 
+#' @param module
 #' @param expr
 #' list of R calls of the form expert/3 or buggy/3
 #'
-feedback <- function(expr)
-  Vectorize(.feedback1)(mathml::hooked(expr))
+feedback <- function(module, expr)
+  Vectorize(.feedback1)(module, mathml::hooked(expr))
 
 #' Evaluate argument of error/1
 #' (for internal use)

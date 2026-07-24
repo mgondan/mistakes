@@ -1,3 +1,5 @@
+:- module(tratio, []).
+
 :- discontiguous intermediate/1, expert/4.
 
 % Solution of the problem

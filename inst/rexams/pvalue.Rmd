@@ -64,8 +64,8 @@ repeat
 
 rolog::consult(system.file("rexams/pvalue.pl", package="mistakes"))
 
-Q <- quote(search(pvalue(d, mu_d, s_d, n, alpha), .S, .R, .P, .E))
-S <- findall(Q, options=list(preproc=as.rolog), env=.GlobalEnv)
+Q <- quote(search(pvalue, pvalue(d, mu_d, s_d, n, alpha), .S, .R, .P, .E))
+S <- findall(Q, options=list(preproc=as.rolog), env=environment())
 
 questions <- character(length(S))
 solutions <- logical(length(S))
@@ -84,8 +84,8 @@ for(i in 1:length(S))
   questions[i] <- Ri
   solutions[i] <- all(expert(Pi))
   e1 <- sprintf("The result matches the following expression: %s\n", mathml(Si))
-  e2 <- paste(feedback(Pi), collapse=" ")
-  e3 <- paste(feedback(Ei), collapse=" ")
+  e2 <- paste(feedback("pvalue", Pi), collapse=" ")
+  e3 <- paste(feedback("pvalue", Ei), collapse=" ")
   if(e3 != "")
     e3 <- paste("Extra information: ", e3)
   explanations[i] <- paste(e1, e2, e3)
