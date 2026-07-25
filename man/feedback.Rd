@@ -5,10 +5,13 @@
 \title{Extract feedback from a list
 (for internal use)}
 \usage{
-feedback(expr)
+feedback(module, expr)
 }
 \arguments{
-\item{expr}{list of R calls of the form expert/3 or buggy/3}
+\item{module:}{the Prolog module with the feedback}
+
+\item{expr:}{the expression
+list of R calls of the form expert/3 or buggy/3}
 }
 \description{
 Extract feedback from a list

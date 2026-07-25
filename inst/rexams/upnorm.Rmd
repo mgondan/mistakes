@@ -1,0 +1,102 @@
+---
+title: "Normal distribution"
+---
+
+```{r, include=FALSE}
+library(exams)
+library(mathml)
+library(mistakes)
+
+task <- "upnorm"
+
+hook(sigma2, sigma^2L)
+hook(pvalue(.P), .P)
+hook(pnorm1(.X, .Tail), pnorm(.X, .Tail))
+
+dist <- function(Symb, X, Tail)
+  return(X)
+
+tail <- function(Tail)
+  return(Tail)
+
+pnorm1 <- function(C, Tail)
+{
+  if(Tail == "lower")
+    return(pnorm(C, lower.tail=TRUE))
+
+  if(Tail == "upper")
+    return(pnorm(C, lower.tail=FALSE))
+
+  stop("Tail must bei either upper or lower")
+}
+
+## DATA GENERATION
+repeat
+{
+  mu     <- round(runif(1, min=-50, max=50), 1)
+  sigma2 <- round(runif(1, min=10, max=30), 1)
+  p      <- round(runif(1, min=0.1, max=0.9), 1)
+  C      <- round(qnorm(p, mean=mu, sd=sqrt(sigma2)), 1)
+  break
+}
+
+rolog::consult(system.file("rexams/upnorm.pl", package="mistakes"))
+
+Q <- quote(search(upnorm, upnorm(C, mu, sigma2), .S, .R, .P, .E))
+S <- findall(Q, options=list(preproc=as.rolog), env=environment())
+
+questions <- character(length(S))
+solutions <- logical(length(S))
+explanations <- character(length(S))
+
+if(length(S) == 0)
+  stop("No solutions found.")
+
+for(i in 1:length(S))
+{
+  Si <- S[[i]]$S
+  Ri <- S[[i]]$R
+  Pi <- S[[i]]$P
+  Ei <- S[[i]]$E
+
+  questions[i] <- Ri
+  solutions[i] <- all(expert(Pi))
+  e1 <- sprintf("The result matches the following expression: %s\n", mathml(Si))
+  e2 <- paste(feedback("upnorm", Pi), collapse=" ")
+  e3 <- paste(feedback("upnorm", Ei), collapse=" ")
+  if(e3 != "")
+    e3 <- paste("Extra information: ", e3)
+  explanations[i] <- paste(e1, e2, e3)
+}
+
+o <- sample(1:length(S))
+questions <- questions[o]
+solutions <- solutions[o]
+explanations <- explanations[o]
+S <- S[o]
+```
+
+Question
+========
+We consider the Normal
+distribution $X \sim N\left(\mu=`r mu`, \sigma^2=`r sigma2`\right)$. 
+
+How many realizations are above `r C`?
+
+```{r questionlist, echo = FALSE, results = "asis"}
+answerlist(questions, markup="markdown")
+```
+
+Solution
+========
+The proportion is calculated by: `r mathml(S[[which(solutions)[1]]]$S)`
+
+```{r solutionlist, echo = FALSE, results = "asis"}
+answerlist(ifelse(solutions, "True", "False"), explanations, markup="markdown")
+```
+
+Meta-information
+================
+extype: schoice
+exsolution: `r mchoice2string(solutions, single=TRUE)`
+exname: upnorm
