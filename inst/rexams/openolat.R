@@ -28,4 +28,3 @@ exams2webquiz(
   dir=".",
   name="pvalue", 
   edir=system.file("rexams", package="mistakes"))
-

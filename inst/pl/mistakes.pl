@@ -1,5 +1,7 @@
+:- module(mistakes, [search/6]).
+
+:- reexport(message).
 :- use_module(intermediate).
-:- use_module(message).
 :- use_module(depends).
 :- use_module(relevant).
 
