@@ -1,0 +1,109 @@
+---
+title: "Normal distribution"
+---
+
+```{r, include=FALSE}
+library(exams)
+library(mathml)
+library(mistakes)
+
+task <- "lpnorm"
+rolog::usemodule(system.file("rexams/lpnorm.pl", package="mistakes"))
+
+hook(pvalue(.P), .P)
+hook(pnorm1(.X, .Tail), pnorm(.X, .Tail))
+
+dist <- function(Symb, X, Tail)
+  return(X)
+
+tail <- function(Tail)
+  return(Tail)
+
+pnorm1 <- function(C, Tail)
+{
+  if(Tail == "lower")
+    return(pnorm(C, lower.tail=TRUE))
+
+  if(Tail == "upper")
+    return(pnorm(C, lower.tail=FALSE))
+
+  stop("Tail must bei either upper or lower")
+}
+
+## DATA GENERATION
+repeat
+{
+  mu     <- round(runif(1, min=-10, max=10), 1)
+  sigma  <- round(runif(1, min=5, max=25), 1)
+  p      <- round(runif(1, min=0.1, max=0.9), 1)
+  C      <- round(qnorm(p, mean=mu, sd=sigma), 1)
+  
+  Q <- quote(search(lpnorm, lpnorm(C, mu, sigma^2L), .S, .R, .P, .E))
+  S <- findall(Q, options=list(preproc=as.rolog), env=environment())
+  if(length(S) == 0)
+    stop("No solutions found.")
+
+  R <- sapply(S, FUN="[[", "R")
+  
+  # Todo: several incorrect solutions match to < 0.001 and 1. Collapse into
+  # one option, and collect feedback for all of them.
+  # if(any(duplicated(R)))
+  #   next
+
+  # Todo: correct solutions should be unique.
+  # Todo: copy to upnorm
+  break
+}
+
+questions <- character(length(S))
+solutions <- logical(length(S))
+explanations <- character(length(S))
+
+for(i in 1:length(S))
+{
+  Si <- S[[i]]$S
+  Ri <- S[[i]]$R
+  Pi <- S[[i]]$P
+  Ei <- S[[i]]$E
+
+  questions[i] <- Ri
+  solutions[i] <- all(expert(Pi))
+  e1 <- sprintf("The result matches the following expression: %s\n", mathml(Si))
+  e2 <- paste(feedback(task, Pi), collapse=" ")
+  e3 <- paste(feedback(task, Ei), collapse=" ")
+  if(e3 != "")
+    e3 <- paste("Extra information: ", e3)
+  explanations[i] <- paste(e1, e2, e3)
+}
+
+o <- sample(1:length(S))
+questions <- questions[o]
+solutions <- solutions[o]
+explanations <- explanations[o]
+S <- S[o]
+```
+
+Question
+========
+We consider the Normal
+distribution $X \sim N\left(\mu=`r mu`, \sigma^2=`r sigma^2`\right)$. 
+
+How many realizations are below $`r C`$?
+
+```{r questionlist, echo = FALSE, results = "asis"}
+answerlist(questions, markup="markdown")
+```
+
+Solution
+========
+The proportion is calculated by: `r mathml(S[[which(solutions)[1]]]$S)`
+
+```{r solutionlist, echo = FALSE, results = "asis"}
+answerlist(ifelse(solutions, "True", "False"), explanations, markup="markdown")
+```
+
+Meta-information
+================
+extype: schoice
+exsolution: `r mchoice2string(solutions, single=TRUE)`
+exname: lpnorm
