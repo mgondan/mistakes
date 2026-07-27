@@ -44,13 +44,18 @@ repeat
     stop("No solutions found.")
 
   R <- sapply(S, FUN="[[", "R")
+  P <- sapply(S, FUN=function(s) all(expert(s$P)))
+
+  # Correct solution(s) should differ from incorrect ones.
+  if(any(R[P] %in% R[!P]))
+    next
   
   # Todo: several incorrect solutions match to < 0.001 and 1. Collapse into
   # one option, and collect feedback for all of them.
   # if(any(duplicated(R)))
   #   next
 
-  # Todo: correct solutions should be unique.
+  # Todo: Local definition of user:math_hook/2 overrides weak import from mathml
   # Todo: copy to upnorm
   break
 }

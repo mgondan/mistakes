@@ -12,25 +12,25 @@ expert(X, Y, lpnorm, []) :-
 
 intermediate(zfrac/3).
 expert(X, Y, zfrac, []) :-
-    X = zfrac(C, Mu, Sigma2),
-    Y = dfrac(C - Mu, sqrt(Sigma2)).
+    X = zfrac(C, Mu, Sigma^2),
+    Y = dfrac(C - Mu, Sigma).
 
 intermediate(zdist/1).
 expert(X, Y, lower, []) :-
     X = zdist(Z), 
     Y = pnorm1(dist('Z', Z, "lower"), tail("lower")). 
 
+buggy(X, Y, sqrt(Sigma^2), []) :-
+    X = zfrac(C, Mu, Sigma^2),
+    Y = dfrac(C - Mu, error(instead(Sigma^2, Sigma))).
+
 buggy(X, Y, upper, []) :-
     X = zdist(Z), 
     Y = pnorm1(dist('Z', Z, "upper"), tail("upper")). 
 
 buggy(X, Y, paren, []) :-
-    X = dfrac(C - Mu, S),
-    Y = C - dfrac(Mu, S). 
-
-buggy(X, Y, sqrt(Sigma^2), []) :-
-    X = sqrt(Sigma^2),
-    Y = error(instead(Sigma, Sigma^2)).
+    X = dfrac(C - Mu, Sigma),
+    Y = C - dfrac(Mu, Sigma). 
 
 % Feedback
 msg(lpnorm, "The Normal distribution must be used.").
