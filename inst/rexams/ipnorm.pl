@@ -17,10 +17,14 @@ expert(X, Y, zfrac, []) :-
     Y = dfrac(C - Mu, Sigma).
 
 intermediate(zdist/2).
-expert(X, Y, lower, []) :-
+expert(X, Y, zdist, []) :-
     X = zdist(Z1, Z2), 
-    Y = pnorm1(dist('Z', Z2, "lower"), tail("lower")) -
-        pnorm1(dist('Z', Z1, "lower"), tail("lower")). 
+    Y = zdist(Z2) - zdist(Z1).
+
+intermediate(zdist/1).
+expert(X, Y, lower, []) :-
+    X = zdist(Z), 
+    Y = pnorm1(dist('Z', Z, "lower"), tail("lower")). 
 
 buggy(X, Y, sqrt(Sigma^2), []) :-
     X = zfrac(C, Mu, Sigma^2),
@@ -38,6 +42,9 @@ buggy(X, Y, paren, []) :-
 msg(ipnorm, "The Normal distribution must be used.").
 
 msg(zfrac, "The ~m-transformation is applied."-[z]).
+
+msg(zdist, "The area is given by the difference of the distribution function
+    at ~m and ~m."-[subscript(z, 2), subscript(z, 1)]).
 
 msg(lower, "The result is given by the lower tail.").
 

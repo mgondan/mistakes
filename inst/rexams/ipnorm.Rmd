@@ -35,12 +35,12 @@ pnorm1 <- function(C, Tail)
 ## DATA GENERATION
 repeat
 {
-  mu     <- round(runif(1, min=-10, max=10), 1)
-  sigma  <- round(runif(1, min=5, max=25), 1)
-  p      <- round(runif(2, min=0.1, max=0.9), 1)
+  mu <- round(runif(1, min=-10, max=10), 1)
+  sigma <- round(runif(1, min=5, max=25), 1)
+  p <- round(runif(2, min=0.1, max=0.9), 1)
   if(p[1] >= p[2])
     next
-  C      <- round(qnorm(p, mean=mu, sd=sigma), 1)
+  C <- round(qnorm(p, mean=mu, sd=sigma), 1)
   
   Q <- quote(search(ipnorm, ipnorm(C[1L], C[2L], mu, sigma^2L), .S, .R, .P, .E))
   S <- findall(Q, options=list(preproc=as.rolog), env=environment())
@@ -54,8 +54,6 @@ repeat
   if(any(R[P] %in% R[!P]))
     next
   
-  # Check: lower/upper is not used
-
   # Todo: couple bugs for z1 and z2, maybe use context(z1, ...) and 
   # context(z2, ...)
   
