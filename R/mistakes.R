@@ -37,13 +37,19 @@ expert <- Vectorize(.expert1)
   if(expr[[1]] == "expert")
   {
     X <- once(call("message", as.symbol(module), expr[[2]], expression(X)))
-    return(X$X)
+    if(is.list(X))
+      return(X$X)
+    
+    stop("expert: no feedback for ", module, ":", expr[[2]])
   }
 
   if(expr[[1]] == "buggy")
   {
     X <- once(call("message", as.symbol(module), expr[[2]], expression(X)))
-    return(X$X)
+    if(is.list(X))
+      return(X$X)
+    
+    stop("buggy: no feedback for ", module, ":", expr[[2]])
   }
   
   stop("feedback: expression should be expert/1 or buggy/1")
