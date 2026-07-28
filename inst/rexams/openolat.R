@@ -1,6 +1,7 @@
 library(exams)
 
 myexam <- list(
+  ipnorm="ipnorm.Rmd",
   upnorm="upnorm.Rmd",
   lpnorm="lpnorm.Rmd",
   tratio="tratio.Rmd",
@@ -12,6 +13,12 @@ exams2openolat(myexam,
   solutionswitch=TRUE)
 
 library(exams2forms)
+exams2webquiz(
+  "ipnorm.Rmd", 
+  dir=".",
+  name="ipnorm", 
+  edir=system.file("rexams", package="mistakes"))
+
 exams2webquiz(
   "lpnorm.Rmd", 
   dir=".",
