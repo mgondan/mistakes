@@ -1,0 +1,108 @@
+---
+title: "Normal distribution"
+---
+
+```{r, include=FALSE}
+library(exams)
+library(mathml)
+library(mistakes)
+
+task <- "lqnorm"
+rolog::usemodule(system.file("rexams/lqnorm.pl", package="mistakes"))
+
+hook(qnorm1(.X, .Tail), qnorm(.X, .Tail))
+
+quant <- function(Symb, P, Tail)
+  return(P)
+
+tail <- function(Tail)
+  return(Tail)
+
+qnorm1 <- function(p, Tail)
+{
+  if(Tail == "lower")
+    return(qnorm(p, lower.tail=TRUE))
+
+  if(Tail == "upper")
+    return(qnorm(p, lower.tail=FALSE))
+
+  stop("Tail must bei either upper or lower")
+}
+
+## DATA GENERATION
+repeat
+{
+  mu <- round(runif(1, min=-10, max=10), 1)
+  sigma <- round(runif(1, min=5, max=25), 1)
+  p <- round(runif(1, min=0.1, max=0.9), 2)
+
+  Q <- quote(search(lqnorm, lqnorm(p, mu, sigma^2L), .S, .R, .P, .E))
+  S <- findall(Q, options=list(preproc=as.rolog), env=environment())
+  if(length(S) == 0)
+    stop("No solutions found.")
+
+  R <- sapply(S, FUN="[[", "R")
+  P <- sapply(S, FUN=function(s) all(expert(s$P)))
+
+  # Correct solution(s) should differ from incorrect ones.
+  if(any(R[P] %in% R[!P]))
+    next
+
+  # Todo: format X (decimal)
+  # Todo: quant etc. in mathml
+  
+  break
+}
+
+questions <- character(length(S))
+solutions <- logical(length(S))
+explanations <- character(length(S))
+
+for(i in 1:length(S))
+{
+  Si <- S[[i]]$S
+  Ri <- S[[i]]$R
+  Pi <- S[[i]]$P
+  Ei <- S[[i]]$E
+
+  questions[i] <- Ri
+  solutions[i] <- all(expert(Pi))
+  e1 <- sprintf("The result matches the following expression: %s\n", mathml(Si))
+  e2 <- paste(feedback(task, Pi), collapse=" ")
+  e3 <- paste(feedback(task, Ei), collapse=" ")
+  if(e3 != "")
+    e3 <- paste("Extra information: ", e3)
+  explanations[i] <- paste(e1, e2, e3)
+}
+
+o <- sample(1:length(S))
+questions <- questions[o]
+solutions <- solutions[o]
+explanations <- explanations[o]
+S <- S[o]
+```
+
+Question
+========
+We consider the Normal
+distribution $X \sim N\left(\mu=`r mu`, \sigma^2=`r sigma^2`\right)$. 
+
+Which $X$ is larger than $`r 100*p`\,\%$ of the realizations?
+
+```{r questionlist, echo = FALSE, results = "asis"}
+answerlist(questions, markup="markdown")
+```
+
+Solution
+========
+The proportion is calculated by: `r mathml(S[[which(solutions)[1]]]$S)`
+
+```{r solutionlist, echo = FALSE, results = "asis"}
+answerlist(ifelse(solutions, "True", "False"), explanations, markup="markdown")
+```
+
+Meta-information
+================
+extype: schoice
+exsolution: `r mchoice2string(solutions, single=TRUE)`
+exname: ipnorm
