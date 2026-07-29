@@ -6,7 +6,7 @@
   if(!rolog::rolog_ok())
     stop("Could not attach R package rolog.")
 
-  rolog::usemodule(system.file("pl/mistakes.pl", package=pkgname))
+  rolog::consult(system.file("pl/mistakes.pl", package=pkgname))
   
   mathml::hook(call("error", expression(X)), expression(X), 
     quote=FALSE, as.rolog=FALSE)

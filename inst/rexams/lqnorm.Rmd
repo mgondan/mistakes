@@ -8,7 +8,7 @@ library(mathml)
 library(mistakes)
 
 task <- "lqnorm"
-rolog::usemodule(system.file("rexams/lqnorm.pl", package="mistakes"))
+rolog::consult(system.file("rexams/lqnorm.pl", package="mistakes"))
 
 hook(qnorm1(.X, .Tail), qnorm(.X, .Tail))
 
