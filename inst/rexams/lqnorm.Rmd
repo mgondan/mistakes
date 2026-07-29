@@ -48,7 +48,6 @@ repeat
   if(any(R[P] %in% R[!P]))
     next
 
-  # Todo: format X (decimal)
   # Todo: quant etc. in mathml
   
   break

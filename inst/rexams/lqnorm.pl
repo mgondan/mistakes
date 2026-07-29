@@ -1,6 +1,6 @@
 :- module(lqnorm, []).
 
-:- discontiguous intermediate/1, expert/4.
+:- discontiguous intermediate/1, expert/4, buggy/4.
 
 % Solution of the problem
 intermediate(lqnorm/3).
@@ -9,7 +9,7 @@ intermediate(invz/3).
 expert(X, Y, lqnorm, []) :-
     X = lqnorm(P, Mu, Sigma2),
     Y = { '<-'(z, zquant(P))
-        ; '<-'('X', invz(z, Mu, Sigma2))
+        ; round('<-'('X', invz(z, Mu, Sigma2)), 1)
         }.
 
 expert(X, Y, zfrac, []) :-
