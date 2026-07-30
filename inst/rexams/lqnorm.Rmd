@@ -10,7 +10,9 @@ library(mistakes)
 task <- "lqnorm"
 rolog::consult(system.file("rexams/lqnorm.pl", package="mistakes"))
 
-hook(qnorm1(.X, .Tail), qnorm(.X, .Tail))
+hook(qnorm1(.Quant, .Tail), .Quant)
+hook(quant(.Z, .p, "lower"), fn(subscript(arg, z), list(.p == fn(P, list(.Z <= z)))))
+hook(quant(.Z, .p, "upper"), fn(subscript(arg, z), list(.p == fn(P, list(.Z > z)))))
 
 quant <- function(Symb, P, Tail)
   return(P)
@@ -48,8 +50,6 @@ repeat
   if(any(R[P] %in% R[!P]))
     next
 
-  # Todo: quant etc. in mathml
-  
   break
 }
 
