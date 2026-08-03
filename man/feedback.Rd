@@ -8,9 +8,9 @@
 feedback(module, expr)
 }
 \arguments{
-\item{module:}{the Prolog module with the feedback}
+\item{module}{the Prolog module with the feedback}
 
-\item{expr:}{the expression
+\item{expr}{the expression
 list of R calls of the form expert/3 or buggy/3}
 }
 \description{
