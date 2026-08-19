@@ -7,8 +7,8 @@ output: html_document
 library(mistakes)
 library(rolog)
 
-task <- "normal_quantile2"
-rolog::consult("normal_quantile2.pl")
+task <- "normal_quantile"
+rolog::consult("normal_quantile.pl")
 
 # Zufällige Parameter erzeugen
 mu <- round(runif(1, min = 40, max = 60), 1)
@@ -18,8 +18,8 @@ p <- round(runif(1, min = 0.1, max = 0.9), 2)
 # Prolog-Abfrage
 Q <- quote(
   search(
-    normal_quantile2,
-    normal_quantile2(p, mu, sigma^2L),
+    normal_quantile,
+    normal_quantile(p, mu, sigma^2L),
     .S, .R, .P, .E
   )
 )
@@ -83,46 +83,40 @@ for(i in seq_along(S)) {
 
   explanations[i] <- paste(explanation, collapse = " ")
 }
+
+explanations[explanations == ""] <- "Richtig"
 ```
 
-Question
-========
+# Question
 
-Eine normalverteilte Zufallsvariable hat einen Mittelwert von μ = `r mu` und eine Standardabweichung von σ = `r sigma`.
+Eine normalverteilte Zufallsvariable hat einen Erwartungswert von $\mu$ = `r mu` und eine Varianz von $\sigma$ = `r sigma`.
 
-Welcher Wert wird von `r round(p * 100)` % der Realisationen unterschritten?
+Welcher Wert wird von `r round(p * 100)`% der Realisationen unterschritten?
 
-Answerlist
-----------
 
-```{r}
-for(i in seq_along(questions)) {
-  cat("- ", questions[i], "\n")
-}
+```{r questionlist, echo=FALSE, results="asis"}
+exams::answerlist(questions, markup="markdown")
 ```
 
-Solution
-========
+# Solution
+
 Die korrekte Berechnung erfolgt mit:
 
-`q norm(p, mean = mu, sd = sigma)
+mu + qnorm(p)\*sigma
 
 Die richtige Antwort wird automatisch bestimmt.
 
-Answerlist
-----------
-```{r}
-for(i in seq_along(explanations)) {
-  if(explanations[i] == "") {
-    cat("- Richtig.\n")
-  } else {
-    cat("- ", explanations[i], "\n")
-  }
-}
+
+```{r, echo=FALSE, results='asis'}
+exams::answerlist(explanations, markup="markdown")
 ```
-Meta-information
-=================
-exname: normal_quantile2
-extype:schoice
+
+# Meta-information
+
+exname: normal_quantile
+
+extype: schoice
+
 exsolution: `r exsolution`
+
 exshuffle: TRUE
