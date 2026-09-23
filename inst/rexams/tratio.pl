@@ -1,6 +1,6 @@
 :- module(tratio, []).
 
-:- discontiguous intermediate/1, expert/4, buggy/4.
+:- discontiguous intermediate/1, expert/4, buggy/4, blame/2.
 
 % Solution of the problem
 intermediate(tratio/8).
