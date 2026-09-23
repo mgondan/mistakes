@@ -1,6 +1,6 @@
 :- module(tratio, []).
 
-:- discontiguous intermediate/1, expert/4.
+:- discontiguous intermediate/1, expert/4, buggy/4.
 
 % Solution of the problem
 intermediate(tratio/8).
@@ -40,26 +40,26 @@ buggy(X, Y, school(N), []) :-
     Y = frac(1, 2*N).
 
 % Feedback
-msg(indep, "This is not a two-sample problem.").
+blame(indep, "This is not a two-sample problem.").
 
-msg(twosample, "You have correctly determined the expression for the two-sample ~m-test."-[t]).
+praise(twosample, "You have correctly determined the expression for the two-sample ~m-test."-[t]).
 
-msg(paired, "You have correctly identified this as paired samples problem.").
+praise(paired, "You have correctly identified this as paired samples problem.").
 
-msg(tratio, "You have correctly identified the expression for the ~m-ratio."-[t]).
+praise(tratio, "You have correctly identified the expression for the ~m-ratio."-[t]).
 
-msg(paren, "Please do not forget the parentheses around the numerator and the denominator of a fraction.").
+blame(paren, "Please do not forget the parentheses around the numerator and the denominator of a fraction.").
 
-msg(sqrt(X), "Please do not omit the square root around ~m."-[X]).
+blame(sqrt(X), "Please do not omit the square root around ~m."-[X]).
 
-msg(mu(Mu), "Do not omit the null hypothesis ~m in the ~m-ratio."-[Mu, t]).
+blame(mu(Mu), "Do not omit the null hypothesis ~m in the ~m-ratio."-[Mu, t]).
 
-msg(school(A, B), M) :-
+blame(school(A, B), M) :-
     M = "The result matches the expression for the ~m-ratio for independent 
     samples with ~m under the square root. Please keep in mind that ~m."
     - [t, frac(1, A + B), frac(1, A) + frac(1, B) \= frac(1, A + B)].
 
-msg(school(N), M) :-
+blame(school(N), M) :-
     M = "The result matches the expression for the ~m-ratio for independent 
     samples with ~m under the square root. Please keep in mind that ~m."
     - [t, frac(1, 2*N), frac(1, N) + frac(1, N) = frac(2, N)].
