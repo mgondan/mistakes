@@ -29,15 +29,15 @@ buggy(X, Y, upper, []) :-
           instead(tail("upper"), tail("two.sided"))).
 
 msg(paired, 
-  "Correctly recognised the problem as a ~m-test for paired samples."-[t]).
+  "You have correctly recognised the problem as a ~m-test for paired samples."-[t]).
 
-msg(tratio, "Correctly identified the expression for the ~m-ratio."-[t]).
+msg(tratio, "You have correctly identified the expression for the ~m-ratio."-[t]).
 
-msg(twotailed, "Correctly determined the two-tailed ~m-value."-[p]).
+msg(twotailed, "You have correctly determined the two-tailed ~m-value."-[p]).
 
-msg(lower, "The result matches the lower one-tailed ~m-value."-[p]).
+msg(lower, "Careful, your result matches the lower one-tailed ~m-value."-[p]).
 
-msg(upper, "The result matches the upper one-tailed ~m-value."-[p]).
+msg(upper, "Careful, your result matches the upper one-tailed ~m-value."-[p]).
 
 
 
