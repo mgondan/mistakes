@@ -33,15 +33,14 @@ buggy(X, Y, sqrt(Sigma2), []) :-
     Y = error(instead(Sigma2, sqrt(Sigma2))).
 
 % Feedback
-msg(upnorm, "The Normal distribution must be used.").
+praise(upnorm, "The Normal distribution must be used.").
 
-msg(zfrac, "The ~m-transformation is applied."-[z]).
+praise(zfrac, "The ~m-transformation is applied."-[z]).
 
-msg(upper, "The result is given by the upper tail.").
+praise(upper, "The result is given by the upper tail.").
 
-msg(lower, "The lower tail was used (instead of the upper tail).").
+blame(lower, "The lower tail was used (instead of the upper tail).").
 
-msg(paren, "Please do not forget the parentheses around the numerator and 
-    the denominator of a fraction.").
+blame(paren, "Please do not forget the parentheses around the numerator and the denominator of a fraction.").
 
-msg(sqrt(X), "Please do not omit the square root around ~m."-[X]).
+blame(sqrt(X), "Please do not omit the square root around ~m."-[X]).
