@@ -1,17 +1,26 @@
 library(exams)
 
+oodir <- "."
+oldname <- "mistakes"
+newname <- "fixed"
+
 myexam <- list(
   lqnorm="lqnorm.Rmd",
-  ipnorm="ipnorm.Rmd",
-  upnorm="upnorm.Rmd",
-  lpnorm="lpnorm.Rmd",
   tratio="tratio.Rmd",
   pvalue="pvalue.Rmd")
 
 exams2openolat(myexam,
-  dir=".", name="mistakes", 
+  dir=oodir, name=oldname, 
   edir=system.file("rexams", package="mistakes"),
   solutionswitch=TRUE)
+
+oldzip <- normalizePath(file.path(oodir, sprintf("%s.zip", oldname)), winslash="/")
+newzip <- normalizePath(file.path(oodir, sprintf("%s.zip", newname)), winslash="/")
+fix_feedback(oldzip, newzip)
+
+
+
+
 
 library(exams2forms)
 exams2webquiz(

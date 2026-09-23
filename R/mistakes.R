@@ -7,6 +7,7 @@
     stop("Could not attach R package rolog.")
 
   rolog::consult(system.file("pl/mistakes.pl", package=pkgname))
+  rolog::consult(system.file("pl/qti21-fb.pl", package=pkgname))
   
   mathml::hook(call("error", expression(X)), expression(X), 
     quote=FALSE, as.rolog=FALSE)
@@ -60,8 +61,8 @@ expert <- Vectorize(.expert1)
 #'
 #' @md
 #' 
-#' @param module: the Prolog module with the feedback
-#' @param expr: the expression 
+#' @param module the Prolog module with the feedback
+#' @param expr the expression 
 #' list of R calls of the form expert/3 or buggy/3
 #'
 feedback <- function(module, expr)
