@@ -37,7 +37,7 @@ expert <- Vectorize(.expert1)
   
   if(expr[[1]] == "expert")
   {
-    X <- once(call("message", as.symbol(module), expr[[2]], expression(X)))
+    X <- once(call("praise", as.symbol(module), expr[[2]], expression(X)))
     if(is.list(X))
       return(X$X)
     
@@ -46,7 +46,7 @@ expert <- Vectorize(.expert1)
 
   if(expr[[1]] == "buggy")
   {
-    X <- once(call("message", as.symbol(module), expr[[2]], expression(X)))
+    X <- once(call("blame", as.symbol(module), expr[[2]], expression(X)))
     if(is.list(X))
       return(X$X)
     
@@ -67,6 +67,58 @@ expert <- Vectorize(.expert1)
 #'
 feedback <- function(module, expr)
   Vectorize(.feedback1)(module, mathml::hooked(expr))
+
+.praise1 <- function(module, expr)
+{
+  if(!is.call(expr))
+    stop("praise: expression is not a call")
+  
+  if(expr[[1]] == "expert")
+  {
+    X <- once(call("praise", as.symbol(module), expr[[2]], expression(X)))
+    if(is.list(X))
+      return(X$X)
+    
+    stop("expert: no feedback for ", module, ":", expr[[2]])
+  }
+  
+  if(expr[[1]] == "buggy")
+    return(NA)
+
+  stop("praise: expression should be expert/1 or buggy/1")
+}
+
+praise <- function(module, expr)
+{
+  fb <- Vectorize(.praise1)(module, mathml::hooked(expr))
+  fb[!is.na(fb)]
+}
+
+.blame1 <- function(module, expr)
+{
+  if(!is.call(expr))
+    stop("blame: expression is not a call")
+  
+  if(expr[[1]] == "expert")
+    return(NA)
+  
+  if(expr[[1]] == "buggy")
+  {
+    X <- once(call("blame", as.symbol(module), expr[[2]], expression(X)))
+    if(is.list(X))
+      return(X$X)
+    
+    stop("buggy: no feedback for ", module, ":", expr[[2]])
+  }
+  
+  stop("blame: expression should be expert/1 or buggy/1")
+}
+
+blame <- function(module, expr)
+{
+  fb <- Vectorize(.blame1)(module, mathml::hooked(expr))
+  fb[!is.na(fb)]
+}
 
 #' Evaluate argument of error/1
 #' (for internal use)
