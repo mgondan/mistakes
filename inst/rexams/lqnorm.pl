@@ -6,6 +6,7 @@
 intermediate(lqnorm/3).
 intermediate(zquant/1).
 intermediate(invz/3).
+
 expert(X, Y, lqnorm, []) :-
     X = lqnorm(P, Mu, Sigma2),
     Y = { '<-'(z, zquant(P))
@@ -24,20 +25,19 @@ expert(X, Y, lower, []) :-
     X = zquant(P), 
     Y = qnorm1(quant('Z', P, "lower"), tail("lower")). 
 
-buggy(X, Y, upper, []) :-
+buggy(X, Y, upper(P), []) :-
     X = zquant(P), 
     Y = qnorm1(quant('Z', P, "upper"), tail("upper")). 
 
 % Feedback
-msg(lqnorm, "The quantile function of the Normal distribution must be used.").
+msg(lqnorm, "This is a Normal distribution quantile problem.").
 
-msg(zfrac, "The inverse ~m-transformation is applied."-[z]).
+msg(zfrac, "You correctly transformed the ~m-value back to the original scale."-[z]).
 
-msg(zquant, "The area is given by the difference of the distribution function
-    at ~m and ~m."-[subscript(z, 2), subscript(z, 1)]).
+msg(zquant, "The area is given by the difference of the distribution function at ~m and ~m."-[subscript(z, 2), subscript(z, 1)]).
 
-msg(lower, "The result is given by the quantile function of the lower tail.").
+msg(lower, "You correctly used the lower tail of the Normal distribution.").
 
-msg(upper, "The upper tail was used (instead of the lower tail).").
+msg(upper(P), "You used the wrong tail of the Normal distribution. The exercise asks for the value of ~m that is larger than the proportion ~m of observations. Therefore, the lower tail must be used instead." -['X', P]).
 
-msg(sqrt(Sigma2), "Please do not omit the square root around ~m."-[Sigma2]).
+msg(sqrt(Sigma2), "Remember to take the square root of the variance ~m before using it in the inverse ~m-transformation."-[Sigma2, z]).
