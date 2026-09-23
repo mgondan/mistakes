@@ -42,15 +42,13 @@ buggy(X, Y, school(N), []) :-
 % Feedback
 msg(indep, "This is not a two-sample problem.").
 
-msg(twosample, "Correctly determined the expression for the
-    two-sample ~m-test."-[t]).
+msg(twosample, "You have correctly determined the expression for the two-sample ~m-test."-[t]).
 
-msg(paired, "This is indeed a problem with paired samples.").
+msg(paired, "You have correctly identified this as paired samples problem.").
 
-msg(tratio, "Correctly identified the expression for the ~m-ratio."-[t]).
+msg(tratio, "You have correctly identified the expression for the ~m-ratio."-[t]).
 
-msg(paren, "Please do not forget the parentheses around the numerator and 
-    the denominator of a fraction.").
+msg(paren, "Please do not forget the parentheses around the numerator and the denominator of a fraction.").
 
 msg(sqrt(X), "Please do not omit the square root around ~m."-[X]).
 
