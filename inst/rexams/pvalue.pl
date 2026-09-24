@@ -28,16 +28,16 @@ buggy(X, Y, upper, []) :-
     Y = pt1(instead(dist('T', T, "upper"), dist('T', T, "two.sided")), DF,
           instead(tail("upper"), tail("two.sided"))).
 
-msg(paired, 
+praise(paired, 
   "You have correctly recognised the problem as a ~m-test for paired samples."-[t]).
 
-msg(tratio, "You have correctly identified the expression for the ~m-ratio."-[t]).
+praise(tratio, "You have correctly identified the expression for the ~m-ratio."-[t]).
 
-msg(twotailed, "You have correctly determined the two-tailed ~m-value."-[p]).
+praise(twotailed, "You have correctly determined the two-tailed ~m-value."-[p]).
 
-msg(lower, "Careful, your result matches the lower one-tailed ~m-value."-[p]).
+blame(lower, "Careful, your result matches the lower one-tailed ~m-value."-[p]).
 
-msg(upper, "Careful, your result matches the upper one-tailed ~m-value."-[p]).
+blame(upper, "Careful, your result matches the upper one-tailed ~m-value."-[p]).
 
 
 
