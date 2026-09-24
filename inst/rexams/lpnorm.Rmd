@@ -8,7 +8,7 @@ library(mathml)
 library(mistakes)
 
 task <- "lpnorm"
-rolog::usemodule(system.file("rexams/lpnorm.pl", package="mistakes"))
+rolog::consult(system.file("rexams/lpnorm.pl", package="mistakes"))
 
 hook(pvalue(.P), .P)
 hook(pnorm1(.X, .Tail), pnorm(.X, .Tail))
@@ -74,11 +74,12 @@ for(i in 1:length(S))
   questions[i] <- Ri
   solutions[i] <- all(expert(Pi))
   e1 <- sprintf("The result matches the following expression: %s\n", mathml(Si))
-  e2 <- paste(feedback(task, Pi), collapse=" ")
+  p2 <- paste(praise(task, Pi), collapse=" ")
+  b2 <- paste(blame(task, Pi), collapse=" ")
   e3 <- paste(feedback(task, Ei), collapse=" ")
   if(e3 != "")
     e3 <- paste("Extra information: ", e3)
-  explanations[i] <- paste(e1, e2, e3)
+  explanations[i] <- paste(e1, p2, b2, e3)
 }
 
 o <- sample(1:length(S))
