@@ -39,18 +39,16 @@ buggy(X, Y, paren, []) :-
     Y = C - dfrac(Mu, Sigma). 
 
 % Feedback
-msg(ipnorm, "The Normal distribution must be used.").
+praise(ipnorm, "The Normal distribution must be used.").
 
-msg(zfrac, "The ~m-transformation is applied."-[z]).
+praise(zfrac, "The ~m-transformation is applied."-[z]).
 
-msg(zdist, "The area is given by the difference of the distribution function
-    at ~m and ~m."-[subscript(z, 2), subscript(z, 1)]).
+praise(zdist, "The area is given by the difference of the distribution function at ~m and ~m."-[subscript(z, 2), subscript(z, 1)]).
 
-msg(lower, "The result is given by the lower tail.").
+praise(lower, "The result is given by the lower tail.").
 
-msg(upper, "The upper tail was used (instead of the lower tail).").
+blame(upper, "The upper tail was used (instead of the lower tail).").
 
-msg(paren, "Please do not forget the parentheses around the numerator and 
-    the denominator of a fraction.").
+blame(paren, "Please do not forget the parentheses around the numerator and  the denominator of a fraction.").
 
-msg(sqrt(X), "Please do not omit the square root around ~m."-[X]).
+blame(sqrt(X), "Please do not omit the square root around ~m."-[X]).
