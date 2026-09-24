@@ -84,11 +84,12 @@ for(i in 1:length(S))
   questions[i] <- Ri
   solutions[i] <- all(expert(Pi))
   e1 <- sprintf("The result matches the following expression: %s\n", mathml(Si))
-  e2 <- paste(feedback("pvalue", Pi), collapse=" ")
+  p2 <- paste(praise("pvalue", Pi), collapse=" ")
+  b2 <- paste(blame("pvalue", Pi), collapse=" ")
   e3 <- paste(feedback("pvalue", Ei), collapse=" ")
   if(e3 != "")
     e3 <- paste("Extra information: ", e3)
-  explanations[i] <- paste(e1, e2, e3)
+  explanations[i] <- paste(e1, p2, b2, e3)
 }
 
 o <- sample(1:length(S))
