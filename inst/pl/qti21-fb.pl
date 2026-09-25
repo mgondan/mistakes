@@ -12,11 +12,11 @@ map_entries(DOM, Keys) :-
 new_fb(element(assessmentItem, Prop, Old), element(assessmentItem, Prop, New)) :-
     select(element(modalFeedback, _, Global), Old, New0), % remove global feedback
     select(element(ul, _, UL), Global, Header), % extract header, handles only 1st <ul>
-    convlist([element(li, _, LI), [element(p, [], LI)]] >> true, UL, Ps),
+    convlist([element(li, _, LI), LI] >> true, UL, LIs),
     % create list of response-specific feedback items
     findall(element(modalFeedback, [identifier=Id, outcomeIdentifier='FEEDBACKMODAL', showHide=show], Item),
-        (   nth1(I, Ps, P), format(atom(Id), 'FEEDBACK_~w', [I]),
-            append(Header, P, Item) % prepend header
+        (   nth1(I, LIs, LI), format(atom(Id), 'FEEDBACK_~w', [I]),
+            append(Header, LI, Item) % prepend header
         ), FBList),
     append(New0, FBList, New).
 

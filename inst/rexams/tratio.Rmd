@@ -5,6 +5,7 @@ title: "Phase II clinical study"
 ```{r, include=FALSE}
 library(exams)
 library(mathml)
+library(htmltools)
 library(mistakes)
 
 hook(d, mean(D))
@@ -55,9 +56,12 @@ rolog::consult(system.file("rexams/tratio.pl", package="mistakes"))
 Q <- quote(search(tratio, tratio(t0, s_t0, eot, s_eot, d, mu_d, s_d, n), .S, .R, .P, .E))
 S <- findall(Q, options=list(preproc=as.rolog), env=environment())
 
-questions <- character(length(S))
-solutions <- logical(length(S))
+alternatives <- character(length(S))
+correct <- logical(length(S))
 explanations <- character(length(S))
+praise <- list(length(S))
+blame <- list(length(S))
+extra <- list(length(S))
 
 if(length(S) == 0)
   stop("No solutions found.")
@@ -69,22 +73,44 @@ for(i in 1:length(S))
   Pi <- S[[i]]$P
   Ei <- S[[i]]$E
 
-  questions[i] <- sprintf("%.2f", Ri)
-  solutions[i] <- all(expert(Pi))
-  e1 <- sprintf("The result matches the following expression: %s\n", mathml(Si))
-  p2 <- paste(praise("tratio", Pi), collapse=" ")
-  b2 <- paste(blame("tratio", Pi), collapse=" ")
-  e3 <- paste(feedback("tratio", Ei), collapse=" ")
-  if(e3 != "")
-    e3 <- paste("Extra information: ", e3)
-  explanations[i] <- paste(e1, p2, b2, e3)
+  alternatives[i] <- sprintf("%.2f", Ri)
+  correct[i] <- all(expert(Pi))
+  explanations[i] <- sprintf("The result matches the following expression: %s\n", mathml(Si))
+  praise[[i]] <- praise("tratio", Pi)
+  blame[[i]] <- blame("tratio", Pi)
+  extra[[i]] <- feedback("tratio", Ei)
+  if(length(extra[[i]]) > 0)
+    extra[[i]] <- c("Extra information: ", extra[[i]])
 }
 
-o <- sample(1:length(S))
-questions <- questions[o]
-solutions <- solutions[o]
+# number of MC alternatives, reduce if needed, but make sure the correct
+# alternative is in the set
+A <- length(S)
+
+# Shuffle
+o <- sample(1:A)
+alternatives <- alternatives[o]
+correct <- correct[o]
 explanations <- explanations[o]
+praise <- praise[o]
+blame <- blame[o]
+extra <- extra[o]
 S <- S[o]
+
+# Improve formatting
+p_correct <- lapply(FUN=tags$p, correct)
+h_explanations <- lapply(FUN=HTML, explanations)
+p_explanations <- lapply(FUN=tags$p, h_explanations)
+h_praise <- lapply(FUN=function(x) lapply(FUN=HTML, x), praise)
+p_praise <- lapply(FUN=function(x) tagList(tags$em("Expert"), tags$ul(lapply(FUN=tags$li, x))), h_praise)
+h_blame <- lapply(FUN=function(x) lapply(FUN=HTML, x), blame)
+p_blame <- lapply(FUN=function(x) tagList(tags$em("Buggy"), tags$ul(lapply(FUN=tags$li, x))), h_blame)
+h_extra <- lapply(FUN=function(x) lapply(FUN=HTML, x), extra)
+p_extra <- lapply(FUN=function(x) tagList(tags$em("Extra"), tags$ul(lapply(FUN=tags$li, x))), h_extra)
+
+div_sol <- mapply(p_correct, p_explanations, p_praise, p_blame, p_extra,
+  FUN=tagList, SIMPLIFY=FALSE)
+sol <- lapply(div_sol, FUN=gsub, pattern="\\n", replacement="")
 ```
 
 Question
@@ -108,19 +134,19 @@ HDRS scores between baseline (T0) and End of Treatment (EOT)? Please report
 the $t$-ratio.
 
 ```{r questionlist, echo = FALSE, results = "asis"}
-answerlist(questions, markup="markdown")
+answerlist(alternatives, markup="markdown")
 ```
 
 Solution
 ========
-The $t$-statistic is calculated by: `r mathml(S[[which(solutions)[1]]]$S)`
+The $t$-statistic is calculated by: `r mathml(S[[which(correct)[1]]]$S)`
 
 ```{r solutionlist, echo = FALSE, results = "asis"}
-answerlist(ifelse(solutions, "True", "False"), explanations, markup="markdown")
+answerlist(sol, markup="markdown")
 ```
 
 Meta-information
 ================
 extype: schoice
-exsolution: `r mchoice2string(solutions, single=TRUE)`
+exsolution: `r mchoice2string(correct, single=TRUE)`
 exname: t-ratio
