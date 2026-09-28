@@ -79,16 +79,14 @@ for(i in 1:length(S))
   praise[[i]] <- praise("tratio", Pi)
   blame[[i]] <- blame("tratio", Pi)
   extra[[i]] <- feedback("tratio", Ei)
-  if(length(extra[[i]]) > 0)
-    extra[[i]] <- c("Extra information: ", extra[[i]])
 }
 
 # number of MC alternatives, reduce if needed, but make sure the correct
 # alternative is in the set
 A <- length(S)
+o <- sample(1:A)
 
 # Shuffle
-o <- sample(1:A)
 alternatives <- alternatives[o]
 correct <- correct[o]
 explanations <- explanations[o]
@@ -97,20 +95,7 @@ blame <- blame[o]
 extra <- extra[o]
 S <- S[o]
 
-# Improve formatting
-p_correct <- lapply(FUN=tags$p, correct)
-h_explanations <- lapply(FUN=HTML, explanations)
-p_explanations <- lapply(FUN=tags$p, h_explanations)
-h_praise <- lapply(FUN=function(x) lapply(FUN=HTML, x), praise)
-p_praise <- lapply(FUN=function(x) tagList(tags$em("Expert"), tags$ul(lapply(FUN=tags$li, x))), h_praise)
-h_blame <- lapply(FUN=function(x) lapply(FUN=HTML, x), blame)
-p_blame <- lapply(FUN=function(x) tagList(tags$em("Buggy"), tags$ul(lapply(FUN=tags$li, x))), h_blame)
-h_extra <- lapply(FUN=function(x) lapply(FUN=HTML, x), extra)
-p_extra <- lapply(FUN=function(x) tagList(tags$em("Extra"), tags$ul(lapply(FUN=tags$li, x))), h_extra)
-
-div_sol <- mapply(p_correct, p_explanations, p_praise, p_blame, p_extra,
-  FUN=tagList, SIMPLIFY=FALSE)
-sol <- lapply(div_sol, FUN=gsub, pattern="\\n", replacement="")
+sol <- format_feedback(correct, explanations, praise, blame, extra)
 ```
 
 Question
@@ -142,6 +127,7 @@ Solution
 The $t$-statistic is calculated by: `r mathml(S[[which(correct)[1]]]$S)`
 
 ```{r solutionlist, echo = FALSE, results = "asis"}
+sol <- lapply(sol, FUN=gsub, pattern="\\n", replacement="")
 answerlist(sol, markup="markdown")
 ```
 
