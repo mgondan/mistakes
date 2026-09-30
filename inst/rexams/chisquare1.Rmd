@@ -1,0 +1,115 @@
+---
+title: "Comparison of success rates"
+---
+
+```{r, include=FALSE}
+library(exams)
+library(mathml)
+library(htmltools)
+library(mistakes)
+
+hook(p_a, subscript(p, A))
+hook(p_b, subscript(p, B))
+hook(p_pool, subscript(p, "pool"))
+hook(n_a, subscript(N, A))
+hook(n_b, subscript(N, B))
+hook(x_a, subscript(X, A))
+hook(x_b, subscript(X, B))
+hook(n, N)
+
+## DATA GENERATION
+repeat
+{
+  n_a <- as.integer(round(runif(1, min=20, max=45)))
+  n_b <- as.integer(round(runif(1, min=20, max=45)))
+
+  if(n_a == n_b)
+    next
+  n <- n_a + n_b
+  x_a <- as.integer(round(runif(1, min=5, max=n_a - 5)))
+  x_b <- as.integer(round(runif(1, min=5, max=n_b - 5)))
+  p_a <- x_a / n_a
+  p_b <- x_b / n_b
+  p_pool <- (x_a + x_b) / (n_a + n_b)
+  z <- (p_a - p_b) /sqrt(p_pool * (1 - p_pool) * (1 / n_a + 1 / n_b))
+  chisq <- z^2
+
+  #Wrong
+  z_wrong_n <- (p_a - p_b) / sqrt(p_pool * (1 - p_pool) *(1 / n + 1 / n))
+  chisq_wrong_n <- z_wrong_n^2
+
+  if(abs(z) < 0.5)
+    next
+  if(abs(z) > 3.0)
+    next
+
+  # different MC alternatives after rounding 
+  vals <- c(p_pool, z, -z, chisq, chisq_wrong_n)
+
+  if(length(unique(round(vals, 2))) < 5)
+    next
+  alpha <- 0.05
+  break
+}
+
+rolog::consult(system.file("rexams/chisquare1.pl", package="mistakes"))
+
+Q <- quote(search(chisquare1, chisquare1(p_a, p_b, p_pool, n_a, n_b, n), .S, .R, .P, .E))
+S <- findall(Q, options=list(preproc=as.rolog), env=environment())
+
+alternatives <- character(length(S))
+correct <- logical(length(S))
+explanations <- character(length(S))
+praise <- list(length(S))
+blame <- list(length(S))
+extra <- list(length(S))
+
+if(length(S) == 0)
+  stop("No solutions found.")
+
+for(i in 1:length(S))
+{
+  Si <- S[[i]]$S
+  Ri <- S[[i]]$R
+  Pi <- S[[i]]$P
+  Ei <- S[[i]]$E
+
+  alternatives[i] <- sprintf("%.2f", Ri)
+  correct[i] <- all(expert(Pi))
+  explanations[i] <- sprintf("The result matches the following expression: %s\n", mathml(Si))
+  praise[[i]] <- praise("chisquare1", Pi)
+  blame[[i]] <- blame("chisquare1", Pi)
+  extra[[i]] <- feedback("chisquare1", Ei)
+}
+
+# number of MC alternatives, reduce if needed, but make sure the correct
+# alternative is in the set
+A <- length(S)
+o <- sample(1:A)
+
+# Shuffle
+alternatives <- alternatives[o]
+correct <- correct[o]
+explanations <- explanations[o]
+praise <- praise[o]
+blame <- blame[o]
+extra <- extra[o]
+S <- S[o]
+
+sol <- format_feedback(correct, explanations, praise, blame, extra)
+```
+
+Question
+========
+
+In a randomized controlled trial, `r n` patients are observed.
+
+`r n_a` patients are randomized to therapy group A and `r n_b` patients
+are randomized to control group B. In group A, `r x_a` treatment successes
+are observed, whereas in group B, `r x_b` treatment successes are observed.
+
+Determine the $\chi^2$-statistic for testing whether the success probabilities
+in the two groups are equal.
+
+```{r questionlist, echo = FALSE, results = "asis"}
+answerlist(alternatives, markup="markdown")
