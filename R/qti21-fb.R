@@ -80,7 +80,9 @@ prepare <- function(task, S, N=length(S))
     Pi <- S[[i]]$P
     Ei <- S[[i]]$E
   
-    a[i] <- sprintf("%.2f", Ri)
+    a[i] <- Ri
+    if(is.numeric(Ri))
+      a[i] <- sprintf("%.2f", Ri)
     c[i] <- all(expert(Pi))
     e[i] <- sprintf("The result matches the following expression: %s\n", mathml(Si))
     p[[i]] <- praise(task, Pi)

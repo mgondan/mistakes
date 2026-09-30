@@ -6,6 +6,7 @@ title: "Phase II clinical study"
 library(exams)
 library(mathml)
 library(mistakes)
+library(htmltools)
 
 hook(d, mean(D))
 hook(s_d, subscript(s, D))
@@ -66,37 +67,8 @@ rolog::consult(system.file("rexams/pvalue.pl", package="mistakes"))
 
 Q <- quote(search(pvalue, pvalue(d, mu_d, s_d, n, alpha), .S, .R, .P, .E))
 S <- findall(Q, options=list(preproc=as.rolog), env=environment())
-
-questions <- character(length(S))
-solutions <- logical(length(S))
-explanations <- character(length(S))
-
-if(length(S) == 0)
-  stop("No solutions found.")
-
-for(i in 1:length(S))
-{
-  Si <- S[[i]]$S
-  Ri <- S[[i]]$R
-  Pi <- S[[i]]$P
-  Ei <- S[[i]]$E
-
-  questions[i] <- Ri
-  solutions[i] <- all(expert(Pi))
-  e1 <- sprintf("The result matches the following expression: %s\n", mathml(Si))
-  p2 <- paste(praise("pvalue", Pi), collapse=" ")
-  b2 <- paste(blame("pvalue", Pi), collapse=" ")
-  e3 <- paste(feedback("pvalue", Ei), collapse=" ")
-  if(e3 != "")
-    e3 <- paste("Extra information: ", e3)
-  explanations[i] <- paste(e1, p2, b2, e3)
-}
-
-o <- sample(1:length(S))
-questions <- questions[o]
-solutions <- solutions[o]
-explanations <- explanations[o]
-S <- S[o]
+t <- prepare(task="pvalue", S)
+sol <- format_feedback(t$correct, t$explanations, t$praise, t$blame, t$extra)
 ```
 
 Question
@@ -120,19 +92,20 @@ HDRS scores between baseline (T0) and End of Treatment (EOT)? Please report
 the $p$-value.
 
 ```{r questionlist, echo = FALSE, results = "asis"}
-answerlist(questions, markup="markdown")
+answerlist(t$alternatives, markup="markdown")
 ```
 
 Solution
 ========
-The $p$-value is calculated by: `r mathml(S[[which(solutions)[1]]]$S)`
+The $p$-value is calculated by: `r mathml(S[[which(t$correct)[1]]]$S)`
 
 ```{r solutionlist, echo = FALSE, results = "asis"}
-answerlist(ifelse(solutions, "True", "False"), explanations, markup="markdown")
+sol <- lapply(sol, FUN=gsub, pattern="\\n", replacement="")
+answerlist(sol, markup="markdown")
 ```
 
 Meta-information
 ================
 extype: schoice
-exsolution: `r mchoice2string(solutions, single=TRUE)`
+exsolution: `r mchoice2string(t$correct, single=TRUE)`
 exname: p-value
