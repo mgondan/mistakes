@@ -56,3 +56,43 @@ format_feedback <- function(correct, explanations, praise, blame, extra)
   mapply(p_corr, p_expl, hd_praise, hd_blame, hd_extra,
     FUN=tagList, SIMPLIFY=FALSE)
 }
+
+# Extract the relevant feedback from the query
+#
+# 
+prepare <- function(S, N=length(S))
+{
+  if(length(S) == 0)
+    stop("No solutions found.")
+  
+  a <- character(length(S))
+  c <- logical(length(S))
+  e <- character(length(S))
+  p <- list(length(S))
+  b <- list(length(S))
+  ex <- list(length(S))
+  for(i in 1:length(S))
+  {
+    Si <- S[[i]]$S
+    Ri <- S[[i]]$R
+    Pi <- S[[i]]$P
+    Ei <- S[[i]]$E
+  
+    a[i] <- sprintf("%.2f", Ri)
+    c[i] <- all(expert(Pi))
+    e[i] <- sprintf("The result matches the following expression: %s\n", mathml(Si))
+    p[[i]] <- praise("tratio", Pi)
+    b[[i]] <- blame("tratio", Pi)
+    ex[[i]] <- feedback("tratio", Ei)
+  }
+
+  # Shuffle
+  repeat
+  { o <- sample(1:length(S), size=N)
+    if(any(c[o]))
+      break
+  }
+
+  list(alternatives=a[o], correct=c[o], explanations=e[o], praise=p[o],
+    blame=b[o], extra=ex[o])
+}
