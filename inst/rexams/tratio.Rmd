@@ -93,7 +93,7 @@ answerlist(t$alternatives, markup="markdown")
 
 Solution
 ========
-The $t$-statistic is calculated by: `r mathml(S[[which(t$correct)[1]]]$S)`
+The $t$-statistic is calculated by: `r t$solution`
 
 ```{r solutionlist, echo = FALSE, results = "asis"}
 answerlist(sol, markup="markdown")

@@ -55,6 +55,8 @@ format_feedback <- function(correct, explanations, praise, blame, extra)
   hd_extra <- lapply(ul_extra, FUN=function(x) tagList(tags$em("Extra"), x))
   hd_extra <- ifelse(sapply(li_extra, FUN=length) == 0, ul_extra, hd_extra)
   
+  # Expression of correct response
+  
   mapply(p_corr, p_expl, hd_praise, hd_blame, hd_extra,
     FUN=tagList, SIMPLIFY=FALSE)
 }
@@ -129,6 +131,7 @@ prepare <- function(task, S, N=length(S))
   a <- character(length(S))
   c <- logical(length(S))
   e <- character(length(S))
+  s <- character(length(S))
   p <- list(length(S))
   b <- list(length(S))
   ex <- list(length(S))
@@ -143,6 +146,7 @@ prepare <- function(task, S, N=length(S))
     if(is.numeric(Ri))
       a[i] <- sprintf("%.2f", Ri)
     c[i] <- all(expert(Pi))
+    s[i] <- mathml(Si)
     e[i] <- sprintf("The result matches the following expression: %s\n", mathml(Si))
     p[[i]] <- praise(task, Pi)
     b[[i]] <- blame(task, Pi)
@@ -157,5 +161,5 @@ prepare <- function(task, S, N=length(S))
   }
 
   list(alternatives=a[o], correct=c[o], explanations=e[o], praise=p[o],
-    blame=b[o], extra=ex[o])
+    blame=b[o], extra=ex[o], solution=s[o][which(c[o])[1]])
 }
