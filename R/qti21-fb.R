@@ -59,6 +59,65 @@ format_feedback <- function(correct, explanations, praise, blame, extra)
     FUN=tagList, SIMPLIFY=FALSE)
 }
 
+# Check response options
+#
+#
+problems <- function(S, warn=FALSE, stop=FALSE)
+{
+  if(length(S) == 0)
+  {
+    if(stop)
+      stop("No solutions found.")
+  
+    if(warn)
+      warning("No solutions found")
+    
+    return(TRUE)
+  }
+  
+  # The correct solution(s) should differ from the incorrect alternatives.
+  R <- sapply(S, FUN="[[", "R")
+  P <- sapply(S, FUN=function(s) all(expert(s$P)))
+  if(any(R[P] %in% R[!P]))
+  {
+    if(warn)
+      warning("Correct responses overlap with incorrect ones.")
+    
+    return(TRUE)
+  }
+
+  # The correct solution(s) should differ from the incorrect alternatives.
+  Responses <- sapply(S, FUN="[[", "R")
+  Correct <- sapply(S, FUN=function(s) all(expert(s$P)))
+  if(any(Responses[Correct] %in% Responses[!Correct]))
+  {
+    if(warn)
+      warning("Correct responses overlap with incorrect ones.")
+    
+    return(TRUE)
+  }
+
+  # Consider: The correct solution(s) should differ from each other (?)
+  # if(length(Responses[Correct]) == length(unique(Responses[Correct])))
+  # {
+  #   if(warn)
+  #     warning("Correct responses overlap with incorrect ones.")
+  #   
+  #   return(TRUE)
+  
+  # Consider: The wrong solution(s) should differ from each other (?)
+  # if(length(Responses[!Correct]) == length(unique(Responses[!Correct])))
+  # {
+  #   if(warn)
+  #     warning("Correct responses overlap with incorrect ones.")
+  #   
+  #   return(TRUE)
+  
+  # no problems
+  return(FALSE)
+}
+
+
 # Extract the relevant feedback from the query
 #
 # 

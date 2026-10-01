@@ -8,6 +8,10 @@ library(mathml)
 library(htmltools)
 library(mistakes)
 
+task <- "tratio"
+plfile <- file.path("rexams", sprintf("%s.pl", task))
+rolog::consult(system.file(plfile, package="mistakes"))
+
 hook(d, mean(D))
 hook(s_d, subscript(s, D))
 hook(mu_d, subscript(mu, D))
@@ -48,15 +52,20 @@ repeat
   tails  <- "two-tailed"
     
   alpha  <- 0.05
+  
+  Q <- quote(search(tratio, tratio(t0, s_t0, eot, s_eot, d, mu_d, s_d, n),
+    .S, .R, .P, .E))
+  S <- findall(Q, options=list(preproc=as.rolog), env=environment())
+
+  if(problems(S))
+    next
+
   break
 }
 
-rolog::consult(system.file("rexams/tratio.pl", package="mistakes"))
-Q <- quote(search(tratio, tratio(t0, s_t0, eot, s_eot, d, mu_d, s_d, n),
-  .S, .R, .P, .E))
-S <- findall(Q, options=list(preproc=as.rolog), env=environment())
-t <- prepare(task="tratio", S)
+t <- prepare(task=task, S)
 sol <- format_feedback(t$correct, t$explanations, t$praise, t$blame, t$extra)
+sol <- lapply(sol, FUN=gsub, pattern="\\n", replacement="")
 ```
 
 Question
@@ -87,7 +96,6 @@ Solution
 The $t$-statistic is calculated by: `r mathml(S[[which(t$correct)[1]]]$S)`
 
 ```{r solutionlist, echo = FALSE, results = "asis"}
-sol <- lapply(sol, FUN=gsub, pattern="\\n", replacement="")
 answerlist(sol, markup="markdown")
 ```
 
