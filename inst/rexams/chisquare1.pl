@@ -34,10 +34,10 @@ buggy(X, Y, neg_z, []) :-
     X = chisquare1(P_A, P_B, P_pool, N_A, N_B, _N),
     Y = -dfrac(P_A-P_B,sqrt(P_pool*(1 - P_pool)*(1/N_A + 1/N_B))).
 
-% Use the total sample size N instead of the two group-specific sample sizes
+% Use 1/(N_A+N_B) at the denominator
 buggy(X, Y, total_n, []) :-
-    X = chisquare1(P_A, P_B, P_pool, _N_A, _N_B, N),
-    Y = (dfrac(P_A - P_B, sqrt(P_pool * (1-P_pool)*(1/N + 1/N))))^2.
+    X = chisquare1(P_A, P_B, P_pool, N_A, N_B, _N),
+    Y = (dfrac(P_A - P_B, sqrt(P_pool * (1-P_pool)*(1/(N_A + N_B)))))^2.
 
 % Feedback
 
@@ -51,5 +51,4 @@ blame(stop_z, "The result corresponds to the ~m-statistic. For the comparison of
 
 blame(neg_z, "The result corresponds to the ~m-statistic with its sign reversed. Changing the sign does not transform a ~m-statistic into a ~m-statistic. The required transformation is ~m."-[z, z, chi^2, chi^2 = z^2]).
 
-blame(total_n, M) :- M = "The result uses the total sample size ~m for both groups. Please keep in mind that the standard error contains the group-specific sample sizes: ~m, not ~m." -[N, 
-frac(1, n_a) + frac(1, n_b), frac(1, N) + frac(1, N)].
+blame(total_n, "The result uses the wrong denominator for the ~m-statistic. Under the square root, use ~m rather than ~m."-[z, frac(1, n_a) + frac(1, n_b), frac(1, n_a + n_b)]).
