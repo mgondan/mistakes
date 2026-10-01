@@ -17,6 +17,10 @@ hook(x_a, subscript(X, A))
 hook(x_b, subscript(X, B))
 hook(n, N)
 
+task <- "chisquare1"
+plfile <- file.path("rexams", sprintf("%s.pl", task))
+rolog::consult(system.file(plfile, package="mistakes"))
+
 ## DATA GENERATION
 repeat
 {
@@ -32,32 +36,23 @@ repeat
   p_b <- x_b / n_b
   p_pool <- (x_a + x_b) / (n_a + n_b)
   z <- (p_a - p_b) /sqrt(p_pool * (1 - p_pool) * (1 / n_a + 1 / n_b))
-  chisq <- z^2
-
-  #Wrong
-  z_wrong_n <- (p_a - p_b) / sqrt(p_pool * (1 - p_pool) * (1 / (n_a + n_b)))
-  chisq_wrong_n <- z_wrong_n^2
 
   if(abs(z) < 0.5)
     next
   if(abs(z) > 3.0)
     next
-
-  # different MC alternatives after rounding 
-  vals <- c(p_pool, z, -z, chisq, chisq_wrong_n)
-
-  if(length(unique(round(vals, 2))) < 5)
-    next
+  
   alpha <- 0.05
+  Q <- quote(search(chisquare1, chisquare1(p_a, p_b, p_pool, n_a, n_b, n), .S, .R, .P, .E))
+  S <- findall(Q, options=list(preproc=as.rolog), env=environment())
+
+  if(problems(S))
+    next
+
   break
 }
 
-rolog::consult(system.file("rexams/chisquare1.pl", package="mistakes"))
-
-Q <- quote(search(chisquare1, chisquare1(p_a, p_b, p_pool, n_a, n_b, n), .S, .R, .P, .E))
-S <- findall(Q, options=list(preproc=as.rolog), env=environment())
-
-t <- prepare(task="chisquare1", S)
+t <- prepare(task=task, S)
 sol <- format_feedback(t$correct, t$explanations, t$praise, t$blame, t$extra)
 ```
 
@@ -79,7 +74,7 @@ answerlist(t$alternatives, markup="markdown")
 
 Solution
 ========
-The $\chi^2$-statistic is calculated by: `r mathml(S[[which(t$correct)[1]]]$S)`
+The $\chi^2$-statistic is calculated by: $\chi^2=$`r sub("^The result matches the following expression: *", "", t$explanations[which(t$correct)[1]])`
 
 ```{r solutionlist, echo = FALSE, results = "asis"}
 sol <- lapply(sol, FUN=gsub, pattern="\\n", replacement="")
