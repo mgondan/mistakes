@@ -35,7 +35,7 @@ repeat
   chisq <- z^2
 
   #Wrong
-  z_wrong_n <- (p_a - p_b) / sqrt(p_pool * (1 - p_pool) *(1 / n + 1 / n))
+  z_wrong_n <- (p_a - p_b) / sqrt(p_pool * (1 - p_pool) * (1 / (n_a + n_b)))
   chisq_wrong_n <- z_wrong_n^2
 
   if(abs(z) < 0.5)
@@ -57,46 +57,8 @@ rolog::consult(system.file("rexams/chisquare1.pl", package="mistakes"))
 Q <- quote(search(chisquare1, chisquare1(p_a, p_b, p_pool, n_a, n_b, n), .S, .R, .P, .E))
 S <- findall(Q, options=list(preproc=as.rolog), env=environment())
 
-alternatives <- character(length(S))
-correct <- logical(length(S))
-explanations <- character(length(S))
-praise <- list(length(S))
-blame <- list(length(S))
-extra <- list(length(S))
-
-if(length(S) == 0)
-  stop("No solutions found.")
-
-for(i in 1:length(S))
-{
-  Si <- S[[i]]$S
-  Ri <- S[[i]]$R
-  Pi <- S[[i]]$P
-  Ei <- S[[i]]$E
-
-  alternatives[i] <- sprintf("%.2f", Ri)
-  correct[i] <- all(expert(Pi))
-  explanations[i] <- sprintf("The result matches the following expression: %s\n", mathml(Si))
-  praise[[i]] <- praise("chisquare1", Pi)
-  blame[[i]] <- blame("chisquare1", Pi)
-  extra[[i]] <- feedback("chisquare1", Ei)
-}
-
-# number of MC alternatives, reduce if needed, but make sure the correct
-# alternative is in the set
-A <- length(S)
-o <- sample(1:A)
-
-# Shuffle
-alternatives <- alternatives[o]
-correct <- correct[o]
-explanations <- explanations[o]
-praise <- praise[o]
-blame <- blame[o]
-extra <- extra[o]
-S <- S[o]
-
-sol <- format_feedback(correct, explanations, praise, blame, extra)
+t <- prepare(task="chisquare1", S)
+sol <- format_feedback(t$correct, t$explanations, t$praise, t$blame, t$extra)
 ```
 
 Question
@@ -112,5 +74,20 @@ Determine the $\chi^2$-statistic for testing whether the success probabilities
 in the two groups are equal.
 
 ```{r questionlist, echo = FALSE, results = "asis"}
-answerlist(alternatives, markup="markdown")
+answerlist(t$alternatives, markup="markdown")
 ```
+
+Solution
+========
+The $\chi^2$-statistic is calculated by: `r mathml(S[[which(t$correct)[1]]]$S)`
+
+```{r solutionlist, echo = FALSE, results = "asis"}
+sol <- lapply(sol, FUN=gsub, pattern="\\n", replacement="")
+answerlist(sol, markup="markdown")
+```
+
+Meta-information
+================
+extype: schoice
+exsolution: `r mchoice2string(t$correct, single=TRUE)`
+exname: chisquare1
