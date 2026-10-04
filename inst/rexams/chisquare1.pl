@@ -19,8 +19,8 @@ expert(X, Y, chisquare, []) :-
 intermediate(chisquare_z/1).
 
 expert(X, Y, square, []) :-
-    X = chisquare_z(Z),
-    Y = Z^2.
+    X = chisquare_z(dfrac(Num, sqrt(Den))),
+    Y = dfrac(Num^2, Den).
 
 % Mistakes
 
@@ -42,7 +42,7 @@ buggy(X, Y, neg_z, []) :-
 % Use 1/(N_A+N_B) at the denominator
 buggy(X, Y, total_n, []) :-
     X = pool_success(P_pool, P_A, P_B, N_A, N_B),
-    Y = (dfrac(P_A - P_B, sqrt(P_pool * (1-P_pool)*(1/(N_A + N_B)))))^2.
+    Y = chisquare_z(dfrac(P_A - P_B, sqrt(P_pool * (1-P_pool)*(1/(N_A + N_B))))).
 
 % Feedback
 
