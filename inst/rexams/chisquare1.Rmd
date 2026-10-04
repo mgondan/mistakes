@@ -16,6 +16,7 @@ hook(n_b, subscript(N, B))
 hook(x_a, subscript(X, A))
 hook(x_b, subscript(X, B))
 hook(n, N)
+hook(p_pool, subscript(p, "pool"))
 
 task <- "chisquare1"
 plfile <- file.path("rexams", sprintf("%s.pl", task))
@@ -43,7 +44,7 @@ repeat
     next
   
   alpha <- 0.05
-  Q <- quote(search(chisquare1, chisquare1(p_a, p_b, p_pool, n_a, n_b, n), .S, .R, .P, .E))
+  Q <- quote(search(chisquare1, chisquare1(p_a, p_b, n_a, n_b, x_a, x_b), .S, .R, .P, .E))
   S <- findall(Q, options=list(preproc=as.rolog), env=environment())
 
   if(problems(S))
@@ -59,11 +60,11 @@ sol <- format_feedback(t$correct, t$explanations, t$praise, t$blame, t$extra)
 Question
 ========
 
-In a randomized controlled trial, `r n` patients are observed.
+We consider a randomized controlled trial with `r n` patients.
 
-`r n_a` patients are randomized to therapy group A and `r n_b` patients
-are randomized to control group B. In group A, `r x_a` treatment successes
-are observed, whereas in group B, `r x_b` treatment successes are observed.
+`r n_a` patients are allocated to the new therapy, and `r n_b` patients
+are randomized to the control group. In the treatment group, `r x_a` successes
+are observed, whereas in the control, `r x_b` successes are observed.
 
 Determine the $\chi^2$-statistic for testing whether the success probabilities
 in the two groups are equal.
