@@ -50,12 +50,12 @@ praise(pooled_success,"You have correctly identified the expression for the pool
 
 praise(chisquare,"You have correctly identified the expression for the ~m-statistic."-[z]).
 
-praise(square,"You have correctly transformed the ~m-statistic into the ~m-statistic using ~m."-[z, chi^2, chi^2 = z^2]).
+praise(square,"You have correctly transformed the ~m-statistic into the ~m-statistic."-[z, chi^2]).
 
-blame(pool, "The result corresponds to the pooled success probability ~m. This is an intermediate quantity used in the denominator of the ~m-statistic, but it is not the requested ~m-statistic."-[p_pool, z, chi^2]).
+blame(pool, "The result corresponds to the pooled success probability ~m. This is an intermediate result used in the denominator of the ~m-statistic, but the task is not yet finished."-[p_pool, z]).
 
-blame(stop_z, "The result corresponds to the ~m-statistic. For the comparison of two success rates, the requested ~m-statistic is obtained by squaring the ~m-statistic: ~m."-[z, chi^2, z, chi^2 = z^2]).
+blame(stop_z, "The result corresponds to the ~m-statistic. The ~m-statistic is obtained by raising it to the square."-[z, chi^2]).
 
-blame(neg_z, "The result corresponds to the ~m-statistic with its sign reversed. Changing the sign does not transform a ~m-statistic into a ~m-statistic. The required transformation is ~m."-[z, z, chi^2, chi^2 = z^2]).
+blame(neg_z, "The result corresponds to the negative ~m-statistic. The ~m-statistic is obtained by raising it to the square."-[z, chi^2]).
 
-blame(total_n, "The result uses the wrong denominator for the ~m-statistic. Under the square root, use ~m rather than ~m."-[z, frac(1, n_a) + frac(1, n_b), frac(1, n_a + n_b)]).
+blame(total_n, "Something is wrong in the denominator. Please note that ~m cannot be simplified to ~m."-[frac(1, n_a) + frac(1, n_b), frac(1, n_a + n_b)]).
