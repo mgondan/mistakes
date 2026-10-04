@@ -16,6 +16,7 @@ hook(n_b, subscript(N, B))
 hook(x_a, subscript(X, A))
 hook(x_b, subscript(X, B))
 hook(n, N)
+hook(p_pool, subscript(p, "pool"))
 
 task <- "chisquare1"
 plfile <- file.path("rexams", sprintf("%s.pl", task))
@@ -43,7 +44,7 @@ repeat
     next
   
   alpha <- 0.05
-  Q <- quote(search(chisquare1, chisquare1(p_a, p_b, p_pool, n_a, n_b, n), .S, .R, .P, .E))
+  Q <- quote(search(chisquare1, chisquare1(p_a, p_b, n_a, n_b, x_a, x_b), .S, .R, .P, .E))
   S <- findall(Q, options=list(preproc=as.rolog), env=environment())
 
   if(problems(S))

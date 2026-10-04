@@ -5,8 +5,15 @@
 % Solution of the problem
 intermediate(chisquare1/6).
 
+expert(X, Y, pooled_success, []) :-
+    X = chisquare1(P_A, P_B, N_A, N_B, X_A, X_B),
+    P = denote(p_pool, dfrac(X_A + X_B, N_A + N_B), "the pooled success probability"),
+    Y = pool_success(P, P_A, P_B, N_A, N_B).
+
+intermediate(pool_success/5).
+
 expert(X, Y, chisquare, []) :-
-    X = chisquare1(P_A, P_B, P_pool, N_A, N_B, _N),
+    X = pool_success(P_pool, P_A, P_B, N_A, N_B),
     Y = chisquare_z(dfrac(P_A - P_B, sqrt(P_pool * (1-P_pool)*(1/N_A+1/N_B)))).
 
 intermediate(chisquare_z/1).
@@ -19,27 +26,27 @@ expert(X, Y, square, []) :-
 
 % Report the pooled success probability instead of the test statistic
 buggy(X, Y, pool, []) :-
-    X = chisquare1(_P_A, _P_B, P_pool, _N_A, _N_B, _N),
+    X = pool_success(P_pool, _P_A, _P_B, _N_A, N_B),
     Y = P_pool.
-
 
 % Stop at the z-statistic instead of calculating chi-square
 buggy(X, Y, stop_z, []) :-
-    X = chisquare1(P_A, P_B, P_pool, N_A, N_B, _N),
-    Y = dfrac(P_A-P_B, sqrt(P_pool * (1 - P_pool)*(1/N_A + 1/N_B))).
-
+    X = chisquare_z(Z),
+    Y = Z.
 
 % Reverse the sign of z instead of squaring it
 buggy(X, Y, neg_z, []) :-
-    X = chisquare1(P_A, P_B, P_pool, N_A, N_B, _N),
-    Y = -dfrac(P_A-P_B,sqrt(P_pool*(1 - P_pool)*(1/N_A + 1/N_B))).
+    X = chisquare_z(Z),
+    Y = -Z.
 
 % Use 1/(N_A+N_B) at the denominator
 buggy(X, Y, total_n, []) :-
-    X = chisquare1(P_A, P_B, P_pool, N_A, N_B, _N),
+    X = pool_success(P_pool, P_A, P_B, N_A, N_B),
     Y = (dfrac(P_A - P_B, sqrt(P_pool * (1-P_pool)*(1/(N_A + N_B)))))^2.
 
 % Feedback
+
+praise(pooled_success,"You have correctly identified the expression for the pooled success probability.").
 
 praise(chisquare,"You have correctly identified the expression for the ~m-statistic."-[z]).
 
