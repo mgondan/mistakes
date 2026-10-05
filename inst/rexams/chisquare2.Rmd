@@ -1,0 +1,85 @@
+---
+title: "Comparison of success rates"
+---
+
+```{r, include=FALSE}
+library(exams)
+library(mathml)
+library(htmltools)
+library(mistakes)
+
+hook(pnorm1(.X, .Tail), pnorm(.X, .Tail))
+
+task <- "chisquare2"
+plfile <- file.path("rexams", sprintf("%s.pl", task))
+rolog::consult(system.file(plfile, package="mistakes"))
+
+pnorm1 <- function(C, Tail)
+{
+  if(Tail == "lower")
+    return(pnorm(C, lower.tail=TRUE))
+
+  if(Tail == "upper")
+    return(pnorm(C, lower.tail=FALSE))
+
+  stop("Tail must bei either upper or lower")
+}
+
+## DATA GENERATION
+repeat
+{
+  n_a <- as.integer(round(runif(1, min=20, max=45)))
+  n_b <- as.integer(round(runif(1, min=20, max=45)))
+
+  if(n_a == n_b)
+    next
+  n <- n_a + n_b
+  x_a <- as.integer(round(runif(1, min=5, max=n_a - 5)))
+  x_b <- as.integer(round(runif(1, min=5, max=n_b - 5)))
+  p_a <- x_a / n_a
+  p_b <- x_b / n_b
+  p_pool <- (x_a + x_b) / (n_a + n_b)
+  z <- (p_a - p_b) /sqrt(p_pool * (1 - p_pool) * (1 / n_a + 1 / n_b))
+
+  if(abs(z) < 0.5)
+    next
+  if(abs(z) > 3.0)
+    next
+  
+  Q <- quote(search(chisquare2, chisquare2(z), .S, .R, .P, .E))
+  S <- findall(Q, options=list(preproc=as.rolog), env=environment())
+
+  if(problems(S))
+    next
+
+  break
+}
+
+t <- prepare(task=task, S)
+sol <- format_feedback(t$correct, t$explanations, t$praise, t$blame, t$extra)
+```
+
+Question
+========
+
+A two-sided $z$-test comparing the success rates of two treatment groups gives $z = `r sprintf("%.2f", z)`$. 
+What is the $p$-value of the corresponding $\chi^2$-test with $df=1$?
+
+```{r questionlist, echo = FALSE, results = "asis"}
+answerlist(t$alternatives, markup="markdown")
+```
+
+Solution
+========
+The $p$-value of the $\chi^2$-test is the same as for the $z$-test, which is calculated by: `r t$solution`
+
+```{r solutionlist, echo = FALSE, results = "asis"}
+sol <- lapply(sol, FUN=gsub, pattern="\\n", replacement="")
+answerlist(sol, markup="markdown")
+```
+
+Meta-information
+================
+extype: schoice
+exsolution: `r mchoice2string(t$correct, single=TRUE)`
+exname: chisquare2
