@@ -1,0 +1,68 @@
+---
+title: "Comparison of success rates"
+---
+
+```{r, include=FALSE}
+library(exams)
+library(mathml)
+library(htmltools)
+library(mistakes)
+
+hook(n_a, subscript(N, A))
+hook(n_b, subscript(N, B))
+hook(x_a, subscript(X, A))
+hook(x_b, subscript(X, B))
+
+task <- "chisquare5"
+plfile <- file.path("rexams", sprintf("%s.pl", task))
+rolog::consult(system.file(plfile, package="mistakes"))
+
+## DATA GENERATION
+repeat
+{
+  n_a <- as.integer(round(runif(1, min=20, max=45)))
+  n_b <- as.integer(round(runif(1, min=20, max=45)))
+
+  if(n_a == n_b)
+    next
+  x_a <- n_a - as.integer(round(runif(1, min=5, max=n_a - 5)))
+  x_b <- as.integer(round(runif(1, min=5, max=n_b - 5)))
+
+  Q <- quote(search(chisquare5, chisquare5(n_a, n_b, x_a, x_b), .S, .R, .P, .E))
+  S <- findall(Q, options=list(preproc=as.rolog), env=environment())
+
+  if(problems(S))
+    next
+
+  break
+}
+
+t <- prepare(task=task, S)
+sol <- format_feedback(t$correct, t$explanations, t$praise, t$blame, t$extra)
+```
+
+Question
+========
+
+In a randomized controlled trial, group A is composed of `r n_a` patients, with `r x_a` showing treatment failure, 
+and group B is composed of `r n_b` patients, with `r x_b` showing treatment success. 
+Determine the pooled success probability, $p_{\mathrm{pool}}$.
+
+```{r questionlist, echo = FALSE, results = "asis"}
+answerlist(t$alternatives, markup="markdown")
+```
+
+Solution
+========
+The pooled success probability is calculated by: `r t$solution`
+
+```{r solutionlist, echo = FALSE, results = "asis"}
+sol <- lapply(sol, FUN=gsub, pattern="\\n", replacement="")
+answerlist(sol, markup="markdown")
+```
+
+Meta-information
+================
+extype: schoice
+exsolution: `r mchoice2string(t$correct, single=TRUE)`
+exname: chisquare5
