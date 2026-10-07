@@ -31,10 +31,11 @@ expert(X, Y, probability, []) :-
 
 buggy(X, Y, sd, []) :-
     X = llnorm1(Pi_0, N, K),
-    Y = normapprox(
-        N * Pi_0 * 1,
-        sqrt(N * Pi_0 * (1 - Pi_0)),
-        K
+    Y = normal_z(
+        dfrac(
+            K - N * Pi_0,
+            N * Pi_0 * (1 - Pi_0)
+        )
     ).
 
 buggy(X, Y, stop_z, []) :-

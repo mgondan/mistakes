@@ -8,8 +8,8 @@ library(mathml)
 library(htmltools)
 library(mistakes)
 
-hook(sigma2, sigma^2)
-
+hook(sigma2, sigma^2L)
+hook(pi_0, subscript(pi, 0L))
 task <- "llnorm1"
 plfile <- file.path("rexams", sprintf("%s.pl", task))
 rolog::consult(system.file(plfile, package="mistakes"))
@@ -19,7 +19,7 @@ repeat
 {
   pi_0 <- round(runif(1, 0.8, 0.9),2)
   N <- sample(40:100, 1)
-  X <- sample((N-15):N, 1)
+  X <- sample((N-15):(N-2), 1)
   
   Q <- quote(search(llnorm1, llnorm1(pi_0, N, X), .S, .R, .P, .E))
   S <- findall(Q, options=list(preproc=as.rolog), env=environment())
