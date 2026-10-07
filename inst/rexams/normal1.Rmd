@@ -1,0 +1,75 @@
+---
+title: "Central 95% interval of normal distribution"
+---
+
+```{r, include=FALSE}
+library(exams)
+library(mathml)
+library(htmltools)
+library(mistakes)
+
+hook(sigma2, sigma^2)
+
+task <- "normal1"
+plfile <- file.path("rexams", sprintf("%s.pl", task))
+rolog::consult(system.file(plfile, package="mistakes"))
+
+## DATA GENERATION
+repeat
+{
+  mu <- sample(40:160, 1)
+  sd_x <- sample(2:8, 1)
+  sigma2 <- sd_x^2
+
+  Q <- quote(search(normal1, normal1(mu, sigma2), .S, .R, .P, .E))
+  S <- findall(Q, options=list(preproc=as.rolog), env=environment())
+
+  if(problems(S))
+    next
+
+  break
+}
+
+t <- prepare(task=task, S)
+sol <- format_feedback(
+  t$correct, t$explanations, t$praise, t$blame, t$extra
+)
+```
+
+Question
+========
+
+A normally distributed random variable $X$ has mean
+$\mu = `r mu`$ and variance $\sigma^2 = `r sigma2`$.
+
+Determine the interval, symmetric about the mean, that contains
+approximately 95% of its realizations.
+
+```{r questionlist, echo=FALSE, results="asis"}
+answerlist(t$alternatives, markup="markdown")
+```
+
+Solution
+========
+
+The standard deviation is
+$\sigma = \sqrt{`r sigma2`} = `r sd_x`$.
+
+The central interval containing approximately 95% of realizations is
+
+$$
+[\mu - 1.96\sigma;\ \mu + 1.96\sigma].
+$$
+
+The range is calculated by: `r t$solution`
+
+```{r solutionlist, echo=FALSE, results="asis"}
+sol <- lapply(sol, FUN=gsub, pattern="\\n", replacement="")
+answerlist(sol, markup="markdown")
+```
+
+Meta-information
+================
+extype: schoice
+exsolution: `r mchoice2string(t$correct, single=TRUE)`
+exname: normal1
