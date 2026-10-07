@@ -1,0 +1,69 @@
+---
+title: "Comparison of success rates"
+---
+
+```{r, include=FALSE}
+library(exams)
+library(mathml)
+library(htmltools)
+library(mistakes)
+
+task <- "chisquare4"
+plfile <- file.path("rexams", sprintf("%s.pl", task))
+rolog::consult(system.file(plfile, package="mistakes"))
+
+## DATA GENERATION
+repeat
+{
+  n_a <- as.integer(round(runif(1, min=20, max=45)))
+  n_b <- as.integer(round(runif(1, min=20, max=45)))
+
+  if(n_a == n_b)
+    next
+  x_a <- as.integer(round(runif(1, min=5, max=n_a - 10)))
+  x_b <- as.integer(round(runif(1, min=5, max=n_b - 5)))
+  p_a <- x_a / n_a
+  p_b <- x_b / n_b
+  if(p_a >= p_b)
+    next
+
+  p_pool <- (x_a + x_b) / (n_a + n_b)
+  z <- (p_a - p_b) / sqrt(p_pool * (1 - p_pool) * (1 / n_a + 1 / n_b))
+
+  Q <- quote(search(chisquare4, chisquare4(z), .S, .R, .P, .E))
+  S <- findall(Q, options=list(preproc=as.rolog), env=environment())
+
+  if(problems(S))
+    next
+
+  break
+}
+
+t <- prepare(task=task, S)
+sol <- format_feedback(t$correct, t$explanations, t$praise, t$blame, t$extra)
+```
+
+Question
+========
+
+A comparison of two success rates gives $z = `r sprintf("%.2f", z)`.$ 
+What is the corresponding $\chi^2$-statistic?
+
+```{r questionlist, echo = FALSE, results = "asis"}
+answerlist(t$alternatives, markup="markdown")
+```
+
+Solution
+========
+The $\chi^2$-statistic is calculated by: `r t$solution`
+
+```{r solutionlist, echo = FALSE, results = "asis"}
+sol <- lapply(sol, FUN=gsub, pattern="\\n", replacement="")
+answerlist(sol, markup="markdown")
+```
+
+Meta-information
+================
+extype: schoice
+exsolution: `r mchoice2string(t$correct, single=TRUE)`
+exname: chisquare4
