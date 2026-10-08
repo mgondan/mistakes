@@ -1,0 +1,101 @@
+---
+title: "Mann-Whitney critical region"
+---
+
+```{r, include=FALSE}
+library(exams)
+library(mathml)
+library(htmltools)
+library(mistakes)
+library(knitr)
+
+hook(n_a, subscript(N, A))
+hook(n_b, subscript(N, B))
+hook(u, U)
+hook(u_crit, subscript(U, crit))
+
+critical <- function(lower, upper) {
+  sprintf("U <= %s or U >= %s", lower, upper)
+}
+
+upper_only <- function(upper) {
+  sprintf("U >= %s", upper)
+}
+
+task <- "mannwhitney3"
+plfile <- file.path("rexams", sprintf("%s.pl", task))
+rolog::consult(system.file(plfile, package = "mistakes"))
+
+ucrit <- function(n_a, n_b, alpha = 0.05)
+{
+  u <- 0:(n_a * n_b)
+  upper <- 1 - pwilcox(u - 1, n_a, n_b)
+  min(u[upper <= alpha / 2])
+}
+
+## DATA GENERATION
+repeat
+{
+  n_a <- sample(10:18, 1)
+  n_b <- sample(12:20, 1)
+
+  u_crit <- ucrit(n_a, n_b)
+  u_lower <- n_a * n_b - u_crit
+
+  na_values <- (n_a-2):(n_a+2) # for table
+  nb_values <- (n_b-2):(n_b+2)
+
+  crit_table <- outer(na_values, nb_values,
+    Vectorize(function(a, b) ucrit(a, b)))
+
+  rownames(crit_table) <- na_values
+  colnames(crit_table) <- nb_values
+
+  Q <- quote(search(mannwhitney3, mannwhitney3(u_lower, u_crit), .S, .R, .P, .E))
+
+  S <- findall(Q, options = list(preproc = as.rolog), env = environment())
+
+  if(problems(S))
+    next
+
+  break
+}
+
+t <- prepare(task = task, S)
+
+sol <- format_feedback(t$correct, t$explanations, t$praise, t$blame, t$extra)
+```
+
+Question
+========
+
+In a Mann-Whitney test, group A contains `r n_a` participants and group B 
+contains `r n_b` participants. The table below gives the upper critical values 
+of the Mann-Whitney $U$-distribution for a two-sided test at the 5% significance level.
+
+```{r table, echo = FALSE}
+kable(crit_table, caption = "Upper critical values of the Mann-Whitney 
+                             U distribution")
+```
+
+The statistic $U$ counts the pairwise comparisons won by group A.
+Determine the rejection region. 
+
+```{r questionlist, echo = FALSE, results = "asis"}
+answerlist(t$alternatives, markup="markdown")
+```
+
+Solution
+========
+The rejection region is: `r t$solution`
+
+```{r solutionlist, echo = FALSE, results = "asis"}
+sol <- lapply(sol, FUN=gsub, pattern="\\n", replacement="")
+answerlist(sol, markup="markdown")
+```
+
+Meta-information
+================
+extype: schoice
+exsolution: `r mchoice2string(t$correct, single=TRUE)`
+exname: mannwhitney3
