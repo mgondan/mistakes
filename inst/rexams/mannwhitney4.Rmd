@@ -1,0 +1,89 @@
+---
+title: "Mann-Whitney z approximation"
+---
+
+```{r, include=FALSE}
+library(exams)
+library(mathml)
+library(htmltools)
+library(mistakes)
+library(knitr)
+
+hook(n_a, subscript(N, A))
+hook(n_b, subscript(N, B))
+hook(u, U)
+
+task <- "mannwhitney4"
+plfile <- file.path("rexams", sprintf("%s.pl", task))
+rolog::consult(system.file(plfile, package = "mistakes"))
+
+## DATA GENERATION
+repeat
+{
+  n_a <- sample(20:40, 1)
+  n_b <- sample(20:40, 1)
+
+ u <- sample(seq.int(ceiling(0.25*n_a*n_b),
+      floor(0.75*n_a*n_b)), 1)
+
+  if(2 * u == n_a * n_b)
+    next
+
+  Q <- quote(search(mannwhitney4, mannwhitney4(u, n_a, n_b), .S, .R, .P, .E))
+
+  S <- findall(Q, options = list(preproc = as.rolog), env = environment())
+
+  if(problems(S))
+    next
+
+  break
+}
+
+t <- prepare(task = task, S)
+
+sol <- format_feedback(t$correct, t$explanations, t$praise, t$blame, t$extra)
+```
+
+Question
+========
+
+In a Mann-Whitney comparison, group A contains `r n_a` participants
+and group B contains `r n_b` participants. There are no ties.
+Group A wins `r u` of the `r n_a * n_b` pairwise comparisons.
+
+Using the normal approximation of the U-distribution, determine the corresponding z-statistic, without applying a continuity correction.
+
+```{r questionlist, echo = FALSE, results = "asis"}
+answerlist(t$alternatives, markup="markdown")
+```
+
+Solution
+========
+Under the null hypothesis:
+
+$$
+E(U)=\frac{N_A N_B}{2},
+\qquad
+\mathrm{Var}(U)=\frac{N_A N_B(N_A+N_B+1)}{12}.
+$$
+
+The z-statistic is calculated as:
+
+$$
+z=
+\frac{U-N_A N_B/2}
+{\sqrt{N_A N_B(N_A+N_B+1)/12}}.
+$$
+
+The result is: `r t$solution`
+
+```{r solutionlist, echo = FALSE, results = "asis"}
+sol <- lapply(sol, FUN=gsub, pattern="\\n", replacement="")
+answerlist(sol, markup="markdown")
+```
+
+Meta-information
+================
+extype: schoice
+exsolution: `r mchoice2string(t$correct, single=TRUE)`
+exname: mannwhitney4
