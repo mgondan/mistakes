@@ -1,0 +1,78 @@
+---
+title: "Comparison of success rates"
+---
+
+```{r, include=FALSE}
+library(exams)
+library(mathml)
+library(htmltools)
+library(mistakes)
+
+hook(n_a, subscript(N, A))
+hook(n_b, subscript(N, B))
+hook(x_a, subscript(X, A))
+hook(x_b, subscript(X, B))
+hook(p_a, subscript(P, A))
+hook(p_b, subscript(P, B))
+hook(pct_a, subscript(P, '%A'))
+hook(pct_b, subscript(P, '%B'))
+hook(p_pool, subscript(p, "pool"))
+
+task <- "chisquare6"
+plfile <- file.path("rexams", sprintf("%s.pl", task))
+rolog::consult(system.file(plfile, package="mistakes"))
+
+## DATA GENERATION
+repeat
+{
+  pct_a <- as.integer(round(runif(1, min=40, max=70)))
+  pct_b <- as.integer(round(runif(1, min=40, max=70)))
+  if (pct_a == pct_b)
+    next
+  
+  n_a <- n_b <- as.integer(round(runif(1, min=20, max=45)))
+  n <- n_a + n_b
+  x_a <- pct_a / 100 * n_a
+  x_b <- pct_b / 100 * n_b
+
+  if (x_a %% 1 != 0 || x_b %% 1 != 0)
+    next
+
+
+  Q <- quote(search(chisquare6, chisquare6(pct_a, pct_b, n), .S, .R, .P, .E))
+  S <- findall(Q, options=list(preproc=as.rolog), env=environment())
+
+  if(problems(S))
+    next
+
+  break
+}
+
+t <- prepare(task=task, S)
+sol <- format_feedback(t$correct, t$explanations, t$praise, t$blame, t$extra)
+```
+
+Question
+========
+In a behavioral experiment, `r n` participants are randomly assigned in equal numbers to two experimental conditions. 
+The observed success rate is `r pct_a`% in condition A and `r pct_b`%  in condition B. 
+Determine the $\chi^2$-statistic for testing whether the success probabilities in the two conditions are equal.
+
+```{r questionlist, echo = FALSE, results = "asis"}
+answerlist(t$alternatives, markup="markdown")
+```
+
+Solution
+========
+The $\chi^2$-statistic is calculated by: `r t$solution`
+
+```{r solutionlist, echo = FALSE, results = "asis"}
+sol <- lapply(sol, FUN=gsub, pattern="\\n", replacement="")
+answerlist(sol, markup="markdown")
+```
+
+Meta-information
+================
+extype: schoice
+exsolution: `r mchoice2string(t$correct, single=TRUE)`
+exname: chisquare6

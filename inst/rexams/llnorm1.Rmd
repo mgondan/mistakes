@@ -1,0 +1,89 @@
+---
+title: "Normalapproximation von Erfolgswahrscheinlichkeiten"
+---
+
+```{r, include=FALSE}
+library(exams)
+library(mathml)
+library(htmltools)
+library(mistakes)
+
+hook(sigma2, sigma^2L)
+hook(pi_0, subscript(pi, 0L))
+task <- "llnorm1"
+plfile <- file.path("rexams", sprintf("%s.pl", task))
+rolog::consult(system.file(plfile, package="mistakes"))
+
+## DATA GENERATION
+repeat
+{
+  pi_0 <- round(runif(1, 0.8, 0.9),2)
+  N <- sample(40:100, 1)
+  X <- sample((N-15):(N-2), 1)
+  
+  Q <- quote(search(llnorm1, llnorm1(pi_0, N, X), .S, .R, .P, .E))
+  S <- findall(Q, options=list(preproc=as.rolog), env=environment())
+
+  if(problems(S))
+    next
+
+  break
+}
+
+t <- prepare(task=task, S)
+sol <- format_feedback(
+  t$correct, t$explanations, t$praise, t$blame, t$extra
+)
+
+## Quantities used in the solution text 
+mu <- N * pi_0 
+sigma2 <- N * pi_0 * (1 - pi_0) 
+sd_x <- sqrt(sigma2) 
+z <- (X - mu) / sd_x 
+prob <- 1 - pnorm(z)
+probr <- round(prob, 2)
+```
+
+Question
+========
+
+Die gängige Standardtherapie zur Behandlung von Depressionen
+weist eine Erfolgsrate von $\pi_0=`r pi_0`$ auf.
+
+Berechne unter Approximation durch die Normalverteilung die Wahrscheinlichkeit,
+dass in einer Stichprobe bei mindestens $X=`r X`$ von $N=`r N`$ Personen ein 
+Behandlungserfolg erzielt wird.
+
+```{r questionlist, echo=FALSE, results="asis"}
+answerlist(t$alternatives, markup="markdown")
+```
+
+Solution
+========
+
+Die Anzahl der Behandlungserfolge kann durch eine Binomialverteilung
+approximiert werden. Unter der Normalapproximation gilt $Y \approx N(\mu,\sigma^2)$
+mit Erwartungswert $\mu = N\pi_0 = `r mu`$ und Varianz $\sigma^2 = N\pi_0(1-\pi_0) = `r sigma2`$,
+(Standardabweichung $\sigma = \sqrt{N\pi_0(1-\pi_0)} = `r sd_x`$).
+
+Für mindestens $X$ Behandlungserfolge ergibt sich 
+
+$$
+P(Y \geq X) \approx 1-\Phi\left(\frac{X-\mu}{\sigma}\right).
+$$
+
+Mit den gegebenen Werten ist $z=\frac{X-\mu}{\sigma}=`r z`$. Damit folgt
+
+$$
+P(Y \geq X) = `r prob` \approx `r probr`
+$$
+```{r solutionlist, echo=FALSE, results="asis"}
+sol <- lapply(sol, FUN=gsub, pattern="\\n", replacement="")
+answerlist(sol, markup="markdown")
+```
+
+Meta-information
+================
+extype: schoice
+exsolution: `r mchoice2string(t$correct, single=TRUE)`
+exname: llnorm1
