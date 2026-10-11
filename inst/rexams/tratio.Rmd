@@ -63,7 +63,7 @@ repeat
   break
 }
 
-t <- prepare(task=task, S)
+t <- prepare(task=task, S, N=5) # 5 alternatives only
 sol <- format_feedback(t$correct, t$explanations, t$praise, t$blame, t$extra)
 sol <- lapply(sol, FUN=gsub, pattern="\\n", replacement="")
 ```

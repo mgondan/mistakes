@@ -155,7 +155,10 @@ prepare <- function(task, S, N=length(S))
 
   # Shuffle
   repeat
-  { o <- sample(1:length(S), size=N)
+  { 
+    # downweight alternatives with many bugs
+    prob <- 1 / (1 + sapply(b, FUN=length))
+    o <- sample(1:length(S), size=N, prob=prob, replace=FALSE)
     if(any(c[o]))
       break
   }
