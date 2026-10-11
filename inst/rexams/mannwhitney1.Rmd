@@ -11,13 +11,18 @@ library(mistakes)
 
 hook(n_a, subscript(N, A))
 hook(n_b, subscript(N, B))
-hook(a_i, subscript(A, i))
-hook(b_j, subscript(B, j))
-hook(u, U)
+hook(a_win, text("any(a > b)"))
+
+ustat <- function(a, b)
+  cardinality(outer(a, b, FUN=">"))
+
+cardinality <- sum
+
 
 task <- "mannwhitney1"
 plfile <- file.path("rexams", sprintf("%s.pl", task))
 rolog::consult(system.file(plfile, package="mistakes"))
+
 
 ## DATA GENERATION
 repeat
@@ -29,23 +34,7 @@ repeat
 
   a <- sort(x[1:n_a])
   b <- sort(x[(n_a + 1):(n_a + n_b)])
-
-  a1 <- a[1]
-  a2 <- a[2]
-  a3 <- a[3]
-  a4 <- a[4]
-  a5 <- a[5]
-  
-  b1 <- b[1]
-  b2 <- b[2]
-  b3 <- b[3]
-  b4 <- b[4]
-  b5 <- b[5]
-  b6 <- b[6]
-
   u <- sum(outer(a, b, ">"))
-  u_b <- n_a * n_b - u # I report them here to avoid calculations in pl
-  pairs <- n_a * n_b
   a_win <- sum(sapply(a, function(x) any(x > b)))
 
   if(u <= 2)
@@ -53,7 +42,7 @@ repeat
   if(u >= n_a*n_b - 2)
     next
 
-  Q <- quote(search(mannwhitney1, mannwhitney1(u, u_b, pairs, a_win),
+  Q <- quote(search(mannwhitney1, mannwhitney1(a, b, n_a, n_b, a_win),
                   .S, .R, .P, .E))
 
   S <- findall(Q, options=list(preproc=as.rolog), env=environment())
@@ -73,10 +62,11 @@ Question
 
 Two independent groups have the following observations:
 
-Group A: `r paste(a, collapse=", ")`and Group B: `r paste(b, collapse=", ")` .
-There are no ties.
+Group A: `r paste(a, collapse=", ")`
 
-Determine the Mann-Whitney $U$-statistic for group A.
+Group B: `r paste(b, collapse=", ")`
+
+There are no ties. Determine the Mann-Whitney $U$-statistic.
 
 ```{r questionlist, echo = FALSE, results = "asis"}
 answerlist(t$alternatives, markup="markdown")
@@ -84,7 +74,11 @@ answerlist(t$alternatives, markup="markdown")
 
 Solution
 ========
-The Mann-Whitney $U$-statistic is calculated by: `r t$solution`
+The Mann-Whitney $U$-statistic for group A is calculated by counting 
+all pairwise comparison won by group A: `r t$solution`
+where $A \times B$ denotes the Cartesian product, so all possible pairs between the elements 
+of group A and group B.
+
 
 ```{r solutionlist, echo = FALSE, results = "asis"}
 sol <- lapply(sol, FUN=gsub, pattern="\\n", replacement="")
