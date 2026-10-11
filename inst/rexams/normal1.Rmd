@@ -8,7 +8,7 @@ library(mathml)
 library(htmltools)
 library(mistakes)
 
-hook(sigma2, sigma^2)
+hook(sigma2, sigma^2L)
 
 task <- "normal1"
 plfile <- file.path("rexams", sprintf("%s.pl", task))
