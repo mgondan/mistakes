@@ -11,10 +11,10 @@ library(mistakes)
 hook(p_a, subscript(p, A))
 hook(p_b, subscript(p, B))
 hook(p_pool, subscript(p, "pool"))
-hook(n_a, subscript(N, A))
-hook(n_b, subscript(N, B))
-hook(x_a, subscript(X, A))
-hook(x_b, subscript(X, B))
+hook(n_a, subscript(n, "A"))
+hook(n_b, subscript(n, "B"))
+hook(s_a, subscript(S, "A"))
+hook(s_b, subscript(S, "B"))
 hook(n, N)
 hook(p_pool, subscript(p, "pool"))
 
@@ -31,11 +31,11 @@ repeat
   if(n_a == n_b)
     next
   n <- n_a + n_b
-  x_a <- as.integer(round(runif(1, min=5, max=n_a - 5)))
-  x_b <- as.integer(round(runif(1, min=5, max=n_b - 5)))
-  p_a <- x_a / n_a
-  p_b <- x_b / n_b
-  p_pool <- (x_a + x_b) / (n_a + n_b)
+  s_a <- as.integer(round(runif(1, min=5, max=n_a - 5)))
+  s_b <- as.integer(round(runif(1, min=5, max=n_b - 5)))
+  p_a <- s_a / n_a
+  p_b <- s_b / n_b
+  p_pool <- (s_a + s_b) / (n_a + n_b)
   z <- (p_a - p_b) /sqrt(p_pool * (1 - p_pool) * (1 / n_a + 1 / n_b))
 
   if(abs(z) < 0.5)
@@ -44,7 +44,7 @@ repeat
     next
   
   alpha <- 0.05
-  Q <- quote(search(chisquare1, chisquare1(p_a, p_b, n_a, n_b, x_a, x_b), .S, .R, .P, .E))
+  Q <- quote(search(chisquare1, chisquare1(p_a, p_b, n_a, n_b, s_a, s_b), .S, .R, .P, .E))
   S <- findall(Q, options=list(preproc=as.rolog), env=environment())
 
   if(problems(S))
@@ -61,13 +61,11 @@ Question
 ========
 
 We consider a randomized controlled trial with `r n` patients.
-
 `r n_a` patients are allocated to the new therapy, and `r n_b` patients
-are randomized to the control group. In the treatment group, `r x_a` successes
-are observed, whereas in the control, `r x_b` successes are observed.
+are randomized to the control group. In the treatment group, `r s_a` successes
+are observed, compared to `r s_b` successes in the control group.
 
-Determine the $\chi^2$-statistic for testing whether the success probabilities
-in the two groups are equal.
+Determine the $\chi^2$-statistic.
 
 ```{r questionlist, echo = FALSE, results = "asis"}
 answerlist(t$alternatives, markup="markdown")
