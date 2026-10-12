@@ -7,7 +7,7 @@ intermediate(chisquare2/1).
 
 expert(X, Y, chisquare_p, []) :-
     X = chisquare2(Z),
-    Y = pnorm1(abs(Z), tail("upper")) * 2.
+    Y = 2 * sqbr(pnorm1(abs(Z), tail("upper"))).
 
 
 % Mistakes
@@ -15,25 +15,25 @@ expert(X, Y, chisquare_p, []) :-
 % Report one-sided p-value of z-test
 buggy(X, Y, one_sided, []) :-
     X = chisquare2(Z),
-    Y = pnorm1(abs(Z), tail("upper")).
+    Y = sqbr(pnorm1(abs(Z), tail("upper"))).
 
 % Double two-sided p-value of z-test
 buggy(X, Y, double_two_sided, []) :-
     X = chisquare2(Z),
-    Y = dot((pnorm1(abs(Z), tail("upper")) * 2), 2).
+    Y = 2 * (2 * sqbr(pnorm1(abs(Z), tail("upper")))).
 
 % Report wrong tail of p-value
 buggy(X, Y, wrong_tail, []) :-
     X = chisquare2(Z),
-    Y = pnorm1(abs(Z), tail("lower")).
+    Y = sqbr(pnorm1(abs(Z), tail("lower"))).
 
 
 % Feedback
 
-praise(chisquare_p, "Correct. For one degree of freedom, ~m, and the corresponding chi-square test has the same p-value as the two-sided ~m-test."-[chi^2 = z^2, z]).
+praise(chisquare_p, "Correct. The upper tail of the ~m-distribution corresponds to the two-tailed p-value of a ~m-test."-[chi^2, z]).
 
-blame(one_sided, "The result corresponds to the one-sided ~m-test p-value. The chi-square test with one degree of freedom corresponds to the two-sided ~m-test, so both tails of the standard normal distribution must be included." -[z, z]).
+blame(one_sided, "The result corresponds to the upper one-sided p-value of  the ~m-test" -[z]).
 
-blame(double_two_sided, "The two-sided ~m-test p-value already includes both tails. It should therefore not be doubled again. The corresponding chi-square test has the same p-value as the two-sided ~m-test."-[z, z]).
+blame(double_two_sided, "The upper tail of the ~m-distribution corresponds to a two-sided ~m-test. It should therefore not be doubled again."-[chi^2, z]).
 
-blame(wrong_tail, "The result corresponds to the one-sided probability in the tail opposite to the observed effect. For the corresponding chi-square test, use the complete two-sided ~m-test p-value."- [z]).
+blame(wrong_tail, "The result corresponds to the lower one-sided p-value of the ~m-test."- [z]).
