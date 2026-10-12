@@ -8,10 +8,10 @@ library(mathml)
 library(htmltools)
 library(mistakes)
 
-hook(n_a, subscript(N, A))
-hook(n_b, subscript(N, B))
-hook(x_a, subscript(X, A))
-hook(x_b, subscript(X, B))
+hook(n_a, subscript(N, "A"))
+hook(n_b, subscript(N, "B"))
+hook(s_a, subscript(S, "A"))
+hook(s_b, subscript(S, "B"))
 
 task <- "chisquare3"
 plfile <- file.path("rexams", sprintf("%s.pl", task))
@@ -25,10 +25,10 @@ repeat
 
   if(n_a == n_b)
     next
-  x_a <- as.integer(round(runif(1, min=5, max=n_a - 5)))
-  x_b <- as.integer(round(runif(1, min=5, max=n_b - 5)))
+  s_a <- as.integer(round(runif(1, min=5, max=n_a - 5)))
+  s_b <- as.integer(round(runif(1, min=5, max=n_b - 5)))
 
-  Q <- quote(search(chisquare3, chisquare3(n_a, n_b, x_a, x_b), .S, .R, .P, .E))
+  Q <- quote(search(chisquare3, chisquare3(n_a, n_b, s_a, s_b), .S, .R, .P, .E))
   S <- findall(Q, options=list(preproc=as.rolog), env=environment())
 
   if(problems(S))
@@ -44,8 +44,9 @@ sol <- format_feedback(t$correct, t$explanations, t$praise, t$blame, t$extra)
 Question
 ========
 
-In a randomized controlled trial, group A is composed of `r n_a` patients, with `r x_a` showing treatment success, 
-and group B is composed of `r n_b` patients, with `r x_b` treatment successes.
+We consider a randomized controlled trial with `r n_a + n_b` patients. `r n_a` 
+patients are allocated to the new therapy, with `r s_a` showing treatment success, 
+and `r n_b` patients randomized to the control group, with `r s_b` successes.
 Determine the pooled success probability, $p_{\mathrm{pool}}$.
 
 ```{r questionlist, echo = FALSE, results = "asis"}
