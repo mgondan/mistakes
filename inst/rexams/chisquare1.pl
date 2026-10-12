@@ -6,8 +6,8 @@
 intermediate(chisquare1/6).
 
 expert(X, Y, pooled_success, []) :-
-    X = chisquare1(P_A, P_B, N_A, N_B, X_A, X_B),
-    P = denote(p_pool, dfrac(X_A + X_B, N_A + N_B), "the pooled success probability"),
+    X = chisquare1(P_A, P_B, N_A, N_B, S_A, S_B),
+    P = denote(p_pool, dfrac(S_A + S_B, N_A + N_B), "the pooled success probability"),
     Y = pool_success(P, P_A, P_B, N_A, N_B).
 
 intermediate(pool_success/5).
@@ -26,7 +26,7 @@ expert(X, Y, square, []) :-
 
 % Report the pooled success probability instead of the test statistic
 buggy(X, Y, pool, []) :-
-    X = pool_success(P_pool, _P_A, _P_B, _N_A, N_B),
+    X = pool_success(P_pool, _P_A, _P_B, _N_A, _N_B),
     Y = P_pool.
 
 % Stop at the z-statistic instead of calculating chi-square
@@ -52,7 +52,7 @@ praise(chisquare,"You have correctly identified the expression for the ~m-statis
 
 praise(square,"You have correctly transformed the ~m-statistic into the ~m-statistic."-[z, chi^2]).
 
-blame(pool, "The result corresponds to the pooled success probability ~m. This is an intermediate result used in the denominator of the ~m-statistic, but the task is not yet finished."-[p_pool, z]).
+blame(pool, "The result corresponds to the pooled success probability ~m. This is an intermediate result, but the task is not yet finished."-[p_pool]).
 
 blame(stop_z, "The result corresponds to the ~m-statistic. The ~m-statistic is obtained by raising it to the square."-[z, chi^2]).
 
