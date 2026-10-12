@@ -8,7 +8,11 @@ library(mathml)
 library(htmltools)
 library(mistakes)
 
-hook(pnorm1(.X, .Tail), pnorm(.X, .Tail))
+hook(pnorm1(.X, tail("upper")), 1L - Phi(.X))
+hook(pnorm1(.X, tail("lower")), Phi(.X))
+hook(sqbr(.X), brackets(.X))
+
+sqbr <- function(x) x
 
 task <- "chisquare2"
 plfile <- file.path("rexams", sprintf("%s.pl", task))
@@ -62,8 +66,9 @@ sol <- format_feedback(t$correct, t$explanations, t$praise, t$blame, t$extra)
 Question
 ========
 
-A two-sided $z$-test comparing the success rates of two treatment groups gives $z = `r sprintf("%.2f", z)`$. 
-What is the $p$-value of the corresponding $\chi^2$-test with $df=1$?
+We consider a randomized controlled trial in which the success rates are compared
+between two treatments. A two-sided $z$-test is calculated, the result is
+$z = `r sprintf("%.2f", z)`$. What is the $p$-value of the corresponding $\chi^2(1)$-test?
 
 ```{r questionlist, echo = FALSE, results = "asis"}
 answerlist(t$alternatives, markup="markdown")
