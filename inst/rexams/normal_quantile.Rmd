@@ -54,7 +54,7 @@ Question
 
 We consider the Normal distribution $X \sim N\left(\mu=`r mu`, \sigma^2=`r sigma^2`\right)$. 
 
-Which $X$ is smaller than `r round(p * 100)`% of the realizations?
+Which $x$ is greater than `r round(p * 100)`% of the realizations?
 
 ```{r questionlist, echo=FALSE, results="asis"}
 exams::answerlist(t$alternatives, markup="markdown")
