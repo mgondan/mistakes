@@ -76,8 +76,6 @@ Solution
 ========
 The Mann-Whitney $U$-statistic for group A is calculated by counting 
 all pairwise comparison won by group A: `r t$solution`
-where $A \times B$ denotes the Cartesian product, so all possible pairs between the elements 
-of group A and group B.
 
 
 ```{r solutionlist, echo = FALSE, results = "asis"}

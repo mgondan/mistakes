@@ -2,17 +2,17 @@
 
 :- discontiguous intermediate/1, expert/4, buggy/4, blame/2, praise/2.
 
-mathml:math_hook(outer(A, B, FUN), M) :-
-    F =.. [FUN, A, B],
-    M = braces('&'('%in%'([a, b], '%*%'('A', 'B')), F)). 
+mathml:math_hook(outer(A, B, Fun), M) :-
+    F =.. [Fun, A, B],
+    M = braces([(list(',', [a, b])) | F]).
 
 mathml:math_hook(cardinality(X), abs(X)).
 
 mathml:math_hook('ustat'(A, B), cardinality(outer(A, B, >))).
 
-mathml:math_hook(a_win, text("any(a > b)")).
-mathml:math_hook(n_a, subscript('N', 'A')).
-mathml:math_hook(n_b, subscript('N', 'B')).
+mathml:math_hook(a_win, subscript("A", "Win")).
+mathml:math_hook(n_a, subscript(n, "A")).
+mathml:math_hook(n_b, subscript(n, "B")).
 
 
 % Solution of the problem
