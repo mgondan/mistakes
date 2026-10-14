@@ -41,10 +41,10 @@ buggy(X, Y, group_a_win, []) :-
 
 % Feedback
 
-praise(group_a,"Correct. You have counted all pairwise comparisons won by group A.").
+praise(group_a,"Correct. You have counted all pairwise comparisons won by Group A.").
 
-blame(group_b,"Careful, these are the pairwise comparisons won by group B. The task asks for the Mann-Whitney U-statistic for group A.").
+blame(group_b,"Careful, these are the pairwise comparisons won by Group B. The task asks for the Mann-Whitney U-statistic for Group A.").
 
-blame(pairs,"Careful, this is the total number of pairwise comparisons. The Mann-Whitney U-statistic counts only the comparisons won by group A.").
+blame(pairs,"Careful, this is the total number of pairwise comparisons. The Mann-Whitney U-statistic counts only the comparisons won by Group A.").
 
-blame(group_a_win, "Careful, this result counts how many participants in group A win at least one comparison. For the Mann-Whitney U-statistic, every pairwise comparison won by group A must be counted separately.").
+blame(group_a_win, "Careful, this result counts how many participants in Group A win at least one comparison. For the Mann-Whitney U-statistic, every pairwise comparison won by Group A must be counted separately.").

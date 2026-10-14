@@ -9,10 +9,6 @@ library(htmltools)
 library(mistakes)
 
 
-hook(n_a, subscript(N, A))
-hook(n_b, subscript(N, B))
-hook(a_win, text("any(a > b)"))
-
 ustat <- function(a, b)
   cardinality(outer(a, b, FUN=">"))
 
@@ -74,8 +70,8 @@ answerlist(t$alternatives, markup="markdown")
 
 Solution
 ========
-The Mann-Whitney $U$-statistic for group A is calculated by counting 
-all pairwise comparison won by group A: `r t$solution`
+The Mann-Whitney $U$-statistic for Group A is calculated by counting 
+all pairwise comparison won by Group A: `r t$solution`
 
 
 ```{r solutionlist, echo = FALSE, results = "asis"}
