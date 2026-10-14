@@ -32,13 +32,14 @@ repeat
   b <- sort(x[(n_a + 1):(n_a + n_b)])
   u <- sum(outer(a, b, ">"))
   a_win <- sum(sapply(a, function(x) any(x > b)))
+  b_win <- sum(sapply(b, function(x) any(x > a)))
 
   if(u <= 2)
     next
   if(u >= n_a*n_b - 2)
     next
 
-  Q <- quote(search(mannwhitney1, mannwhitney1(a, b, n_a, n_b, a_win),
+  Q <- quote(search(mannwhitney1, mannwhitney1(a, b, n_a, n_b, a_win, b_win),
                   .S, .R, .P, .E))
 
   S <- findall(Q, options=list(preproc=as.rolog), env=environment())
