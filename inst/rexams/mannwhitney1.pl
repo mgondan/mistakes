@@ -75,7 +75,7 @@ praise(group_a,"Correct. You have counted all pairwise comparisons won by Group 
 
 blame(group_b,"Careful, these are the pairwise comparisons won by Group B. The task asks for the Mann-Whitney ~m-statistic for Group A."-[u]).
 
-blame(pairs,"Careful, this is the total number of pairwise comparisons. The Mann-Whitney ~-statistic counts only the comparisons won by Group A."-[u]).
+blame(pairs,"Careful, this is the total number of pairwise comparisons. The Mann-Whitney ~m-statistic counts only the comparisons won by Group A."-[u]).
 
 blame(group_a_win, "Careful, this result counts how many participants in Group A win at least one comparison. For the Mann-Whitney ~m-statistic, every pairwise comparison won by Group A must be counted separately."-[u]).
 
