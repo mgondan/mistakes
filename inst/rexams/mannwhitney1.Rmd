@@ -9,10 +9,6 @@ library(htmltools)
 library(mistakes)
 
 
-hook(n_a, subscript(N, A))
-hook(n_b, subscript(N, B))
-hook(a_win, text("any(a > b)"))
-
 ustat <- function(a, b)
   cardinality(outer(a, b, FUN=">"))
 
@@ -36,13 +32,14 @@ repeat
   b <- sort(x[(n_a + 1):(n_a + n_b)])
   u <- sum(outer(a, b, ">"))
   a_win <- sum(sapply(a, function(x) any(x > b)))
+  b_win <- sum(sapply(b, function(x) any(x > a)))
 
   if(u <= 2)
     next
   if(u >= n_a*n_b - 2)
     next
 
-  Q <- quote(search(mannwhitney1, mannwhitney1(a, b, n_a, n_b, a_win),
+  Q <- quote(search(mannwhitney1, mannwhitney1(a, b, n_a, n_b, a_win, b_win),
                   .S, .R, .P, .E))
 
   S <- findall(Q, options=list(preproc=as.rolog), env=environment())
@@ -74,10 +71,8 @@ answerlist(t$alternatives, markup="markdown")
 
 Solution
 ========
-The Mann-Whitney $U$-statistic for group A is calculated by counting 
-all pairwise comparison won by group A: `r t$solution`
-where $A \times B$ denotes the Cartesian product, so all possible pairs between the elements 
-of group A and group B.
+The Mann-Whitney $U$-statistic for Group A is calculated by counting 
+all pairwise comparison won by Group A: `r t$solution`
 
 
 ```{r solutionlist, echo = FALSE, results = "asis"}
