@@ -144,7 +144,7 @@ prepare <- function(task, S, N=length(S))
   
     a[i] <- Ri
     if(is.numeric(Ri))
-      a[i] <- sprintf("%.2f", Ri)
+      a[i] <- sprintf("%.2f", Ri) # needs a better solution
     c[i] <- all(expert(Pi))
     s[i] <- mathml(Si)
     e[i] <- sprintf("The result matches the following expression: %s\n", mathml(Si))

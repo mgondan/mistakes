@@ -1,5 +1,5 @@
 ---
-title: "Mann-Whitney U test"
+title: "Mann-Whitney U-test"
 ---
 
 ```{r, include=FALSE}
@@ -8,17 +8,18 @@ library(mathml)
 library(htmltools)
 library(mistakes)
 
-
-ustat <- function(a, b)
-  cardinality(outer(a, b, FUN=">"))
-
-cardinality <- sum
-
-
 task <- "mannwhitney1"
 plfile <- file.path("rexams", sprintf("%s.pl", task))
 rolog::consult(system.file(plfile, package="mistakes"))
 
+cardinality <- sum
+ustat <- function(a, b)
+  cardinality(outer(a, b, `>`))
+
+hook(ustat)
+hook(cardinality(.A), abs(.A))
+hook(n_a, subscript(n, "A"))
+hook(n_b, subscript(n, "B"))
 
 ## DATA GENERATION
 repeat
@@ -29,21 +30,17 @@ repeat
   x <- sample(10:99, n_a + n_b, replace=FALSE)
 
   a <- sort(x[1:n_a])
-  b <- sort(x[(n_a + 1):(n_a + n_b)])
+  b <- sort(x[n_a + 1:n_b])
   u <- sum(outer(a, b, ">"))
-  a_win <- sum(sapply(a, function(x) any(x > b)))
-  b_win <- sum(sapply(b, function(x) any(x > a)))
 
   if(u <= 2)
     next
-  if(u >= n_a*n_b - 2)
+  if(u >= n_a * n_b - 2)
     next
 
-  Q <- quote(search(mannwhitney1, mannwhitney1(a, b, n_a, n_b, a_win, b_win),
+  Q <- quote(search(mannwhitney1, mannwhitney1(a, b, n_a, n_b),
                   .S, .R, .P, .E))
-
   S <- findall(Q, options=list(preproc=as.rolog), env=environment())
-
   if(problems(S))
     next
 
@@ -71,8 +68,8 @@ answerlist(t$alternatives, markup="markdown")
 
 Solution
 ========
-The Mann-Whitney $U$-statistic for Group A is calculated by counting 
-all pairwise comparison won by Group A: `r t$solution`
+The Mann-Whitney $U$-statistic for Group A is calculated by counting all
+pairwise comparison won by Group A: `r t$solution`
 
 
 ```{r solutionlist, echo = FALSE, results = "asis"}
