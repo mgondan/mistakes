@@ -4,41 +4,48 @@
 
 % Solution of the problem
 intermediate(mannwhitney2/3).
+intermediate(cp/3).
 
-expert(X, Y, comp, []) :-
+expert(X, Y, ustat, []) :-
     X = mannwhitney2(U, N_A, N_B),
+    Y = cp(U, N_A, N_B).
+
+expert(X, Y, pairs, []) :-
+    X = cp(U, N_A, N_B),
     Y = dfrac(U, N_A * N_B).
 
 % Mistakes
 
 % Use total sample size instead of number of pairwise comparisons
 buggy(X, Y, total_n, []) :-
-    X = mannwhitney2(U, N_A, N_B),
+    X = cp(U, N_A, N_B),
     Y = dfrac(U, N_A + N_B).
 
-% Calculate the competing probability for group B
+% Use number of comparisons won by group B
 buggy(X, Y, complement, []) :-
     X = mannwhitney2(U, N_A, N_B),
-    Y = dfrac(N_A * N_B - U, N_A * N_B).
-
+    Y = cp(N_A * N_B - U, N_A, N_B).
+    
 % Divide only by the size of group A
 buggy(X, Y, only_a, []) :-
-    X = mannwhitney2(U, N_A, _N_B),
+    X = cp(U, N_A, _N_B),
     Y = dfrac(U, N_A).
 
 % Divide only by the size of group B
 buggy(X, Y, only_b, []) :-
-    X = mannwhitney2(U, _N_A, N_B),
+    X = cp(U, _N_A, N_B),
     Y = dfrac(U, N_B).
 
 % Feedback
 
-praise(comp, "Correct. The estimated competing probability is the proportion of all pairwise comparisons won by group A.").
+praise(ustat, "Correctly used the number of pairwise comparisons won by group Group A (~m−statistic)."-[u]).
 
-blame(total_n, "Careful, the denominator is not the total number of participants. Each participant in group A is compared with each participant in group B, giving ~m pairwise comparisons."-[n_a * n_b]).
+praise(pairs, "Correctly calculated the total number of pairwise comparisons.").
 
-blame(complement, "Careful, you calculated the proportion of pairwise comparisons won by group B. The question asks for the estimated competing probability that group A wins a pairwise comparison.").
+blame(total_n, "Careful, the number of pairwise comparisons is not equal to the total number of participants, but to ~m ."-[n_a * n_b]).
 
-blame(only_a, "Careful, the denominator must contain all pairwise comparisons between groups A and B, not only the number of participants in group A.").
+blame(complement, "Careful, you calculated the number of pairwise comparisons won by Group B instead of Group A.").
 
-blame(only_b, "Careful, the denominator must contain all pairwise comparisons between groups A and B, not only the number of participants in group B.").
+blame(only_a, "Careful, the number of pairwise comparisons is not equal to the number of participants in Group A, but to ~m ."-[n_a * n_b]).
+
+blame(only_b, "Careful, the number of pairwise comparisons is not equal to the number of participants in Group B, but to ~m ."-[n_a * n_b]).

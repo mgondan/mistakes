@@ -1,5 +1,5 @@
 ---
-title: "Mann-Whitney Competing probability"
+title: "Mann-Whitney Competing Probability"
 ---
 
 
@@ -9,20 +9,23 @@ library(mathml)
 library(htmltools)
 library(mistakes)
 
-hook(n_a, subscript(N, A))
-hook(n_b, subscript(N, B))
-hook(u, U)
-hook(cp, CP)
+
 
 task <- "mannwhitney2"
 plfile <- file.path("rexams", sprintf("%s.pl", task))
 rolog::consult(system.file(plfile, package="mistakes"))
+
+hook(n_a, subscript(n, "A"))
+hook(n_b, subscript(n, "B"))
+hook(u, U)
 
 ## DATA GENERATION
 repeat
 {
   n_a <- sample(12:25, 1)
   n_b <- sample(15:30, 1)
+  if (n_a == n_b)
+    next
   pairs <- n_a * n_b
   u <- sample(2:(pairs - 2), 1)
 
@@ -43,10 +46,10 @@ sol <- format_feedback(t$correct, t$explanations, t$praise, t$blame, t$extra)
 Question
 ========
 
-In a Mann-Whitney comparison, Grohp A contains `r n_a` participants and Group B
+In a Mann-Whitney comparison, Group A has `r n_a` and Group B has
 `r n_b` participants. Group A wins `r u` of the pairwise comparisons.
 
-What is the estimated competing probability?
+What is the estimated competing probability for Group A?
 
 ```{r questionlist, echo = FALSE, results = "asis"}
 answerlist(t$alternatives, markup="markdown")
