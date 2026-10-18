@@ -43,7 +43,7 @@ blame(
 
 blame(
     below_z2,
-    "Careful, you calculated the proportion for IQs below the upper limit of the range without excluding that below the lower limit."
+    "Careful, do not forget to exlude the IQs below the lower limit of the range."
 ).
 
 
