@@ -1,5 +1,5 @@
 ---
-title: "Mann-Whitney critical region"
+title: "Mann-Whitney Critical Region"
 ---
 
 ```{r, include=FALSE}
@@ -9,11 +9,6 @@ library(htmltools)
 library(mistakes)
 library(knitr)
 
-hook(n_a, subscript(N, A))
-hook(n_b, subscript(N, B))
-hook(u, U)
-hook(u_crit, subscript(U, crit))
-
 critical <- function(lower, upper) {
   sprintf("U <= %s or U >= %s", lower, upper)
 }
@@ -21,6 +16,14 @@ critical <- function(lower, upper) {
 upper_only <- function(upper) {
   sprintf("U >= %s", upper)
 }
+
+hook(n_a, subscript(N, A))
+hook(n_b, subscript(N, B))
+hook(u, U)
+hook(u_crit, subscript(U, crit))
+hook(u_lower, subscript(U, lower))
+hook(critical(.Lower, .Upper), c(u <= .Lower, u >= .Upper))
+hook(upper_only(.Upper), c(u >= .Upper))
 
 task <- "mannwhitney3"
 plfile <- file.path("rexams", sprintf("%s.pl", task))
@@ -51,7 +54,7 @@ repeat
   rownames(crit_table) <- na_values
   colnames(crit_table) <- nb_values
 
-  Q <- quote(search(mannwhitney3, mannwhitney3(u_lower, u_crit), .S, .R, .P, .E))
+  Q <- quote(search(mannwhitney3, mannwhitney3(u_crit, n_a, n_b), .S, .R, .P, .E))
 
   S <- findall(Q, options = list(preproc = as.rolog), env = environment())
 
@@ -69,16 +72,16 @@ sol <- format_feedback(t$correct, t$explanations, t$praise, t$blame, t$extra)
 Question
 ========
 
-In a Mann-Whitney test, group A contains `r n_a` participants and group B 
-contains `r n_b` participants. The table below gives the upper critical values 
+In a Mann-Whitney test, Group A has `r n_a` and Group B 
+has `r n_b` participants. The table below gives the upper critical values 
 of the Mann-Whitney $U$-distribution for a two-sided test at the 5% significance level.
 
 ```{r table, echo = FALSE}
 kable(crit_table, caption = "Upper critical values of the Mann-Whitney 
-                             U distribution")
+                             U-distribution")
 ```
 
-The statistic $U$ counts the pairwise comparisons won by group A.
+The $U$-statistic counts the pairwise comparisons won by Group A.
 Determine the rejection region. 
 
 ```{r questionlist, echo = FALSE, results = "asis"}
