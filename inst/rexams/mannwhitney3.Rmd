@@ -10,15 +10,15 @@ library(mistakes)
 library(knitr)
 
 critical <- function(lower, upper) {
-  sprintf("U <= %s or U >= %s", lower, upper)
+  sprintf("$(U <= %s,U >= %s)$", lower, upper)
 }
 
 upper_only <- function(upper) {
-  sprintf("U >= %s", upper)
+  sprintf("$U >= %s$", upper)
 }
 
-hook(n_a, subscript(N, A))
-hook(n_b, subscript(N, B))
+hook(n_a, subscript(n, "A"))
+hook(n_b, subscript(n, "B"))
 hook(u, U)
 hook(u_crit, subscript(U, crit))
 hook(u_lower, subscript(U, lower))
