@@ -21,7 +21,7 @@ repeat
   x1 <- sample(80:100, 1)
   x2 <- sample(100:120, 1)
   
-  if (x2 - x1 > 10)
+  if (x2 - x1 < 5 || x2 - x1 > 20)
     next
 
   Q <- quote(search(llnorm2, llnorm2(x1, x2), .S, .R, .P, .E))

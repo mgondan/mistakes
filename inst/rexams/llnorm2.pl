@@ -8,13 +8,13 @@ intermediate(llnorm2/2).
 
 expert(X, Y, pnorm, []) :-
     X = llnorm2(X1, X2),
-    Y = pnorm(dfrac(X1 - 100, 15)) - pnorm(dfrac(X2 - 100, 15)).
+    Y = pnorm(dfrac(X2 - 100, 15)) - pnorm(dfrac(X1 - 100, 15)).
 
 % Mistakes
 
 buggy(X, Y, brackets, []) :-
     X = llnorm2(X1, X2),
-    Y = pnorm(X1 - dfrac(100, 15)) - pnorm(X2 - dfrac(100, 15)).
+    Y = pnorm(X2 - dfrac(100, 15)) - pnorm(X1 - dfrac(100, 15)).
 
 buggy(X, Y, outside_range, []) :-
     X = llnorm2(X1, X2),
