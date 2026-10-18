@@ -12,10 +12,6 @@ expert(X, Y, inside_range, []) :-
 
 % Mistakes
 
-buggy(X, Y, above_mean, []) :-
-    X = llnorm3(Sd),
-    Y = (pnorm(-2*Sd) - pnorm(-3*Sd)) * 2.
-
 buggy(X, Y, outside_range, []) :-
     X = llnorm3(Sd),
     Y = 1 - (pnorm(-2*Sd) - pnorm(-3*Sd)).
@@ -26,11 +22,6 @@ buggy(X, Y, outside_range, []) :-
 praise(
     inside_range,
     "Correctly used the given standard deviations as ~m values and calculated the proportion of the range."-[z]
-).
-
-blame(
-    above_mean,
-    "Careful, do not also include people in the range between two and three standard deviations above the mean."
 ).
 
 blame(
