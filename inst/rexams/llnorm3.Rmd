@@ -8,8 +8,7 @@ library(mathml)
 library(htmltools)
 library(mistakes)
 
-hook(sd1, subscript(sigma, 1L))
-hook(sd2, subscript(sigma, 2L))
+hook(sd, sigma)
 
 task <- "llnorm3"
 plfile <- file.path("rexams", sprintf("%s.pl", task))
@@ -18,9 +17,8 @@ rolog::consult(system.file(plfile, package="mistakes"))
 ## DATA GENERATION
 repeat
 {
-  sd1 <- -3
-  sd2 <- -2
-  Q <- quote(search(llnorm3, llnorm3(sd1, sd2), .S, .R, .P, .E))
+  sd <- 1L
+  Q <- quote(search(llnorm3, llnorm3(sd), .S, .R, .P, .E))
   S <- findall(Q, options=list(preproc=as.rolog), env=environment())
 
   if(problems(S))

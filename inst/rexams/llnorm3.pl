@@ -4,21 +4,21 @@
 
 % Solution of the problem
 
-intermediate(llnorm3/2).
+intermediate(llnorm3/1).
 
 expert(X, Y, inside_range, []) :-
-    X = llnorm3(Sd1, Sd2),
-    Y = pnorm(Sd2) - pnorm(Sd1).
+    X = llnorm3(Sd),
+    Y = pnorm(-2*Sd) - pnorm(-3*Sd).
 
 % Mistakes
 
 buggy(X, Y, above_mean, []) :-
-    X = llnorm3(Sd1, Sd2),
-    Y = (pnorm(Sd2) - pnorm(Sd1)) * 2.
+    X = llnorm3(Sd),
+    Y = (pnorm(-2*Sd) - pnorm(-3*Sd)) * 2.
 
 buggy(X, Y, outside_range, []) :-
-    X = llnorm3(Sd1, Sd2),
-    Y = 1 - (pnorm(Sd2) - pnorm(Sd1)).
+    X = llnorm3(Sd),
+    Y = 1 - (pnorm(-2*Sd) - pnorm(-3*Sd)).
 
 
 % Feedback
