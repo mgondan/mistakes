@@ -4,34 +4,41 @@
 
 % Solution of the problem
 intermediate(mannwhitney4/3).
+intermediate(zstat/3).
 
-expert(X, Y, z_std, []) :-
+expert(X, Y, numerator, []) :-
     X = mannwhitney4(U, NA, NB),
-    Y = round((U - NA * NB / 2) / sqrt(NA * NB * (NA + NB + 1) / 12), 2).
+    Y = zstat(U - NA * NB / 2, NA, NB).
+
+expert(X, Y, zstat, []) :-
+    X = zstat(Numerator, NA, NB),
+    Y = round(dfrac(Numerator, sqrt(NA * NB * (NA + NB + 1) / 12)), 2).
 
 % Mistakes
 
 % Divide by the variance instead of the standard deviation
 buggy(X, Y, variance, []) :-
-    X = mannwhitney4(U, NA, NB),
-    Y = round((U - NA * NB / 2) / (NA * NB * (NA + NB + 1) / 12), 2).
+    X = zstat(Numerator, NA, NB),
+    Y = round(dfrac(Numerator, (NA * NB * (NA + NB + 1) / 12)), 2).
 
 % Reverse the subtraction in the numerator
 buggy(X, Y, reversed_sign, []) :-
     X = mannwhitney4(U, NA, NB),
-    Y = round((NA * NB / 2 - U) / sqrt(NA * NB * (NA + NB + 1) / 12), 2).
+    Y = zstat((NA * NB / 2 - U), NA, NB).
 
 % Do not subtract the expected value
 buggy(X, Y, no_center, []) :-
     X = mannwhitney4(U, NA, NB),
-    Y = round(U / sqrt(NA * NB * (NA + NB + 1) / 12), 2).
+    Y = zstat(U, NA, NB).
 
 % Feedback
 
-praise(z_std, "You have correctly subtracted the expected value of U under the null hypothesis and divided it by its standard deviation.").
+praise(numerator, "Correctly subtracted the expected value of ~m from the observed ~m."-[u, u]).
 
-blame(variance, "Careful, you should divide by the standard deviation, not the variance. Take the square root of the variance.").
+praise(zstat, "Correctly divided by the standard deviation.").
 
-blame(reversed_sign, "Careful, the numerator is the observed U minus its expected value.").
+blame(variance, "Careful, do not divide by the variance, but the standard deviation.").
 
-blame(no_center, "Careful, subtract the expected value NA * NB / 2 from U before dividing by the standard deviation.").
+blame(reversed_sign, "Careful, do not subtract the observed ~m from the expected value, but the other way around."-[u]).
+
+blame(no_center, "Careful, do not forget to subtract the expected value ~m from ~m."-[n_a * n_b / 2, u]).
