@@ -43,7 +43,7 @@ Question
 ========
 
 The intelligence quotient (IQ) has the property that in the general population it has mean $\mu$ = 100 and standard deviation $\sigma$ = 15.
-What proportion of the population has an IQ between `r x1`  and `r x2`? [in %]
+What proportion of the population has an IQ between `r x1`  and `r x2`?
 
 ```{r questionlist, echo=FALSE, results="asis"}
 answerlist(t$alternatives, markup="markdown")
