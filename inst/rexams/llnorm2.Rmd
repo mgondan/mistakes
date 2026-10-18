@@ -1,0 +1,65 @@
+---
+title: "Normal Distribution of IQ"
+---
+
+```{r, include=FALSE}
+library(exams)
+library(mathml)
+library(htmltools)
+library(mistakes)
+
+hook(x1, subscript(x, 1L))
+hook(x2, subscript(x, 2L))
+
+task <- "llnorm2"
+plfile <- file.path("rexams", sprintf("%s.pl", task))
+rolog::consult(system.file(plfile, package="mistakes"))
+
+## DATA GENERATION
+repeat
+{
+  x1 <- sample(80:100, 1)
+  x2 <- sample(100:120, 1)
+  
+  if (x2 - x1 > 10)
+    next
+
+  Q <- quote(search(llnorm2, llnorm2(x1, x2), .S, .R, .P, .E))
+  S <- findall(Q, options=list(preproc=as.rolog), env=environment())
+
+  if(problems(S))
+    next
+
+  break
+}
+
+t <- prepare(task=task, S)
+sol <- format_feedback(
+  t$correct, t$explanations, t$praise, t$blame, t$extra
+)
+```
+
+Question
+========
+
+The intelligence quotient (IQ) has the property that in the general population it has mean $\mu$ = 100 and standard deviation $\sigma$ = 15.
+What proportion of the population has an IQ between `r x1`  and `r x2`? [in %]
+
+```{r questionlist, echo=FALSE, results="asis"}
+answerlist(t$alternatives, markup="markdown")
+```
+
+Solution
+========
+The proportion is calculated by: `r t$solution`
+
+```{r solutionlist, echo=FALSE, results="asis"}
+sol <- lapply(sol, FUN=gsub, pattern="\\n", replacement="")
+answerlist(sol, markup="markdown")
+```
+
+Meta-information
+================
+extype: schoice
+exsolution: `r mchoice2string(t$correct, single=TRUE)`
+exname: llnorm2
