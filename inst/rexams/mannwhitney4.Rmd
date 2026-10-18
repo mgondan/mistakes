@@ -1,5 +1,5 @@
 ---
-title: "Mann-Whitney z approximation"
+title: "Mann-Whitney $z$ Approximation"
 ---
 
 ```{r, include=FALSE}
@@ -9,8 +9,8 @@ library(htmltools)
 library(mistakes)
 library(knitr)
 
-hook(n_a, subscript(N, A))
-hook(n_b, subscript(N, B))
+hook(n_a, subscript(n, "A"))
+hook(n_b, subscript(n, "B"))
 hook(u, U)
 
 task <- "mannwhitney4"
@@ -23,7 +23,7 @@ repeat
   n_a <- sample(20:40, 1)
   n_b <- sample(20:40, 1)
 
- u <- sample(seq.int(ceiling(0.25*n_a*n_b),
+  u <- sample(seq.int(ceiling(0.25*n_a*n_b),
       floor(0.75*n_a*n_b)), 1)
 
   if(2 * u == n_a * n_b)
@@ -47,11 +47,11 @@ sol <- format_feedback(t$correct, t$explanations, t$praise, t$blame, t$extra)
 Question
 ========
 
-In a Mann-Whitney comparison, group A contains `r n_a` participants
-and group B contains `r n_b` participants. There are no ties.
+In a Mann-Whitney comparison, Group A has `r n_a`
+and Group B has `r n_b` participants. There are no ties.
 Group A wins `r u` of the `r n_a * n_b` pairwise comparisons.
 
-Using the normal approximation of the U-distribution, determine the corresponding z-statistic, without applying a continuity correction.
+Using the normal approximation of the $U$-distribution, determine the corresponding $z$-statistic, without applying a continuity correction.
 
 ```{r questionlist, echo = FALSE, results = "asis"}
 answerlist(t$alternatives, markup="markdown")
@@ -59,23 +59,29 @@ answerlist(t$alternatives, markup="markdown")
 
 Solution
 ========
-Under the null hypothesis:
+Under the null hypothesis, the expected value ($\mu$) and variance ($\sigma^2$) are:
 
 $$
-E(U)=\frac{N_A N_B}{2},
+\mu=\frac{n_{\mathrm{A}} n_{\mathrm{B}}}{2},
 \qquad
-\mathrm{Var}(U)=\frac{N_A N_B(N_A+N_B+1)}{12}.
+\sigma^2=\frac{n_{\mathrm{A}} n_{\mathrm{B}}(n_{\mathrm{A}}+n_{\mathrm{B}}+1)}{12}.
 $$
 
-The z-statistic is calculated as:
+The $z$-statistic is calculated as:
 
 $$
 z=
-\frac{U-N_A N_B/2}
-{\sqrt{N_A N_B(N_A+N_B+1)/12}}.
+\frac{x-\mu}
+{\sigma}.
 $$
 
-The result is: `r t$solution`
+By substitution, the result is calculated by:
+$$
+z=
+\frac{U- n_{\mathrm{A}} n_{\mathrm{B}}/2}
+{\sqrt{n_{\mathrm{A}} n_B(n_{\mathrm{A}}+n_{\mathrm{B}}+1)/12}}.
+$$
+
 
 ```{r solutionlist, echo = FALSE, results = "asis"}
 sol <- lapply(sol, FUN=gsub, pattern="\\n", replacement="")
