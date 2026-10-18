@@ -43,7 +43,7 @@ sol <- format_feedback(
 
 Question
 ========
-Into which (symmetrical around the mean) IQ range does `r percentage`% of the population fall ($\mu$ = 100, $\sigma$ = 15)?
+Which is the IQ range that is symmetrical around the mean and includes `r percentage`% of the population ($\mu$ = 100, $\sigma$ = 15)?
 
 ```{r questionlist, echo=FALSE, results="asis"}
 answerlist(t$alternatives, markup="markdown")
