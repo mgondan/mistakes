@@ -5,40 +5,30 @@
 % Solution of the problem
 
 intermediate(llnorm2/2).
-intermediate(zstat/2).
 
-expert(X, Y, z, []) :-
+expert(X, Y, pnorm, []) :-
     X = llnorm2(X1, X2),
-    Y = zstat(dfrac(X1 - 100, 15), dfrac(X2 - 100, 15)).
-
-expert(X, Y, p, []) :-
-    X = zstat(Z1, Z2),
-    Y = pnorm(Z2) - pnorm(Z1).
+    Y = pnorm(dfrac(X1 - 100, 15)) - pnorm(dfrac(X2 - 100, 15)).
 
 % Mistakes
 
 buggy(X, Y, brackets, []) :-
     X = llnorm2(X1, X2),
-    Y = zstat(X1 - dfrac(100, 15), X2 - dfrac(100, 15)).
+    Y = pnorm(X1 - dfrac(100, 15)) - pnorm(X2 - dfrac(100, 15)).
 
 buggy(X, Y, outside_range, []) :-
-    X = zstat(Z1, Z2),
-    Y = pnorm(Z1) + (1 - pnorm(Z2)).
+    X = llnorm2(X1, X2),
+    Y = pnorm(dfrac(X1 - 100, 15)) + (1 - pnorm(dfrac(X2 - 100, 15))).
 
 buggy(X, Y, below_z2, []) :-
-    X = zstat(_Z1, Z2),
-    Y = pnorm(Z2).
+    X = llnorm2(X1, X2),
+    Y = pnorm(dfrac(X2 - 100, 15)).
 
 % Feedback
 
 praise(
-    z,
-    "Correctly standardized the range endpoints ~m and ~m."-[x1, x2]
-).
-
-praise(
-    p,
-    "Correctly determined the probability of the range between ~m and ~m."-[x1, x2]
+    pnorm,
+    "Correctly standardized the range endpoints ~m and ~m and determined its probability."-[x1, x2]
 ).
 
 blame(
