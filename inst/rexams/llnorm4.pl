@@ -16,13 +16,17 @@ buggy(X, Y, one_sided, []) :-
     X = llnorm4(P, Mu, Sigma),
     Y = interval(qnorm(0, Mu, Sigma), qnorm(P, Mu, Sigma)).
 
-buggy(X, Y, not_symmetrical, []) :-
+buggy(X, Y, minus_p, []) :-
     X = llnorm4(P, Mu, Sigma),
-    Y = interval(qnorm(P/2, Mu, Sigma), qnorm(P, Mu, Sigma)).
+    Y = interval(qnorm(round(0.5, 2) - P/2, Mu, Sigma), qnorm(round(0.5, 2), Mu, Sigma)).
 
-buggy(X, Y, one_sd, []) :-
+buggy(X, Y, plus_p, []) :-
     X = llnorm4(P, Mu, Sigma),
-    Y = interval(Mu - Sigma, Mu + Sigma).
+    Y = interval(qnorm(round(0.5, 2), Mu, Sigma), qnorm(round(0.5, 2) + P/2, Mu, Sigma)).
+
+buggy(X, Y, minus_plus_p, []) :-
+    X = llnorm4(P, Mu, Sigma),
+    Y = interval(qnorm(round(0.5, 2) - P, Mu, Sigma), qnorm(round(0.5, 2) + P, Mu, Sigma)).
 
 % Feedback
 
@@ -37,11 +41,16 @@ blame(
 ).
 
 blame(
-    not_symmetrical,
+    minus_p,
     "Careful, make sure that the proportion is equally distributed on both sides of the mean."
 ).
 
 blame(
-    one_sd,
-    "Careful, do not calculate a range that is one standard deviation around the mean, but use the given proportion."
+    plus_p,
+    "Careful, make sure that the proportion is equally distributed on both sides of the mean."
+).
+
+blame(
+    minus_plus_p,
+    "Careful, make sure that the proportion is equally distributed on both sides of the mean."
 ).
