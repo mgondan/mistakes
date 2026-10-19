@@ -1,0 +1,65 @@
+---
+title: "Normal Distribution of IQ"
+---
+
+```{r, include=FALSE}
+library(exams)
+library(mathml)
+library(htmltools)
+library(mistakes)
+
+task <- "llnorm4"
+plfile <- file.path("rexams", sprintf("%s.pl", task))
+rolog::consult(system.file(plfile, package="mistakes"))
+
+interval <- function(l, u) {
+  sprintf("$(%s, %s)$", round(l, 2), round(u, 2))
+}
+
+hook(interval(.Lower, .Upper), c(.Lower, .Upper))
+
+## DATA GENERATION
+repeat
+{
+  percentage <- sample(seq(10, 45, 5), 1)
+  p <- round(percentage / 100, 2)
+  mu <- 100
+  sigma <- 15
+  
+  Q <- quote(search(llnorm4, llnorm4(p, mu, sigma), .S, .R, .P, .E))
+  S <- findall(Q, options=list(preproc=as.rolog), env=environment())
+
+  if(problems(S))
+    next
+
+  break
+}
+
+t <- prepare(task=task, S)
+sol <- format_feedback(
+  t$correct, t$explanations, t$praise, t$blame, t$extra
+)
+```
+
+Question
+========
+Which is the IQ range that is symmetrical around the mean and includes `r percentage`% of the population ($\mu$ = 100, $\sigma$ = 15)?
+
+```{r questionlist, echo=FALSE, results="asis"}
+answerlist(t$alternatives, markup="markdown")
+```
+
+Solution
+========
+The range is calculated by: `r t$solution`
+
+```{r solutionlist, echo=FALSE, results="asis"}
+sol <- lapply(sol, FUN=gsub, pattern="\\n", replacement="")
+answerlist(sol, markup="markdown")
+```
+
+Meta-information
+================
+extype: schoice
+exsolution: `r mchoice2string(t$correct, single=TRUE)`
+exname: llnorm4
