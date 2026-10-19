@@ -21,7 +21,7 @@ hook(interval(.Lower, .Upper), c(.Lower, .Upper))
 ## DATA GENERATION
 repeat
 {
-  percentage <- sample(seq(20, 95, 5), 1)
+  percentage <- sample(seq(10, 45, 5), 1)
   p <- round(percentage / 100, 2)
   mu <- 100
   sigma <- 15
