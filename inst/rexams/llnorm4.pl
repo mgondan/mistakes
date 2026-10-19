@@ -52,5 +52,5 @@ blame(
 
 blame(
     minus_plus_p,
-    "Careful, make sure that the proportion is equally distributed on both sides of the mean."
+    "Careful, do not use the entire proportion on both sides, but divide it equally so that it sums up to ~m."-[p]
 ).
