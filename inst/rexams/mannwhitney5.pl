@@ -13,7 +13,7 @@ expert(X, Y, wins_a, []) :-
 
 expert(X, Y, ties, []) :-
     X = wins(U, A, B, N_A, N_B),
-    Y = ties(U, dfrac(ustat(A, B, ==), 2), N_A, N_B).
+    Y = ties(U, round(0.5, 1) * ustat(A, B, ==), N_A, N_B).
 
 expert(X, Y, ustat_a, []) :-
     X = ties(U, T, _N_A, _N_B),
