@@ -18,7 +18,7 @@ hook(cardinality(.A), abs(.A))
 hook(n_a, subscript(n, "A"))
 hook(n_b, subscript(n, "B"))
 hook(u, U)
-hook(as.character, "")
+hook(as.character(.X), .X)
 
 task <- "mannwhitney5"
 plfile <- file.path("rexams", sprintf("%s.pl", task))
