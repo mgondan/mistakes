@@ -1,0 +1,101 @@
+---
+title: "Mann-Whitney Comparison with Ties"
+---
+
+```{r, include=FALSE}
+library(exams)
+library(mathml)
+library(htmltools)
+library(mistakes)
+library(knitr)
+
+cardinality <- sum
+ustat <- function(a, b, fun)
+  cardinality(outer(a, b, fun))
+
+hook(ustat)
+hook(cardinality(.A), abs(.A))
+hook(n_a, subscript(n, "A"))
+hook(n_b, subscript(n, "B"))
+hook(u, U)
+hook(as.character(.X), .X)
+
+task <- "mannwhitney5"
+plfile <- file.path("rexams", sprintf("%s.pl", task))
+rolog::consult(system.file(plfile, package = "mistakes"))
+
+## DATA GENERATION
+repeat
+{
+  n_a <- sample(20:40, 1)
+  n_b <- sample(20:40, 1)
+
+  x <- sample(1:20, n_a + n_b, replace=TRUE)
+
+  a <- sort(x[1:n_a])
+  b <- sort(x[n_a + 1:n_b])
+
+  wins_a <- sum(outer(a, b, ">"))
+  ties   <- sum(outer(a, b, "=="))
+  wins_b <- sum(outer(a, b, "<"))
+
+  if(ties < 1) 
+    next
+
+  if(wins_a < 2 || wins_b < 2)
+    next
+
+  #To avoid duplicate answers
+  if(wins_a == wins_b) 
+    next
+  if(wins_a == wins_b + ties/2) 
+    next  
+  if(wins_a + ties/2 == wins_b ) 
+    next
+
+  Q <- quote(search(mannwhitney5, mannwhitney5(a, b, n_a, n_b), .S, .R, .P, .E))
+
+  S <- findall(Q, options = list(preproc = as.rolog), env = environment())
+
+  if(problems(S))
+    next
+
+  break
+}
+
+t <- prepare(task = task, S)
+
+sol <- format_feedback(t$correct, t$explanations, t$praise, t$blame, t$extra)
+```
+
+Question
+========
+
+A group of researchers conducted a study to compare the effectiveness of two teaching methods. 
+Students were randomly assigned to either Method A (interactive learning) or Method B (standard teaching), 
+with `r n_a` and `r n_b` students, respectively. At the end of the course, all students completed the same achievement test.
+Comparing each student's test score from Method A with each student's score from Method B resulted in `r n_a * n_b` pairwise comparisons. 
+Students taught with Method A achieved higher scores in `r wins_a` comparisons, 
+students taught with Method B achieved higher scores in `r wins_b` comparisons, and `r ties` comparisons were ties.
+Calculate the Mann–Whitney $U$-statistic for Method A.
+
+
+```{r questionlist, echo = FALSE, results = "asis"}
+answerlist(t$alternatives, markup="markdown")
+```
+
+Solution
+========
+The $U$-statistic is calculated by counting one point for each comparisons where Method A achieved higher scores and half point for each tie. `r t$solution`
+
+
+```{r solutionlist, echo = FALSE, results = "asis"}
+sol <- lapply(sol, FUN=gsub, pattern="\\n", replacement="")
+answerlist(sol, markup="markdown")
+```
+
+Meta-information
+================
+extype: schoice
+exsolution: `r mchoice2string(t$correct, single=TRUE)`
+exname: mannwhitney5
