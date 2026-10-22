@@ -194,5 +194,5 @@ pvalue <- function(x)
   if(x < 0.10)
     return(sprintf("%.3f", x))
   
-  return(sprintf("%.2f", x))
+  sprintf("%.2f", x)
 }
