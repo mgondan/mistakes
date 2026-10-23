@@ -8,7 +8,8 @@
 
   rolog::consult(system.file("pl/mistakes.pl", package=pkgname))
   rolog::consult(system.file("pl/qti21-fb.pl", package=pkgname))
-  
+  rolog::once(call("assert", call("file_search_path", 
+    as.symbol("library"), as.symbol(system.file("pl", package=pkgname)))))
   mathml::hook(call("error", expression(X)), expression(X), 
     quote=FALSE, as.rolog=FALSE)
 }

@@ -4,6 +4,7 @@
 :- use_module(intermediate).
 :- use_module(depends).
 :- use_module(relevant).
+:- reexport(i18n).
 
 % Apply expert and buggy rules
 step(M, X, Y, expert(Step, Flags)) :-

@@ -1,5 +1,7 @@
 ---
 title: "Phase II-Studie"
+params:
+  lang: "de"
 ---
 
 ```{r, include=FALSE}
@@ -62,7 +64,7 @@ repeat
   break
 }
 
-t <- prepare(task=task, S, N=5) # 5 alternatives only
+t <- prepare(task=task, S) # 5 alternatives only
 sol <- format_feedback(t$correct, t$explanations, t$praise, t$blame, t$extra)
 sol <- lapply(sol, FUN=gsub, pattern="\\n", replacement="")
 ```

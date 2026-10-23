@@ -1,6 +1,7 @@
 :- module(tratio, []).
 
-:- discontiguous intermediate/1, expert/4, buggy/4, blame/2.
+:- discontiguous intermediate/1, expert/4, buggy/4.
+:- use_module(library(i18n)).
 
 % Solution of the problem
 intermediate(tratio/8).
@@ -14,8 +15,17 @@ intermediate(tindep/5).
 expert(X, Y, twosample, []) :-
     X = tindep(T0, S_T0, EOT, S_EOT, N), 
     V = var_pool(N, S_T0^2, N, S_EOT^2),
-    P = denote(s_pool^2, V, "the pooled variance"),
+    lang(pooledvar, Pooled),
+    P = denote(s_pool^2, V, Pooled),
     Y = dfrac(T0 - EOT, sqrt(P * (1/N + 1/N))).
+
+lang(Id, Elem),
+    lang(L),
+    lang(L, Id, Elem0)
+ => Elem = Elem0.
+
+lang(en, pooledvar, "the pooled variance").
+lang(de, pooledvar, "die gepoolte Varianz").
 
 % Mistakes
 buggy(X, Y, indep, []) :-
@@ -40,26 +50,41 @@ buggy(X, Y, school(N), []) :-
     Y = frac(1, 2*N).
 
 % Feedback
-blame(indep, "This is not a two-sample problem.").
+praise(en, twosample, "You have correctly determined the expression for the two-sample ~m-test."-[t]).
+praise(de, twosample, "Du hast den richtigen Ausdruck für den Zwei-Stichproben-~m-test herausgesucht."-[t]).
 
-praise(twosample, "You have correctly determined the expression for the two-sample ~m-test."-[t]).
+praise(en, paired, "You have correctly identified this as paired samples problem.").
+praise(de, paired, "Du hast das Problem als korrekt erkannt (gepaarte Stichproben).").
 
-praise(paired, "You have correctly identified this as paired samples problem.").
+praise(en, tratio, "You have correctly identified the expression for the ~m-ratio."-[t]).
+praise(de, tratio, "Du hast den richtigen Ausdruck für die ~m-Statistik ermittelt."-[t]).
 
-praise(tratio, "You have correctly identified the expression for the ~m-ratio."-[t]).
+blame(en, indep, "This is not a two-sample problem.").
+blame(de, indep, "Das ist kein Zwei-Stichproben-Problem.").
 
-blame(paren, "Please do not forget the parentheses around the numerator and the denominator of a fraction.").
+blame(en, paren, "Please do not forget the parentheses around the numerator and the denominator of a fraction.").
+blame(de, paren, "Bitte die Klammern um Zähler und Nenner nicht vergessen.").
 
-blame(sqrt(X), "Please do not omit the square root around ~m."-[X]).
+blame(en, sqrt(X), "Please do not omit the square root around ~m."-[X]).
+blame(de, sqrt(X), "Bitte die Wurzel um ~m nicht vergessen."-[X]).
 
-blame(mu(Mu), "Do not omit the null hypothesis ~m in the ~m-ratio."-[Mu, t]).
+blame(en, mu(Mu), "Do not omit the null hypothesis ~m in the ~m-ratio."-[Mu, t]).
+blame(de, mu(Mu), "Bitte vergiss nicht die Nullhypothese ~m in der ~m-Statistik."-[Mu, t]).
 
-blame(school(A, B), M) :-
+blame(en, school(A, B), M) :-
     M = "The result matches the expression for the ~m-ratio for independent 
     samples with ~m under the square root. Please keep in mind that ~m."
     - [t, frac(1, A + B), frac(1, A) + frac(1, B) \= frac(1, A + B)].
+blame(de, school(A, B), M) :-
+    M = "Das Ergebnis passt zur ~m-Statistik für unabhängige Stichproben, 
+    mit ~m unter der Wurzel. Bitte vergiss nicht, dass ~m."
+    - [t, frac(1, A + B), frac(1, A) + frac(1, B) \= frac(1, A + B)].
 
-blame(school(N), M) :-
+blame(en, school(N), M) :-
     M = "The result matches the expression for the ~m-ratio for independent 
     samples with ~m under the square root. Please keep in mind that ~m."
+    - [t, frac(1, 2*N), frac(1, N) + frac(1, N) = frac(2, N)].
+blame(de, school(N), M) :-
+    M = "Das Ergebnis passt zur ~m-Statistik für unabhängige Stichproben, 
+    mit ~m unter der Wurzel. Bitte vergiss nicht, dass ~m."
     - [t, frac(1, 2*N), frac(1, N) + frac(1, N) = frac(2, N)].

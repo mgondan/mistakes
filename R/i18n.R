@@ -1,13 +1,28 @@
 # Interim solution until we have proper gettext support
-s <- function(id)
+lang <- function()
 {
+  if(exists("params"))
+    if(!is.na(params$lang))
+      return(params$lang)
+  
   if(Sys.getenv("LANGUAGE") %in% c("", "en", "en_GB", "en_US"))
-    return(.en(id))
+    return("en")
   
   if(Sys.getenv("LANGUAGE") %in% c("", "de", "de_DE", "de_AT"))
-    return(.de(id))
+    return("de")
+  
+  # silent
+  return("en")
+}
 
-  warning("LANGUAGE=", Sys.getenv("LANGUAGE"), " not supported.")  
+s <- function(id)
+{
+  if(lang() == "en")
+    return(.en(id))
+  
+  if(lang() == "de")
+    return(.de(id))
+  
   .en(id)
 }
 

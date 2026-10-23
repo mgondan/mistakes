@@ -1,5 +1,6 @@
 :- module(message, [message/3, praise/3, blame/3]).
 
+:- use_module(i18n).
 :- format_predicate(m, format_mathjax(_, _Symbol)).
 
 format_mathjax(_, Symbol) :-
@@ -18,10 +19,19 @@ message_(String, String).
 
 % New version
 praise(M, Code, Res) :-
+    lang(L),
+    M:praise(L, Code, Mask_Format),
+    !, message_(Mask_Format, Res).
+
+praise(M, Code, Res) :-
     M:praise(Code, Mask_Format),
     message_(Mask_Format, Res).
 
 blame(M, Code, Res) :-
+    lang(L),
+    M:blame(L, Code, Mask_Format),
+    !, message_(Mask_Format, Res).
+
+blame(M, Code, Res) :-
     M:blame(Code, Mask_Format),
     message_(Mask_Format, Res).
-

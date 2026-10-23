@@ -1,5 +1,7 @@
 ---
 title: "Phase II clinical study"
+params:
+  lang: "en"
 ---
 
 ```{r, include=FALSE}
