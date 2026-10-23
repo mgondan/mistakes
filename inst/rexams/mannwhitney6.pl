@@ -9,7 +9,7 @@ intermediate(ties/4).
 
 expert(X, Y, wins_a, []) :-
     X = mannwhitney6(A, B, N_A, N_B),
-    Y = wins(ustat(A, B, >), A, B, N_A, N_B).
+    Y = wins(ustat(A, B, <), A, B, N_A, N_B).
 
 expert(X, Y, ties, []) :-
     X = wins(U, A, B, N_A, N_B),
@@ -25,7 +25,7 @@ expert(X, Y, cp, []) :-
 % Count the pairwise comparisons won by Method B instead of Method A
 buggy(X, Y, wins_b, []) :-
     X = mannwhitney6(A, B, N_A, N_B),
-    Y = wins(ustat(B, A, >), A, B, N_A, N_B).
+    Y = wins(ustat(A, B, >), A, B, N_A, N_B).
 
 
 % Count one point for tie instead of half point

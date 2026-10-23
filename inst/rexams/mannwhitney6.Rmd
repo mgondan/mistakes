@@ -35,9 +35,9 @@ repeat
   a <- sort(x[1:n_a])
   b <- sort(x[n_a + 1:n_b])
 
-  wins_a <- sum(outer(a, b, ">"))
+  wins_a <- sum(outer(a, b, "<"))
   ties   <- sum(outer(a, b, "=="))
-  wins_b <- sum(outer(a, b, "<"))
+  wins_b <- sum(outer(a, b, ">"))
 
   if(ties < 1) 
     next
