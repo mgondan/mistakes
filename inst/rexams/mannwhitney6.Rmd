@@ -1,0 +1,106 @@
+---
+title: "Mann-Whitney Comparison with Ties"
+---
+
+```{r, include=FALSE}
+library(exams)
+library(mathml)
+library(htmltools)
+library(mistakes)
+library(knitr)
+
+cardinality <- sum
+ustat <- function(a, b, fun)
+  cardinality(outer(a, b, fun))
+
+hook(ustat)
+hook(cardinality(.A), abs(.A))
+hook(n_a, subscript(n, "A"))
+hook(n_b, subscript(n, "B"))
+hook(u, U)
+hook(as.character(.X), .X)
+
+task <- "mannwhitney6"
+plfile <- file.path("rexams", sprintf("%s.pl", task))
+rolog::consult(system.file(plfile, package = "mistakes"))
+
+## DATA GENERATION
+repeat
+{
+  n_a <- sample(20:40, 1)
+  n_b <- sample(20:40, 1)
+
+  x <- sample(1:20, n_a + n_b, replace=TRUE)
+
+  a <- sort(x[1:n_a])
+  b <- sort(x[n_a + 1:n_b])
+
+  wins_a <- sum(outer(a, b, "<"))
+  ties   <- sum(outer(a, b, "=="))
+  wins_b <- sum(outer(a, b, ">"))
+
+  if(ties < 1) 
+    next
+
+  if(wins_a < 2 || wins_b < 2)
+    next
+
+  #To avoid duplicate answers
+  if(wins_a == wins_b) 
+    next
+  if(wins_a == wins_b + ties/2) 
+    next  
+  if(wins_a + ties/2 == wins_b ) 
+    next
+
+  Q <- quote(search(mannwhitney6, mannwhitney6(a, b, n_a, n_b), .S, .R, .P, .E))
+
+  S <- findall(Q, options = list(preproc = as.rolog), env = environment())
+
+  if(problems(S))
+    next
+
+  break
+}
+
+t <- prepare(task = task, S)
+
+sol <- format_feedback(t$correct, t$explanations, t$praise, t$blame, t$extra)
+```
+
+Question
+========
+
+In a clinical trial, patients were randomized to either a new therapy for anxiety (Therapy A) 
+or treatment as usual (Therapy B), with `r n_a` and `r n_b` patients in each treatment arm, 
+respectively. At the end of the treatment, anxiety symptoms were assessed 
+using the Generalized Anxiety Disorder-7 (GAD-7) questionnaire, 
+with lower scores indicating less severe anxiety symptoms.
+Comparing each patient's GAD-7 score from Treatment A with each patient's score 
+from Treatment B resulted in `r n_a * n_b` pairwise comparisons. 
+Patients receiving Therapy A had lower scores in `r wins_a` comparisons, 
+patients receiving Treatment B had lower scores in `r wins_b` comparisons, 
+and `r ties` comparisons were ties.
+
+Estimate the competing probability for Therapy A.
+
+```{r questionlist, echo = FALSE, results = "asis"}
+answerlist(t$alternatives, markup="markdown")
+```
+
+Solution
+========
+The competing probability is calculated by dividing the $U$-statistic 
+by the number of pairwise comparisons: `r t$solution`
+
+
+```{r solutionlist, echo = FALSE, results = "asis"}
+sol <- lapply(sol, FUN=gsub, pattern="\\n", replacement="")
+answerlist(sol, markup="markdown")
+```
+
+Meta-information
+================
+extype: schoice
+exsolution: `r mchoice2string(t$correct, single=TRUE)`
+exname: mannwhitney6
