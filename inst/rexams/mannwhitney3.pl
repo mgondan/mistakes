@@ -41,20 +41,20 @@ buggy(X, Y, plus_one, []) :-
 
 % Feedback
 
-praise(lower,
+praise(en, lower,
     "Correct. The lower critical value follows from the symmetry of the ~m-distribution."-[u]).
 
-praise(critical_region,
+praise(en, critical_region,
     "Correctly identified a lower and upper critical rejection region.").
 
-blame(uppert_only,
+blame(en, uppert_only,
     "Careful, this includes only the upper tail.").
 
-blame(same_cutoff,
+blame(en, same_cutoff,
     "Careful, the upper critical value cannot be used directly also as the lower critical value.").
 
-blame(reversed,
+blame(en, reversed,
     "Careful, the lower and upper critical values have been interchanged.").
 
-blame(plus_one,
+blame(en, plus_one,
     "Careful, the lower critical value has been shifted by one. Determine the value from the symmetry of the ~m-distribution."-[u]).

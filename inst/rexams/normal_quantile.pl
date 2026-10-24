@@ -42,16 +42,16 @@ buggy(X, Y, swapped, []) :-
 
 % Feedback
 
-praise(normal_quantile, "You correctly identified the steps of the problem.").
+praise(en, normal_quantile, "You correctly identified the steps of the problem.").
 
-praise(lower, "You correctly determined the z-standardized quantile corresponding to the percentage ~m."-[p]).
+praise(en, lower, "You correctly determined the z-standardized quantile corresponding to the percentage ~m."-[p]).
 
-praise(sd, "You correctly took the square root of the variance ~m to get the standard deviation ~m."-[sigma2, sigma]).
+praise(en, sd, "You correctly took the square root of the variance ~m to get the standard deviation ~m."-[sigma2, sigma]).
 
-praise(zfrac, "You correctly transformed the ~m-value back to the original scale."-[z]).
+praise(en, zfrac, "You correctly transformed the ~m-value back to the original scale."-[z]).
 
-blame(upper, "The upper tail was used instead of the lower tail.").
+blame(en, upper, "The upper tail was used instead of the lower tail.").
 
-blame(variance, "The variance ~m was used instead of the standard deviation ~m."-[sigma2, sigma]).
+blame(en, variance, "The variance ~m was used instead of the standard deviation ~m."-[sigma2, sigma]).
 
-blame(swapped, "Mean ~m and standard deviation ~m were swapped."-[mu, sigma]).
+blame(en, swapped, "Mean ~m and standard deviation ~m were swapped."-[mu, sigma]).

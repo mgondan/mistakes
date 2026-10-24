@@ -38,14 +38,14 @@ buggy(X, Y, only_b, []) :-
 
 % Feedback
 
-praise(ustat, "Correctly used the number of pairwise comparisons won by group Group A (~m−statistic)."-[u]).
+praise(en, ustat, "Correctly used the number of pairwise comparisons won by group Group A (~m−statistic)."-[u]).
 
-praise(pairs, "Correctly calculated the total number of pairwise comparisons.").
+praise(en, pairs, "Correctly calculated the total number of pairwise comparisons.").
 
-blame(total_n, "Careful, the number of pairwise comparisons is not equal to the total number of participants, but to ~m ."-[n_a * n_b]).
+blame(en, total_n, "Careful, the number of pairwise comparisons is not equal to the total number of participants, but to ~m ."-[n_a * n_b]).
 
-blame(complement, "Careful, you calculated the number of pairwise comparisons won by Group B instead of Group A.").
+blame(en, complement, "Careful, you calculated the number of pairwise comparisons won by Group B instead of Group A.").
 
-blame(only_a, "Careful, the number of pairwise comparisons is not equal to the number of participants in Group A, but to ~m ."-[n_a * n_b]).
+blame(en, only_a, "Careful, the number of pairwise comparisons is not equal to the number of participants in Group A, but to ~m ."-[n_a * n_b]).
 
-blame(only_b, "Careful, the number of pairwise comparisons is not equal to the number of participants in Group B, but to ~m ."-[n_a * n_b]).
+blame(en, only_b, "Careful, the number of pairwise comparisons is not equal to the number of participants in Group B, but to ~m ."-[n_a * n_b]).

@@ -33,12 +33,12 @@ buggy(X, Y, no_center, []) :-
 
 % Feedback
 
-praise(numerator, "Correctly subtracted the expected value of ~m from the observed ~m."-[u, u]).
+praise(en, numerator, "Correctly subtracted the expected value of ~m from the observed ~m."-[u, u]).
 
-praise(zstat, "Correctly divided by the standard deviation.").
+praise(en, zstat, "Correctly divided by the standard deviation.").
 
-blame(variance, "Careful, do not divide by the variance, but the standard deviation.").
+blame(en, variance, "Careful, do not divide by the variance, but the standard deviation.").
 
-blame(reversed_sign, "Careful, do not subtract the observed ~m from the expected value, but the other way around."-[u]).
+blame(en, reversed_sign, "Careful, do not subtract the observed ~m from the expected value, but the other way around."-[u]).
 
-blame(no_center, "Careful, do not forget to subtract the expected value ~m from ~m."-[n_a * n_b / 2, u]).
+blame(en, no_center, "Careful, do not forget to subtract the expected value ~m from ~m."-[n_a * n_b / 2, u]).

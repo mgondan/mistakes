@@ -28,16 +28,16 @@ buggy(X, Y, neg_square, []) :-
 
 % Feedback
 
-praise(square, "Correct. The chi-square statistic is obtained 
+praise(en, square, "Correct. The chi-square statistic is obtained 
     by squaring the ~m-statistic: ~m."- [z, chi^2 = z^2]).
 
-blame(only_z, "The result corresponds to the original ~m-statistic. 
+blame(en, only_z, "The result corresponds to the original ~m-statistic. 
     To obtain the chi-square statistic, the ~m-statistic must be squared." - [z, z]).
 
-blame(abs_z, "The absolute value removes the sign of the ~m-statistic, 
+blame(en, abs_z, "The absolute value removes the sign of the ~m-statistic, 
     but this is not the required transformation. The ~m-statistic is obtained 
     by squaring the ~m-statistic: ~m." - [z, chi^2, z, chi^2 = z^2]).
 
-blame(neg_square, "The ~m-statistic has been squared, but the negative sign 
+blame(en, neg_square, "The ~m-statistic has been squared, but the negative sign 
     has been retained incorrectly. A squared value cannot be negative, 
     so the ~m statistic is ~m."- [z, chi^2, chi^2 = z^2]).

@@ -37,16 +37,16 @@ buggy(X, Y, only_minus, []) :-
 
 % Feedback
 
-praise(std, "You have correctly calculated the standard deviation by taking the square root of the variance.").
+praise(en, std, "You have correctly calculated the standard deviation by taking the square root of the variance.").
 
-praise(central, "You have correctly calculated the central range using the mean plus/minus two standard deviations.").
+praise(en, central, "You have correctly calculated the central range using the mean plus/minus two standard deviations.").
 
-blame(variance, "Careful, you have used the variance instead of the standard deviation. The central range is calculated using the mean plus/minus two standard deviations. Remember to take the square root of the variance.").
+blame(en, variance, "Careful, you have used the variance instead of the standard deviation. The central range is calculated using the mean plus/minus two standard deviations. Remember to take the square root of the variance.").
 
-blame(only_plus, "Careful, your range includes only values above the mean and contains approximately 47.7% of realizations. The central range must also include values down to the mean minus two standard deviations.").
+blame(en, only_plus, "Careful, your range includes only values above the mean and contains approximately 47.7% of realizations. The central range must also include values down to the mean minus two standard deviations.").
 
-blame(only_minus, "Careful, your range includes only values below the mean and contains approximately 47.7% of realizations. The central range must also include values up to the mean plus two standard deviations.").
+blame(en, only_minus, "Careful, your range includes only values below the mean and contains approximately 47.7% of realizations. The central range must also include values up to the mean plus two standard deviations.").
 
 % Extra information
 
-extra(central, "Remember that 2 is an approximation to 1.96. The range given by the mean plus/minus two standard deviations contains approximately 95.45% of realizations; using 1.96 gives approximately 95%.").
+extra(en, central, "Remember that 2 is an approximation to 1.96. The range given by the mean plus/minus two standard deviations contains approximately 95.45% of realizations; using 1.96 gives approximately 95%.").

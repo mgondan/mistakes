@@ -19,12 +19,12 @@ buggy(X, Y, outside_range, []) :-
 
 % Feedback
 
-praise(
+praise(en, 
     inside_range,
     "Correctly used the given standard deviations as ~m values and calculated the proportion of the range."-[z]
 ).
 
-blame(
+blame(en, 
     outside_range,
     "Careful, you calculated the proportion for IQs below or exceeding the range, not within it."
 ).

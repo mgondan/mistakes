@@ -43,20 +43,20 @@ buggy(X, Y, stop_z, []) :-
 
 % Feedback
 
-praise(pooled_success,"You have correctly identified the expression for the pooled success probability
+praise(en, pooled_success,"You have correctly identified the expression for the pooled success probability
     after calculating the number of successes in group A and B.").
 
-praise(chisquare,"You have correctly identified the expression for the ~m-statistic."-[z]).
+praise(en, chisquare,"You have correctly identified the expression for the ~m-statistic."-[z]).
 
-praise(square,"You have correctly transformed the ~m-statistic into the ~m-statistic."-[z, chi^2]).
+praise(en, square,"You have correctly transformed the ~m-statistic into the ~m-statistic."-[z, chi^2]).
 
-blame(pool, "The result corresponds to the pooled success probability ~m. 
+blame(en, pool, "The result corresponds to the pooled success probability ~m. 
     This is an intermediate result used in the denominator of the ~m-statistic, 
     but the task is not yet finished."-[p_pool, z]).
 
-blame(total_n, "The result was calculated using the total sample size ~m for both groups. 
+blame(en, total_n, "The result was calculated using the total sample size ~m for both groups. 
     Since the groups are equally large, each group contains ~m patients, 
     so the standard error must use ~m rather than ~m." - [n, n/2, frac(1, n/2) + frac(1, n/2), frac(1, n) + frac(1, n)]).
 
-blame(stop_z, "The result corresponds to the ~m-statistic. 
+blame(en, stop_z, "The result corresponds to the ~m-statistic. 
     The ~m-statistic is obtained by raising it to the square."-[z, chi^2]).
