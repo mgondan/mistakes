@@ -30,17 +30,17 @@ buggy(X, Y, pool_b, []) :-
 
 % Feedback
 
-praise(pool, "Correct. The pooled success probability is obtained by dividing the total number of successes 
+praise(en, pool, "Correct. The pooled success probability is obtained by dividing the total number of successes 
     in both groups by the total number of patients: ~m." - [frac(x_a + x_b, n_a + n_b)]).
 
-blame(pool_two, "The numerator correctly combines the successes from both groups, 
+blame(en, pool_two, "The numerator correctly combines the successes from both groups, 
     but the pooled success probability is not obtained by dividing the total number of successes by two. 
     It must be divided by the total number of patients, ~m." - [n_a + n_b]).
 
-blame(pool_a, "The denominator correctly contains the total number of patients, 
+blame(en, pool_a, "The denominator correctly contains the total number of patients, 
     but the numerator includes only the successes from group A. 
     For the pooled success probability, the successes from both groups must be combined." ).
 
-blame(pool_b, "The denominator correctly contains the total number of patients, 
+blame(en, pool_b, "The denominator correctly contains the total number of patients, 
     but the numerator includes only the successes from group B. 
     For the pooled success probability, the successes from both groups must be combined." ).

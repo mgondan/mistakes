@@ -26,22 +26,22 @@ buggy(X, Y, below_z2, []) :-
 
 % Feedback
 
-praise(
+praise(en, 
     pnorm,
     "Correctly standardized the range endpoints ~m and ~m and determined its probability."-[x1, x2]
 ).
 
-blame(
+blame(en, 
     brackets,
     "Careful, do not forget the brackets around ~m in the ~m standardization."-[x - mu, z]
 ).
 
-blame(
+blame(en, 
     outside_range,
     "Careful, you calculated the proportion for IQs below or exceeding the range, not within it."
 ).
 
-blame(
+blame(en, 
     below_z2,
     "Careful, do not forget to exlude the IQs below the lower limit of the range."
 ).

@@ -30,27 +30,27 @@ buggy(X, Y, minus_plus_p, []) :-
 
 % Feedback
 
-praise(
+praise(en, 
     symmetrical,
     "Correctly determined the symmetrical range around the mean."
 ).
 
-blame(
+blame(en, 
     one_sided,
     "Careful, do not construct a one-sided interval, but distribute the proportion on both sides of the mean."
 ).
 
-blame(
+blame(en, 
     minus_p,
     "Careful, make sure that the proportion is equally distributed on both sides of the mean."
 ).
 
-blame(
+blame(en, 
     plus_p,
     "Careful, make sure that the proportion is equally distributed on both sides of the mean."
 ).
 
-blame(
+blame(en, 
     minus_plus_p,
     "Careful, do not use the entire proportion on both sides, but divide it equally so that it sums up to ~m."-[p]
 ).

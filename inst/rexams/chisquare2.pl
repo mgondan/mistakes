@@ -30,10 +30,10 @@ buggy(X, Y, wrong_tail, []) :-
 
 % Feedback
 
-praise(chisquare_p, "Correct. For one degree of freedom, ~m, and the corresponding chi-square test has the same p-value as the two-sided ~m-test."-[chi^2 = z^2, z]).
+praise(en, chisquare_p, "Correct. For one degree of freedom, ~m, and the corresponding chi-square test has the same p-value as the two-sided ~m-test."-[chi^2 = z^2, z]).
 
-blame(one_sided, "The result corresponds to the one-sided ~m-test p-value. The chi-square test with one degree of freedom corresponds to the two-sided ~m-test, so both tails of the standard normal distribution must be included." -[z, z]).
+blame(en, one_sided, "The result corresponds to the one-sided ~m-test p-value. The chi-square test with one degree of freedom corresponds to the two-sided ~m-test, so both tails of the standard normal distribution must be included." -[z, z]).
 
-blame(double_two_sided, "The two-sided ~m-test p-value already includes both tails. It should therefore not be doubled again. The corresponding chi-square test has the same p-value as the two-sided ~m-test."-[z, z]).
+blame(en, double_two_sided, "The two-sided ~m-test p-value already includes both tails. It should therefore not be doubled again. The corresponding chi-square test has the same p-value as the two-sided ~m-test."-[z, z]).
 
-blame(wrong_tail, "The result corresponds to the one-sided probability in the tail opposite to the observed effect. For the corresponding chi-square test, use the complete two-sided ~m-test p-value."- [z]).
+blame(en, wrong_tail, "The result corresponds to the one-sided probability in the tail opposite to the observed effect. For the corresponding chi-square test, use the complete two-sided ~m-test p-value."- [z]).

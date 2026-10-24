@@ -49,32 +49,32 @@ buggy(X, Y, lower_tail, []) :-
 
 % Feedback
 
-praise(
+praise(en, 
     normapprox,
     "You have correctly identified the mean and variance of the normal approximation."
 ).
 
-praise(
+praise(en, 
     z,
     "You have correctly standardized the cutoff value."
 ).
 
-praise(
+praise(en, 
     probability,
     "You have correctly calculated the upper-tail probability."
 ).
 
-blame(
+blame(en, 
     sd,
     "You used the variance instead of the standard deviation. Do not forget to take the square root."
 ).
 
-blame(
+blame(en, 
     stop_z,
     "You have stopped at the standardized z-score. The task asks for the corresponding upper-tail probability."
 ).
 
-blame(
+blame(en, 
     lower_tail,
     "You have calculated the lower-tail probability. The task asks for the probability of at least X successes, so the upper-tail probability is required."
 ).

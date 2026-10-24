@@ -38,10 +38,10 @@ buggy(X, Y, cp, []) :-
     Y = dfrac(U + T, N_A * N_B).
 
 % Feedback
-praise(wins_a, "You have correctly counted each win of Method A as one point.").
-praise(ties, "You have correctly counted each tie as half point.").
-praise(ustat_a, "You have correctly added up the points for the wins and the ties.").
+praise(en, wins_a, "You have correctly counted each win of Method A as one point.").
+praise(en, ties, "You have correctly counted each tie as half point.").
+praise(en, ustat_a, "You have correctly added up the points for the wins and the ties.").
 
-blame(wins_b, "Careful, you counted the wins of Method B instead of Method A.").
-blame(tie_one, "Careful, you counted each tie as one point instead of half a point.").
-blame(cp, "Careful, you divided the Mann–Whitney ~m-statistic by the total number of pairwise comparisons. This gives the estimated competing probability, but the task asks for the ~m-statistic."-['U', 'U']).
+blame(en, wins_b, "Careful, you counted the wins of Method B instead of Method A.").
+blame(en, tie_one, "Careful, you counted each tie as one point instead of half a point.").
+blame(en, cp, "Careful, you divided the Mann–Whitney ~m-statistic by the total number of pairwise comparisons. This gives the estimated competing probability, but the task asks for the ~m-statistic."-['U', 'U']).

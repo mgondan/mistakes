@@ -28,18 +28,18 @@ buggy(X, Y, mix_failsucc, []) :-
 
 % Feedback
 
-praise(pool, "Correct. Since ~m denotes treatment failures in group A, 
+praise(en, pool, "Correct. Since ~m denotes treatment failures in group A, 
     the number of successes in group A is ~m. The pooled success probability 
     is therefore ~m." - [x_a, n_a - x_a, frac((n_a - x_a) + x_b, n_a + n_b)]).
 
-blame(only_a_fail, "The result treats the failures observed in group A 
+blame(en, only_a_fail, "The result treats the failures observed in group A 
     as treatment successes. Since ~m counts failures, the number of successes 
     in group A is ~m."- [x_a, n_a - x_a]).
 
-blame(only_b, "The result includes only the successes observed in group B. 
+blame(en, only_b, "The result includes only the successes observed in group B. 
     The pooled success probability must also include the successes from group A, 
     which are ~m because ~m denotes failures." - [n_a - x_a, x_a]).
 
-blame(mix_failsucc, "The result adds the failures from group A to the successes 
+blame(en, mix_failsucc, "The result adds the failures from group A to the successes 
     from group B. For the pooled success probability, both terms in the numerator 
     must represent successes. The number of successes in group A is ~m." - [n_a - x_a]).

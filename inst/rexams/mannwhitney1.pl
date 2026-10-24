@@ -46,8 +46,8 @@ buggy(X, Y, one_sided_p, []) :-
 praise(group_a, "Correct. You have counted all pairwise comparisons won by Group A.").
 blame(group_b, "Careful, you determined the pairwise comparisons won by Group B instead of A.").
 
-praise(ustat, "The ~m−statistic was correctly determined."-['U']).
-blame(pairs, "Careful, the result matches the total number of pairwise comparisons. Please determine the ~m−statistic."-['U']).
-blame(cp, "Careful, this is the competing proportion. Please determine the ~m-statistic."-['U']).
-blame(two_sided_p, "Careful, this is the two-sided ~m-value of the Mann-Whitney test. Please determine the ~m−statistic."-[p, 'U']).
-blame(one_sided_p, "Careful, this is the one-sided ~m-value of the Mann-Whitney test. Please determine the ~m−statistic."-[p, 'U']).
+praise(en, ustat, "The ~m−statistic was correctly determined."-['U']).
+blame(en, pairs, "Careful, the result matches the total number of pairwise comparisons. Please determine the ~m−statistic."-['U']).
+blame(en, cp, "Careful, this is the competing proportion. Please determine the ~m-statistic."-['U']).
+blame(en, two_sided_p, "Careful, this is the two-sided ~m-value of the Mann-Whitney test. Please determine the ~m−statistic."-[p, 'U']).
+blame(en, one_sided_p, "Careful, this is the one-sided ~m-value of the Mann-Whitney test. Please determine the ~m−statistic."-[p, 'U']).

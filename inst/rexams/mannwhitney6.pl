@@ -40,10 +40,10 @@ buggy(X, Y, ustat, []) :-
     Y = 'as.character'(U + T).
 
 % Feedback
-praise(wins_a, "You have correctly counted each win of Therapy A as one point.").
-praise(ties, "You have correctly counted each tie as half point.").
-praise(cp, "You have correctly divided the Mann–Whitney ~m-statistic by the total number of pairwise comparisons"-['U']).
+praise(en, wins_a, "You have correctly counted each win of Therapy A as one point.").
+praise(en, ties, "You have correctly counted each tie as half point.").
+praise(en, cp, "You have correctly divided the Mann–Whitney ~m-statistic by the total number of pairwise comparisons"-['U']).
 
-blame(wins_b, "Careful, you counted the wins of Therapy B instead of Therapy A.").
-blame(tie_one, "Careful, you counted each tie as one point instead of half a point.").
-blame(ustat, "Careful, you forgot to divide the Mann-Whitney ~m-statistic by the total number of pairwise comparisons."-['U']).
+blame(en, wins_b, "Careful, you counted the wins of Therapy B instead of Therapy A.").
+blame(en, tie_one, "Careful, you counted each tie as one point instead of half a point.").
+blame(en, ustat, "Careful, you forgot to divide the Mann-Whitney ~m-statistic by the total number of pairwise comparisons."-['U']).
