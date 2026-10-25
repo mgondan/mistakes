@@ -6,7 +6,7 @@ library(mistakes)
 plfile <- file.path("rexams", sprintf("%s.pl", task))
 rolog::consult(system.file(plfile, package="mistakes"))
 
-hook(mu_D, subscript(mu, D))
+hook(d, mean(D))
 hook(s_D, subscript(s, D))
 hook(mu_0, subscript(mu, 0L))
 hook(s_pool, subscript(s, "pool"))
@@ -22,15 +22,15 @@ repeat
   
   t <- runif(1, 0.5, 3.0)
   
-  mu_D <- round(mu_0 + t * s_D / sqrt(N), 1)
-  mu_eot <- mu_D + mu_t0
+  d <- round(mu_0 + t * s_D / sqrt(N), 1)
+  mu_eot <- d + mu_t0
   s_eot <- round(s_t0 + runif(1, -0.3, 0.3),1)
-  tratio <- (mu_D - mu_0) / (s_D / sqrt(N))
+  tratio <- (d - mu_0) / (s_D / sqrt(N))
   
   if(tratio<0.5 || tratio>3.0)
     next
    
-   Q <- substitute(search(task, tpaired(mu_D, mu_0, s_D, N),
+   Q <- substitute(search(task, tpaired(d, mu_0, s_D, N),
                      .S, .R, .P, .E), list(task = as.name(task)))
    S <- findall(Q, options=list(preproc=as.rolog), env=environment())
    
@@ -42,7 +42,7 @@ repeat
   
 tab <- data.frame(T0 = c(mu_t0, s_t0),
                 EOT= c(mu_eot, s_eot),
-                D = c(mu_D, s_D))
+                D = c(d, s_D))
 row.names(tab) <- c("Mean", "SD")
 
 
