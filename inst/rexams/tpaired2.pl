@@ -17,16 +17,16 @@ expert(X, Y, tratio, []) :-
 intermediate(pval/2).
 expert(X, Y, pval, []) :-
     X = pval(T, N),
-    Y = pt(-abs(T), N - 1).
+    Y = 1 - pt(T, N - 1).
 
 % Mistakes
 buggy(X, Y, twotailed, []) :-
     X = pval(T, N),
-    Y = 2 * pt(-abs(T), N - 1) .
+    Y = 2 * (1 - pt(T, N - 1)) .
 
 buggy(X, Y, othertail, []) :-
     X = pval(T, N),
-    Y = 1 - pt(-abs(T), N - 1).
+    Y = pt(T, N - 1).
 
 % Feedback
 praise(en, paired, "You correctly calculated the numerator of the $t$-statistic.").
