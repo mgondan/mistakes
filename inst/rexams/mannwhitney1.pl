@@ -32,14 +32,14 @@ buggy(X, Y, cp, []) :-
 % Two-sided p-value of the U-statistic (via z-approximation)
 buggy(X, Y, two_sided_p, []) :-
     X = mannwhitney1(A, B, N_A, N_B),
-    U = denote('U', ustat(A, B), "the Mann-Whitney statistic"),
+    U = denote('U', ustat(A, B), "with ~m denoting the Mann-Whitney statistic."),
     Y = 2 * (1 - pnorm(abs(dfrac(U - dot(N_A, N_B) / 2, sqrt(N_A * N_B * (N_A + N_B + 1) / 12))))).
 %    Y = 2 * (1 - pnorm(U, dot(N_A, N_B) / 2, sqrt(N_A * N_B * (N_A + N_B + 1) / 12))).
 
 % One-sided p-value
 buggy(X, Y, one_sided_p, []) :-
     X = mannwhitney2(A, B, N_A, N_B),
-    U = denote('U', ustat(A, B), "the Mann-Whitney statistic"),
+    U = denote('U', ustat(A, B), "with ~m denoting the Mann-Whitney statistic."),
     Y = 1 - pnorm(dfrac(U - dot(N_A, N_B) / 2, sqrt(N_A * N_B * (N_A + N_B + 1) / 12))).
 
 % Feedback

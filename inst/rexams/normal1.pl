@@ -9,7 +9,7 @@ intermediate(normal1/2).
 
 expert(X, Y, std, []) :-
     X = normal1(Mu, Sigma2),
-    Sigma = denote(sigma, sqrt(Sigma2), "the standard deviation"),
+    Sigma = denote(sigma, sqrt(Sigma2), "with ~m denoting the standard deviation."),
     Y = central95(Mu, Sigma).
 
 intermediate(central95/2).

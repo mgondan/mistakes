@@ -7,9 +7,9 @@ intermediate(chisquare6/3).
 
 expert(X, Y, pooled_success, []) :-
     X = chisquare6(Pct_A, Pct_B, N),
-    X_A = denote(x_a, dot(frac(Pct_A, 100), frac(N, 2)), "the number of successes in group A"),
-    X_B = denote(x_b, dot(frac(Pct_B, 100), frac(N, 2)), "the number of successes in group B"),
-    P = denote(p_pool, dfrac(X_A + X_B, N), "the pooled success probability"),
+    X_A = denote(x_a, dot(frac(Pct_A, 100), frac(N, 2)), "with ~m denoting the number of successes in group A."),
+    X_B = denote(x_b, dot(frac(Pct_B, 100), frac(N, 2)), "with ~m denoting the number of successes in group B."),
+    P = denote(p_pool, dfrac(X_A + X_B, N), "with ~m denoting the pooled success probability."),
     Y = pool_success(P, Pct_A, Pct_B, N).
 
 intermediate(pool_success/4).

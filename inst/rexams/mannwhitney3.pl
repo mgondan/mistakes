@@ -8,7 +8,7 @@ intermediate(lower_crit/2).
 
 expert(X, Y, lower, []) :-
     X = mannwhitney3(U_Crit, N_A, N_B),
-    U_Lower = denote(u_lower, N_A * N_B - U_Crit, "the lower critical value"),
+    U_Lower = denote(u_lower, N_A * N_B - U_Crit, "with ~m denoting the lower critical value."),
     Y = lower_crit(U_Crit, U_Lower).
 
 expert(X, Y, critical_region, []) :-
@@ -36,7 +36,7 @@ buggy(X, Y, reversed, []) :-
 % Shift the lower critical value by one
 buggy(X, Y, plus_one, []) :-
     X = mannwhitney3(U_Crit, N_A, N_B),
-    U_Lower = denote(u_lower, N_A * N_B - U_Crit, "the lower critical value"),
+    U_Lower = denote(u_lower, N_A * N_B - U_Crit, "with ~m denoting the lower critical value"),
     Y = lower_crit(U_Crit, U_Lower + 1).
 
 % Feedback
