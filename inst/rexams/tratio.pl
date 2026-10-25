@@ -24,8 +24,8 @@ lang(Id, Elem),
     lang(L, Id, Elem0)
  => Elem = Elem0.
 
-lang(en, pooledvar, "the pooled variance").
-lang(de, pooledvar, "die gepoolte Varianz").
+lang(en, pooledvar, "with ~m denoting the pooled variance.").
+lang(de, pooledvar, "mit ~m für die gepoolte Varianz.").
 
 % Mistakes
 buggy(X, Y, indep, []) :-

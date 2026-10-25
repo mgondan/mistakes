@@ -7,7 +7,7 @@ intermediate(chisquare1/6).
 
 expert(X, Y, pooled_success, []) :-
     X = chisquare1(P_A, P_B, N_A, N_B, X_A, X_B),
-    P = denote(p_pool, dfrac(X_A + X_B, N_A + N_B), "the pooled success probability"),
+    P = denote(p_pool, dfrac(X_A + X_B, N_A + N_B), "with ~m denoting the pooled success probability."),
     Y = pool_success(P, P_A, P_B, N_A, N_B).
 
 intermediate(pool_success/5).
