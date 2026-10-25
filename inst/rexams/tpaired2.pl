@@ -1,0 +1,41 @@
+:- module(tpaired2, []).
+
+:- discontiguous intermediate/1, expert/4, buggy/4.
+:- use_module(library(i18n)).
+
+% Solution of the problem
+intermediate(tpaired/4).
+expert(X, Y, paired, []) :-
+    X = tpaired(D, Mu, Sd, N),
+    Y = tratio(D - Mu, Sd, N).
+
+intermediate(tratio/3).
+expert(X, Y, tratio, []) :-
+    X = tratio(Numerator, Sd, N),
+    Y = pval(dfrac(Numerator, Sd / sqrt(N)), N).
+
+intermediate(pval/2).
+expert(X, Y, pval, []) :-
+    X = pval(T, N),
+    Y = pt(-abs(T), N - 1).
+
+% Mistakes
+buggy(X, Y, twotailed, []) :-
+    X = pval(T, N),
+    Y = 2 * pt(-abs(T), N - 1) .
+
+buggy(X, Y, othertail, []) :-
+    X = pval(T, N),
+    Y = 1 - pt(-abs(T), N - 1).
+
+% Feedback
+praise(en, paired, "You correctly calculated the numerator of the $t$-statistic.").
+
+praise(en, tratio, "You correctly calculated the denominator of the $t$-statistic.").
+
+praise(en, pval, "You correctly calculated the one-tailed $p$-value.").
+
+blame(en, twotailed, "Careful, you have calculated the two-tailed $p$-value.").
+
+blame(en, othertail, "•	Careful, you have calculated the one-tailed $p$-value of having less than a ~m unit increase."-[mu_0]).
+
