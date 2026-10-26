@@ -4,9 +4,9 @@
 :- use_module(library(i18n)).
 
 % Solution of the problem
-intermediate(tpaired/4).
+intermediate(tpaired/6).
 expert(X, Y, paired, []) :-
-    X = tpaired(D, Mu, Sd, N),
+    X = tpaired(D, Mu, Sd, _Sd_T0, _Sd_EOT, N),
     Y = tratio(D - Mu, Sd, N).
 
 intermediate(tratio/3).
