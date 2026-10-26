@@ -8,6 +8,8 @@ rolog::consult(system.file(plfile, package="mistakes"))
 
 hook(d, mean(D))
 hook(s_D, subscript(s, D))
+hook(s_t0, subscript(s, T0))
+hook(s_eot, subscript(s, EOT))
 hook(mu_0, subscript(mu, 0L))
 hook(s_pool, subscript(s, "pool"))
 
@@ -18,7 +20,7 @@ repeat
   
   mu_t0 <- round(runif(1, 0.5, 2.5), 1)
   s_t0 <- round(runif(1, 0.5, 1), 1)
-  s_D <- round(runif(1, 0.4, 0.8)*s_t0, 1)
+  s_D <- round(runif(1, 0.8, 1.2)*s_t0, 1)
   
   t <- runif(1, 0.5, 3.0)
   
@@ -30,7 +32,7 @@ repeat
   if(tratio<0.5 || tratio>3.0)
     next
    
-   Q <- substitute(search(task, tpaired(d, mu_0, s_D, N),
+   Q <- substitute(search(task, tpaired(d, mu_0, s_D, s_t0, s_eot, N),
                      .S, .R, .P, .E), list(task = as.name(task)))
    S <- findall(Q, options=list(preproc=as.rolog), env=environment())
    

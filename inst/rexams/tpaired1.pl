@@ -4,9 +4,9 @@
 :- use_module(library(i18n)).
 
 % Solution of the problem
-intermediate(tpaired/4).
+intermediate(tpaired/6).
 expert(X, Y, paired, []) :-
-    X = tpaired(D, Mu, Sd, N),
+    X = tpaired(D, Mu, Sd, _Sd_T0, _Sd_EOT, N),
     Y = tratio(D - Mu, Sd, N).
 
 intermediate(tratio/3).
@@ -16,8 +16,8 @@ expert(X, Y, tratio, []) :-
 
 % Mistakes
 buggy(X, Y, indep, []) :-
-    X = tpaired(D, Mu, Sd, N),
-    V = dfrac((N - 1) * Sd + (N - 1) * Sd, N + N - 2),
+    X = tpaired(D, Mu, Sd, Sd_T0, Sd_EOT, N),
+    V = dfrac((N - 1) * Sd_T0^2 + (N - 1) * Sd_EOT^2, N + N - 2),
     lang(pooledvar, Pooled),
     P = denote(s_pool^2, V, Pooled),
     Y = dfrac(D - Mu, sqrt(P * (1/N + 1/N))).
@@ -31,7 +31,7 @@ lang(en, pooledvar, "with ~m denoting the pooled variance.").
 lang(de, pooledvar, "mit ~m für die gepoolte Varianz.").
 
 buggy(X, Y, mu, []) :-
-    X = tpaired(D, _Mu, Sd, N),
+    X = tpaired(D, _Mu, Sd, _Sd_T0, _Sd_EOT, N),
     Y = tratio(D, Sd, N).
 
 buggy(X, Y, squareroot, []) :-
