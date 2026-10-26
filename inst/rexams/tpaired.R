@@ -20,7 +20,7 @@ repeat
   
   mu_t0 <- round(runif(1, 0.5, 2.5), 1)
   s_t0 <- round(runif(1, 0.5, 1), 1)
-  s_D <- round(runif(1, 0.4, 0.8)*s_t0, 1)
+  s_D <- round(runif(1, 0.8, 1.2)*s_t0, 1)
   
   t <- runif(1, 0.5, 3.0)
   
