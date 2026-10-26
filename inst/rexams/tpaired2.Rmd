@@ -1,0 +1,42 @@
+---
+title: "Explorative Study on Tutoring"
+params:
+  lang: "en"
+---
+
+```{r, include=FALSE}
+task <- "tpaired2"
+source("tpaired.R")
+```
+
+Question
+========
+An explorative study investigates the effect of one-on-one tutoring on school grades of pupils.
+A total of $N=`r N`$ pupils receive a 16-weeks intervention. The primary outcome is 
+the difference in Grade Point Average measured before and after the intervention 
+(GPA from 0 = worst to 4 = best).The significance level is set to $\alpha=.05$ one-tailed.
+
+````{r, echo=FALSE}
+knitr::kable(tab, caption="_Table 1._ GPA scores at T0, EOT, and D=EOT−T0")
+````
+Does one-on-one tutoring lead to a meaningful improvement (i.e., more than $\mu_0=`r mu_0`$ units increase) in GPA?
+Please report the one-tailed $p$-value.
+
+```{r questionlist, echo = FALSE, results = "asis"}
+answerlist(t$alternatives, markup="markdown")
+```
+
+Solution
+========
+The $t$-statistic for paired samples is given by $t=\frac{\overline{D}-\mu_0}{s_D / \sqrt{N}}$. 
+The one-tailed $p$-value is then given by looking up $1 - P\left(T \leq t \,;\, N - 1 \text{ df}\right)$
+
+```{r solutionlist, echo = FALSE, results = "asis"}
+answerlist(sol, markup="markdown")
+```
+
+Meta-information
+================
+extype: schoice
+exsolution: `r mchoice2string(t$correct, single=TRUE)`
+exname: tpaired2
