@@ -1,0 +1,49 @@
+---
+title: "Intervention for Work Engagement"
+params:
+  lang: "en"
+---
+
+```{r, include=FALSE}
+task <- "tpaired4"
+repeat{
+  source("tpaired.R")
+  if(mu_eot > 6)
+    next
+  break
+}
+```
+
+Question
+========
+An organizational psychology study investigates whether a team-building program 
+increases employees' work engagement. A total of ($N=`r N`$) employees participate 
+in a six-week intervention. Work engagement is measured before and after the intervention 
+using the Utrecht Work Engagement Scale (UWES-9; from 0 = lowest to 6 = highest work engagement).
+The significance level is set to ($\alpha=.05$), two-tailed.
+
+````{r, echo=FALSE}
+knitr::kable(tab, caption="_Table 1._ UWES-9 scores at T0, EOT, and D=EOT−T0.")
+````
+Does the team-building program lead to a meaningful difference (i.e., more than $\mu_0=`r mu_0`$ units increase) in work engagement? 
+Please report the two-tailed $p$-value.
+
+```{r questionlist, echo = FALSE, results = "asis"}
+answerlist(t$alternatives, markup="markdown")
+```
+
+Solution
+========
+The $t$-statistic for paired samples is given by $t=\frac{\overline{D}-\mu_0}{\sigma / \sqrt{N}}$. 
+The two-tailed $p$-value is then given by looking up $1 - P\left(T \leq t \,;\, N - 1 \text{ df}\right)$
+and multiplying it by 2.
+
+```{r solutionlist, echo = FALSE, results = "asis"}
+answerlist(sol, markup="markdown")
+```
+
+Meta-information
+================
+extype: schoice
+exsolution: `r mchoice2string(t$correct, single=TRUE)`
+exname: tpaired4
