@@ -18,7 +18,7 @@ expert(X, Y, tratio, []) :-
 intermediate(pval/2).
 expert(X, Y, pval, []) :-
     X = pval(T, N),
-    Y = 2 * (1 - pt(T, N - 1)).
+    Y = 2 * pt(-abs(T), N - 1).
 
 % Mistakes
 buggy(X, Y, lowertail, []) :-
