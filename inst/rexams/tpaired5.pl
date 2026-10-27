@@ -7,7 +7,7 @@
 intermediate(tpaired/3).
 expert(X, Y, sigma, []) :-
     X = tpaired(Mu_D, Mu_0, S_T0),
-    Y = sigma(Mu_D, Mu_0, round(0.63, 2) * S_T0).
+    Y = sigma(Mu_D, Mu_0, dot(round(0.63, 2), S_T0)).
 
 intermediate(sigma/3).
 expert(X, Y, effsize, []) :-
