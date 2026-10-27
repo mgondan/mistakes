@@ -1,0 +1,50 @@
+---
+title: "Intervention for Work Engagement"
+params:
+  lang: "en"
+---
+
+```{r, include=FALSE}
+task <- "tpaired5"
+source("tpaired5.R")
+```
+
+Question
+========
+In a study on depression, symptoms are measured on the 
+Montgomery-Asberg Depression Rating Scale (MADRS, from 0 to 60, 
+with higher scores meaning more severe depression symptoms, 
+reliability of measurement at 0.8) before and after the intervention. 
+The new therapy is considered promising if a relevant reduction 
+of more than $\mu_0 = `r mu_0`$ units is reached. 
+The expected benefit of the new therapy is $\mu_D = `r mu_D`$ units. 
+The standard deviation at $T0$ is `r sd_t0`. 
+
+Calculate the necessary sample size to reach a power of 90% ($\alpha=.05$ one-tailed).
+
+```{r questionlist, echo = FALSE, results = "asis"}
+answerlist(t$alternatives, markup="markdown")
+```
+
+Solution
+========
+The sample size calculation for a paired $t$-test involves calculating 
+the standard deviation of the change score. 
+For a power of 90% and a reliability of measurement at 0.8, 
+this is given by $s_D = 0.63 * s_{T0}$.
+
+Next, we calculate the standardized effect size, given by $d = (\mu_D - \mu_0) / (s_D)$.
+
+The sample size formula is then given by $N≈9/d^2$. Note to always round up this number!
+
+
+
+```{r solutionlist, echo = FALSE, results = "asis"}
+answerlist(sol, markup="markdown")
+```
+
+Meta-information
+================
+extype: schoice
+exsolution: `r mchoice2string(t$correct, single=TRUE)`
+exname: tpaired5
