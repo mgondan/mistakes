@@ -17,7 +17,8 @@ expert(X, Y, effsize, []) :-
 intermediate(effsize/1).
 expert(X, Y, sample, []) :-
     X = effsize(D),
-    Y = 'as.character'(ceiling(9 / D^2)).
+    A = denote(d, D, "with ~m denoting the standardized effect size."),
+    Y = 'as.character'(ceiling(dfrac(9, A^2))).
 
 % Mistakes
 buggy(X, Y, sdt0, []) :-
@@ -34,11 +35,13 @@ buggy(X, Y, mu0, []) :-
 
 buggy(X, Y, nosquare, []) :-
     X = effsize(D),
-    Y = 'as.character'(ceiling(9 / D)).
+    A = denote(d, D, "with ~m denoting the standardized effect size."),
+    Y = 'as.character'(ceiling(dfrac(9, A))).
 
 buggy(X, Y, indep, []) :-
     X = effsize(D),
-    Y = 'as.character'(ceiling(42 / D^2)).
+    A = denote(d, D, "with ~m denoting the standardized effect size."),
+    Y = 'as.character'(ceiling(dfrac(42, A^2))).
 
 % Feedback
 praise(en, sigma, "You have correctly calculated the standard deviation of the change score.").
