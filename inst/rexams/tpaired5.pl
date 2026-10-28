@@ -52,7 +52,7 @@ praise(en, sample, "You have correctly used the approximation formula for the sa
 
 blame(en, sdt0, "Careful, you used the standard deviation of the T0 measurements instead of calculating the $S_D$ of the change scores.").
 
-blame(en, brackets, "Careful, you forgot to use parentheses when calculating the effect size.").
+blame(en, brackets, "Careful, you forgot the parenthesis around the numerator/denominator of the $d$-fraction.").
 
 blame(en, mu0, "Careful, you forgot to subtract ~m."-[mu_0]).
 
