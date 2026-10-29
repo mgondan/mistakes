@@ -92,7 +92,7 @@ feedback <- function(module, expr)
 praise <- function(module, expr)
 {
   fb <- Vectorize(.praise1)(module, mathml::hooked(expr))
-  fb[!is.na(fb)]
+  unique(fb[!is.na(fb)])
 }
 
 .blame1 <- function(module, expr)
@@ -118,7 +118,7 @@ praise <- function(module, expr)
 blame <- function(module, expr)
 {
   fb <- Vectorize(.blame1)(module, mathml::hooked(expr))
-  fb[!is.na(fb)]
+  unique(fb[!is.na(fb)])
 }
 
 #' Evaluate argument of error/1
