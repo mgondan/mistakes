@@ -46,7 +46,7 @@ sol <- format_feedback(
 Aufgabe
 ========
 
-In ICD-11 wird eine leichte Störung der Intelligenzentwicklung (6A00.0) durch 
+Im ICD-11 wird eine leichte Störung der Intelligenzentwicklung (6A00.0) durch 
 einen IQ-Bereich definiert, der zwei bis drei Standardabweichungen 
 unterhalb des Mittelwerts liegt (IQ normalverteilt mit $\mu$ = 100, $\sigma$ = 15).
 
