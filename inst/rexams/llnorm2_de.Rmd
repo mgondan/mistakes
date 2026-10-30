@@ -1,0 +1,70 @@
+---
+title: "Normalverteilung des IQ"
+params:
+  lang: de
+---
+
+```{r, include=FALSE}
+library(exams)
+library(mathml)
+library(htmltools)
+library(mistakes)
+
+hook(x1, subscript(x, 1L))
+hook(x2, subscript(x, 2L))
+
+task <- "llnorm2"
+plfile <- file.path("rexams", sprintf("%s.pl", task))
+rolog::consult(system.file(plfile, package="mistakes"))
+
+## DATA GENERATION
+repeat
+{
+  x1 <- sample(80:100, 1)
+  x2 <- sample(100:120, 1)
+  
+  if (x2 - x1 < 5 || x2 - x1 > 20)
+    next
+
+  Q <- quote(search(llnorm2, llnorm2(x1, x2), .S, .R, .P, .E))
+  S <- findall(Q, options=list(preproc=as.rolog), env=environment())
+
+  if(problems(S))
+    next
+
+  break
+}
+
+t <- prepare(task=task, S)
+sol <- format_feedback(
+  t$correct, t$explanations, t$praise, t$blame, t$extra
+)
+```
+
+Aufgabe
+========
+
+Der Intelligenzquotient (IQ) hat in der allgemeinen Bevölkerung einen Mittelwert
+von $\mu$ = 100 und eine Standardabweichung von $\sigma$ = 15.
+Welcher Anteil der Bevölkerung hat einen IQ zwischen `r x1`  und `r x2`?
+
+```{r questionlist, echo=FALSE, results="asis"}
+answerlist(t$alternatives, markup="markdown")
+```
+
+Lösung
+========
+Der Anteil wird folgendermaßen berechnet: `r t$solution`
+
+```{r solutionlist, echo=FALSE, results="asis"}
+sol <- lapply(sol, FUN=gsub, pattern="\\n", replacement="")
+answerlist(sol, markup="markdown")
+```
+
+Meta-information
+================
+extype: schoice
+exsolution: `r mchoice2string(t$correct, single=TRUE)`
+exname: llnorm2
+exshuffle: TRUE
+

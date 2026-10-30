@@ -63,3 +63,4 @@ Meta-information
 extype: schoice
 exsolution: `r mchoice2string(t$correct, single=TRUE)`
 exname: llnorm2
+exshuffle: TRUE
