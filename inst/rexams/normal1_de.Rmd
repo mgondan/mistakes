@@ -1,0 +1,75 @@
+---
+title: "Symmetrischer 95%-Streubereich der Normalverteilung"
+params:
+  lang: de
+---
+
+```{r, include=FALSE}
+library(exams)
+library(mathml)
+library(htmltools)
+library(mistakes)
+
+hook(sigma2, sigma^2L)
+
+task <- "normal1"
+plfile <- file.path("rexams", sprintf("%s.pl", task))
+rolog::consult(system.file(plfile, package="mistakes"))
+
+interval <- function(l, u) {
+  sprintf("$(%s, %s)$", round(l, 1), round(u, 1))
+}
+
+hook(interval(.Lower, .Upper), c(.Lower, .Upper))
+
+## DATA GENERATION
+repeat
+{
+  mu <- sample(40:160, 1)
+  sd_x <- sample(2:8, 1)
+  sigma2 <- sd_x^2
+
+  Q <- quote(search(normal1, normal1(mu, sigma2), .S, .R, .P, .E))
+  S <- findall(Q, options=list(preproc=as.rolog), env=environment())
+
+  if(problems(S))
+    next
+
+  break
+}
+
+t <- prepare(task=task, S)
+sol <- format_feedback(
+  t$correct, t$explanations, t$praise, t$blame, t$extra
+)
+```
+
+Aufgabe
+========
+
+Eine normalverteilte Zufallsvariable $X$ besitzt den Mittelwert
+$\mu = `r sprintf("%.1f", mu)`$ und Varianz $\sigma^2 = `r sprintf("%.1f", sigma2)`$.
+
+Berechne einen um den Mittelwert symmetrischen Streubereich, der rund 95% der
+Realisierungen beinhaltet.
+
+```{r questionlist, echo=FALSE, results="asis"}
+answerlist(t$alternatives, markup="markdown")
+```
+
+Lösung
+========
+
+Das Intervall wird berechnet durch: `r t$solution`
+
+```{r solutionlist, echo=FALSE, results="asis"}
+sol <- lapply(sol, FUN=gsub, pattern="\\n", replacement="")
+answerlist(sol, markup="markdown")
+```
+
+Meta-information
+================
+extype: schoice
+exsolution: `r mchoice2string(t$correct, single=TRUE)`
+exname: normal1
+exshuffle: TRUE

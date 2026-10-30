@@ -1,6 +1,7 @@
 ---
 title: "Normal distribution – quantile"
-output: html_document
+params:
+  lang: en
 ---
 
 ```{r setup, include=FALSE}
@@ -52,7 +53,7 @@ sol <- format_feedback(
 Question
 ========
 
-We consider the Normal distribution $X \sim N\left(\mu=`r mu`, \sigma^2=`r sigma^2`\right)$. 
+We consider the Normal distribution $X \sim N\left(\mu=`r sprintf("%.1f", mu)`, \sigma^2=`r sprintf("%.1f", sigma^2)`\right)$. 
 
 Which $x$ is greater than `r round(p * 100)`% of the realizations?
 
