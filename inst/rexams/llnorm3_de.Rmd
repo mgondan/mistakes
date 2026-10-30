@@ -56,7 +56,7 @@ Welcher Anteil der Bevölkerung fällt in diesen Bereich?
 answerlist(t$alternatives, markup="markdown")
 ```
 
-Solution
+Lösung
 ========
 Der Anteil wird folgendermaßen berechnet: `r t$solution`
 

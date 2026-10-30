@@ -7,21 +7,21 @@
 intermediate(llnorm3/2).
 
 expert(X, Y, inside_range, []) :-
-    X = llnorm3(Mu, Sd),
+    X = llnorm3(_Mu, _Sd),
     Y = perc(pnorm(-2) - pnorm(-3)).
 
 % Mistakes
 
 buggy(X, Y, outside_range, []) :-
-    X = llnorm3(Mu, Sd),
+    X = llnorm3(_Mu, _Sd),
     Y = perc(1 - (pnorm(-2) - pnorm(-3))).
 
 buggy(X, Y, under3, []) :-
-    X = llnorm3(Mu, Sd),
+    X = llnorm3(_Mu, _Sd),
     Y = perc(pnorm(-3)).
 
 buggy(X, Y, under2, []) :-
-    X = llnorm3(Mu, Sd),
+    X = llnorm3(_Mu, _Sd),
     Y = perc(pnorm(-2)).
 
 
