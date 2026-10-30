@@ -10,15 +10,23 @@ library(mistakes)
 
 hook(sd, sigma)
 
+perc <- function(p) {
+  sprintf("%.1f%%", p*100)
+}
+
 task <- "llnorm3"
 plfile <- file.path("rexams", sprintf("%s.pl", task))
 rolog::consult(system.file(plfile, package="mistakes"))
 
+hook(perc(.X), "100%" * .X)
+# hook(perc(.X), .X*100L)
+
 ## DATA GENERATION
 repeat
 {
-  sd <- 1L
-  Q <- quote(search(llnorm3, llnorm3(sd), .S, .R, .P, .E))
+  sd <- 15
+  mu <- 100
+  Q <- quote(search(llnorm3, llnorm3(mu, sd), .S, .R, .P, .E))
   S <- findall(Q, options=list(preproc=as.rolog), env=environment())
 
   if(problems(S))
@@ -37,7 +45,7 @@ Question
 ========
 
 In ICD-11, a mild disorder in intelligence development (6A00.0) is quantified with an IQ 
-($\mu$ = 100, $\sigma$ = 15) between two and three standard deviations below the mean. 
+(normally distributed with $\mu$ = 100, $\sigma$ = 15) between two and three standard deviations below the mean. 
 What proportion of the population falls within this range? 
 
 ```{r questionlist, echo=FALSE, results="asis"}
@@ -58,3 +66,4 @@ Meta-information
 extype: schoice
 exsolution: `r mchoice2string(t$correct, single=TRUE)`
 exname: llnorm3
+exshuffle: TRUE

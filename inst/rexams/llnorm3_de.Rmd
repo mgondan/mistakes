@@ -1,0 +1,73 @@
+---
+title: "Normalverteilung des IQ"
+params:
+  lang: de
+---
+
+```{r, include=FALSE}
+library(exams)
+library(mathml)
+library(htmltools)
+library(mistakes)
+
+hook(sd, sigma)
+
+perc <- function(p) {
+  sprintf("%.1f%%", p*100)
+}
+
+task <- "llnorm3"
+plfile <- file.path("rexams", sprintf("%s.pl", task))
+rolog::consult(system.file(plfile, package="mistakes"))
+
+hook(perc(.X), "100%" * .X)
+# hook(perc(.X), .X*100L)
+
+## DATA GENERATION
+repeat
+{
+  sd <- 15
+  mu <- 100
+  Q <- quote(search(llnorm3, llnorm3(mu, sd), .S, .R, .P, .E))
+  S <- findall(Q, options=list(preproc=as.rolog), env=environment())
+
+  if(problems(S))
+    next
+
+  break
+}
+
+t <- prepare(task=task, S)
+sol <- format_feedback(
+  t$correct, t$explanations, t$praise, t$blame, t$extra
+)
+```
+
+Aufgabe
+========
+
+In ICD-11 wird eine leichte Störung der Intelligenzentwicklung (6A00.0) durch 
+einen IQ-Bereich definiert, der zwei bis drei Standardabweichungen 
+unterhalb des Mittelwerts liegt (IQ normalverteilt mit $\mu$ = 100, $\sigma$ = 15).
+
+Welcher Anteil der Bevölkerung fällt in diesen Bereich?
+
+```{r questionlist, echo=FALSE, results="asis"}
+answerlist(t$alternatives, markup="markdown")
+```
+
+Solution
+========
+Der Anteil wird folgendermaßen berechnet: `r t$solution`
+
+```{r solutionlist, echo=FALSE, results="asis"}
+sol <- lapply(sol, FUN=gsub, pattern="\\n", replacement="")
+answerlist(sol, markup="markdown")
+```
+
+Meta-information
+================
+extype: schoice
+exsolution: `r mchoice2string(t$correct, single=TRUE)`
+exname: llnorm3
+exshuffle: TRUE
