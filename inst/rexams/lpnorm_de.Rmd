@@ -1,0 +1,91 @@
+---
+title: "Normalverteilung"
+params:
+  lang: de
+---
+
+```{r, include=FALSE}
+library(exams)
+library(mathml)
+library(htmltools)
+library(mistakes)
+
+task <- "lpnorm"
+rolog::consult(system.file("rexams/lpnorm.pl", package="mistakes"))
+
+hook(pvalue(.P), .P)
+hook(pnorm1(.X, .Tail), pnorm(.X, .Tail))
+hook(sigma2, sigma^2L)
+
+dist <- function(Symb, X, Tail)
+  return(X)
+
+tail <- function(Tail)
+  return(Tail)
+
+pnorm1 <- function(C, Tail)
+{
+  if(Tail == "lower")
+    return(pnorm(C, lower.tail=TRUE))
+
+  if(Tail == "upper")
+    return(pnorm(C, lower.tail=FALSE))
+
+  stop("Tail must bei either upper or lower")
+}
+
+## DATA GENERATION
+repeat
+{
+  mu     <- round(runif(1, min=-10, max=10), 1)
+  sigma  <- round(runif(1, min=5, max=25), 1)
+  p      <- round(runif(1, min=0.1, max=0.9), 1)
+  C      <- round(qnorm(p, mean=mu, sd=sigma), 1)
+  
+  Q <- quote(search(lpnorm, lpnorm(C, mu, sigma^2L), .S, .R, .P, .E))
+  S <- findall(Q, options=list(preproc=as.rolog), env=environment())
+
+  if(problems(S))
+    next
+  # Todo: several incorrect solutions match to < 0.001 and 1. Collapse into
+  # one option, and collect feedback for all of them.
+  # if(any(duplicated(R)))
+  #   next
+
+  # Todo: Local definition of user:math_hook/2 overrides weak import from mathml
+  # Todo: copy to upnorm
+  break
+}
+
+
+t <- prepare(task=task, S)
+sol <- format_feedback(
+  t$correct, t$explanations, t$praise, t$blame, t$extra
+)
+```
+
+Question
+========
+Wir betrachten die Normalverteilung $\mu = `r sprintf("%.1f", mu)`$, $\sigma^2 =`r sprintf("%.1f", sigma^2)`$. 
+
+Wie viele Realisierungen liegen unter $`r sprintf("%.1f", C)`$?
+
+```{r questionlist, echo = FALSE, results = "asis"}
+answerlist(t$alternatives, markup="markdown")
+```
+
+Lösung
+========
+Der Anteil wird berechnet durch: `r t$solution`
+
+```{r solutionlist, echo = FALSE, results = "asis"}
+sol <- lapply(sol, FUN=gsub, pattern="\\n", replacement="")
+answerlist(sol, markup="markdown")
+```
+
+Meta-information
+================
+extype: schoice
+exsolution: `r mchoice2string(t$correct, single=TRUE)`
+exname: lpnorm
+exshuffle: TRUE
