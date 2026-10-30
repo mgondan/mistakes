@@ -1,5 +1,7 @@
 ---
 title: "Central 95% interval of normal distribution"
+params:
+  lang: en
 ---
 
 ```{r, include=FALSE}
@@ -13,6 +15,12 @@ hook(sigma2, sigma^2L)
 task <- "normal1"
 plfile <- file.path("rexams", sprintf("%s.pl", task))
 rolog::consult(system.file(plfile, package="mistakes"))
+
+interval <- function(l, u) {
+  sprintf("$(%s, %s)$", round(l, 1), round(u, 1))
+}
+
+hook(interval(.Lower, .Upper), c(.Lower, .Upper))
 
 ## DATA GENERATION
 repeat
@@ -40,7 +48,7 @@ Question
 ========
 
 A normally distributed random variable $X$ has mean
-$\mu = `r mu`$ and variance $\sigma^2 = `r sigma2`$.
+$\mu = `r sprintf("%.1f", mu)`$ and variance $\sigma^2 = `r sprintf("%.1f", sigma2)`$.
 
 Determine the interval, symmetric about the mean, that contains
 approximately 95% of its realizations.
@@ -51,15 +59,6 @@ answerlist(t$alternatives, markup="markdown")
 
 Solution
 ========
-
-The standard deviation is
-$\sigma = \sqrt{`r sigma2`} = `r sd_x`$.
-
-The central interval containing approximately 95% of realizations is
-
-$$
-[\mu - 1.96\sigma;\ \mu + 1.96\sigma].
-$$
 
 The range is calculated by: `r t$solution`
 
