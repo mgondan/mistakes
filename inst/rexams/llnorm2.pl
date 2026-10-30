@@ -1,6 +1,6 @@
 :- module(llnorm2, []).
 
-:- discontiguous intermediate/1, expert/4, buggy/4, blame/2, praise/2.
+:- discontiguous intermediate/1, expert/4, buggy/4, blame/3, praise/3.
 
 % Solution of the problem
 
@@ -28,7 +28,7 @@ buggy(X, Y, below_z2, []) :-
 
 praise(en, 
     pnorm,
-    "Correctly standardized the range endpoints ~m and ~m and determined its probability."-[x1, x2]
+    "You correctly standardized the range endpoints ~m and ~m and determined its probability."-[x1, x2]
 ).
 
 blame(en, 
@@ -46,4 +46,22 @@ blame(en,
     "Careful, do not forget to exlude the IQs below the lower limit of the range."
 ).
 
+praise(de,
+    pnorm,
+    "Du hast die Grenzen ~m und ~m korrekt standardisiert und die dazugehörige Wahrscheinlichkeit bestimmt."-[x1, x2]
+).
 
+blame(de,
+    brackets,
+    "Vorsicht, vergiss nicht die Klammern um ~m bei der ~m-Standardisierung."-[x - mu, z]
+).
+
+blame(de,
+    outside_range,
+    "Vorsicht, du hast den Anteil der IQ-Werte unterhalb oder oberhalb des Bereichs berechnet, nicht den Anteil innerhalb des Bereichs."
+).
+
+blame(de,
+    below_z2,
+    "Vorsicht, vergiss nicht, die IQ-Werte unterhalb der unteren Grenze abzuziehen."
+).
