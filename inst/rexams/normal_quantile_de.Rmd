@@ -52,7 +52,7 @@ sol <- format_feedback(
 Aufgabe
 ========
 
-Wir betrachten die Normalverteilung $X \sim N\left(\mu=`r mu`, \sigma^2=`r round(sigma^2, 1)`\right)$. 
+Wir betrachten die Normalverteilung $X \sim N\left(\mu=`r round(mu, 1)`, \sigma^2=`r round(sigma^2, 1)`\right)$. 
 
 Welches $x$ ist größer als `r round(p * 100)`% der Realisierungen?
 
