@@ -1,6 +1,7 @@
 ---
 title: "Normal distribution – quantile"
-output: html_document
+params:
+  lang: en
 ---
 
 ```{r setup, include=FALSE}
