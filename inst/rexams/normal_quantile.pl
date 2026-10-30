@@ -1,6 +1,6 @@
 :- module(normal_quantile, []).
 
-:- discontiguous intermediate/1, expert/4, buggy/4, blame/2, praise/2, extra/2.
+:- discontiguous intermediate/1, expert/4, buggy/4, blame/3, praise/3, extra/2.
 
 intermediate(normal_quantile/4).
 intermediate(zquant/1).
@@ -42,16 +42,32 @@ buggy(X, Y, swapped, []) :-
 
 % Feedback
 
-praise(en, normal_quantile, "You correctly identified the steps of the problem.").
+praise(en, normal_quantile, "You correctly identified the formula for the ~m-score."-[z]).
 
-praise(en, lower, "You correctly determined the z-standardized quantile corresponding to the percentage ~m."-[p]).
+praise(en, lower, "You correctly determined the ~m-standardized quantile corresponding to the percentage ~m."-[z, p]).
 
 praise(en, sd, "You correctly took the square root of the variance ~m to get the standard deviation ~m."-[sigma2, sigma]).
 
 praise(en, zfrac, "You correctly transformed the ~m-value back to the original scale."-[z]).
 
-blame(en, upper, "The upper tail was used instead of the lower tail.").
+blame(en, upper, "Careful, you used the upper tail instead of the lower tail.").
 
-blame(en, variance, "The variance ~m was used instead of the standard deviation ~m."-[sigma2, sigma]).
+blame(en, variance, "Careful, you used the variance ~m instead of the standard deviation ~m."-[sigma2, sigma]).
 
-blame(en, swapped, "Mean ~m and standard deviation ~m were swapped."-[mu, sigma]).
+blame(en, swapped, "Careful, you swapped the mean ~m and standard deviation ~m."-[mu, sigma]).
+
+% de
+
+praise(de, normal_quantile, "Du hast die Formel zur ~m-Standardisierung korrekt ausgewählt."-[z]).
+
+praise(de, lower, "Du hast das ~m-standardisierte Quantil, das dem Prozentsatz ~m entspricht, korrekt bestimmt."-[z, p]).
+
+praise(de, sd, "Du hast korrekt die Wurzel aus der Varianz ~m gezogen, um die Standardabweichung ~m zu erhalten."-[sigma2, sigma]).
+
+praise(de, zfrac, "Du hast den ~m-Wert korrekt auf die ursprüngliche Skala zurücktransformiert."-[z]).
+
+blame(de, upper, "Vorsicht, du hast den rechten statt den linken Randbereich verwendet.").
+
+blame(de, variance, "Vorsicht, du hast die Varianz ~m statt der Standardabweichung ~m verwendet."-[sigma2, sigma]).
+
+blame(de, swapped, "Vorsicht, du hast den Mittelwert ~m und die Standardabweichung ~m vertauscht."-[mu, sigma]).
