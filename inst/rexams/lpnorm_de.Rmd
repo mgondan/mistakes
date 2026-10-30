@@ -68,7 +68,7 @@ Question
 ========
 Wir betrachten die Normalverteilung $\mu = `r sprintf("%.1f", mu)`$, $\sigma^2 =`r sprintf("%.1f", sigma^2)`$. 
 
-Wie viele Realisierungen liegen unter $`r sprintf("%.1f", C)`$?
+Welcher Anteil der Realisierungen liegt unter $`r sprintf("%.1f", C)`$?
 
 ```{r questionlist, echo = FALSE, results = "asis"}
 answerlist(t$alternatives, markup="markdown")

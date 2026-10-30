@@ -67,7 +67,7 @@ Question
 We consider the Normal
 distribution $\mu = `r sprintf("%.1f", mu)`$, $\sigma^2 =`r sprintf("%.1f", sigma^2)`$.
 
-How many realizations are below $`r C`$?
+What proportion of realizations is below $`r C`$?
 
 ```{r questionlist, echo = FALSE, results = "asis"}
 answerlist(t$alternatives, markup="markdown")
