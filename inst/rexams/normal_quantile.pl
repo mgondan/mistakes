@@ -39,6 +39,10 @@ buggy(X, Y, variance, []) :-
 buggy(X, Y, swapped, []) :-
     X = invz(Z, Mu, Sigma),
     Y = Sigma + Z * Mu.
+    
+buggy(X, Y, pqswapped, []) :-
+    X = zquant(P),
+    Y = pnorm(P).
 
 % Feedback
 
@@ -56,6 +60,8 @@ blame(en, variance, "Careful, you used the variance ~m instead of the standard d
 
 blame(en, swapped, "Careful, you swapped the mean ~m and standard deviation ~m."-[mu, sigma]).
 
+blame(en, pqswapped, "Careful, you looked up ~m in the distribution function ~m instead of the quantile function ~m."-[p, 'Phi', 'Phi'^{-1}]).
+
 % de
 
 praise(de, normal_quantile, "Du hast die Formel zur ~m-Standardisierung korrekt ausgewählt."-[z]).
@@ -71,3 +77,5 @@ blame(de, upper, "Vorsicht, du hast den rechten statt den linken Randbereich ver
 blame(de, variance, "Vorsicht, du hast die Varianz ~m statt der Standardabweichung ~m verwendet."-[sigma2, sigma]).
 
 blame(de, swapped, "Vorsicht, du hast den Mittelwert ~m und die Standardabweichung ~m vertauscht."-[mu, sigma]).
+
+blame(de, pqswapped, "Vorsicht, du hast ~m in die Verteilungsfunktion ~m statt in die Quantilsfunktion ~m eingesetzt."-[p, 'Phi', 'Phi'^{-1}]).

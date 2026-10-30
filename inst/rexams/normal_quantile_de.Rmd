@@ -52,9 +52,9 @@ sol <- format_feedback(
 Aufgabe
 ========
 
-Wir betrachten die Normalverteilung $X \sim N\left(\mu=`r round(mu, 1)`, \sigma^2=`r round(sigma^2, 1)`\right)$. 
+Wir betrachten die Normalverteilung $X \sim N\left(\mu=`r sprintf("%.1f", mu)`, \sigma^2=`r sprintf("%.1f", sigma^2)`\right)$. 
 
-Welches $x$ ist größer als `r round(p * 100)`% der Realisierungen?
+Welches $x$ ist größer als $p=$ `r round(p * 100)`% der Realisierungen?
 
 ```{r questionlist, echo=FALSE, results="asis"}
 exams::answerlist(t$alternatives, markup="markdown")

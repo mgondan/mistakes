@@ -53,7 +53,7 @@ sol <- format_feedback(
 Question
 ========
 
-We consider the Normal distribution $X \sim N\left(\mu=`r round(mu, 1)`, \sigma^2=`r round(sigma^2, 1)`\right)$. 
+We consider the Normal distribution $X \sim N\left(\mu=`r sprintf("%.1f", mu)`, \sigma^2=`r sprintf("%.1f", sigma^2)`\right)$. 
 
 Which $x$ is greater than `r round(p * 100)`% of the realizations?
 
