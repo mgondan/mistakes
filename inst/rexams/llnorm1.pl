@@ -1,5 +1,6 @@
 :- module(llnorm1, []).
 
+:- use_module(library(i18n)).
 :- discontiguous intermediate/1, expert/4, buggy/4, blame/3, praise/3.
 
 % Solution of the problem
@@ -18,14 +19,22 @@ intermediate(normapprox/3).
 
 expert(X, Y, z, []) :-
     X = normapprox(Mu, Sigma2, K),
-    Y = normal_z(dfrac(K - Mu, sqrt(Sigma2))).
+    lang(zratio, ZR),
+    Z = denote(z, dfrac(K - Mu, sqrt(Sigma2)), ZR),
+    Y = normal_z(Z).
+
+lang(Id, Elem),
+    lang(L),
+    lang(L, Id, Elem0)
+ => Elem = Elem0.
+
+lang(en, zratio, "with ~m denoting the standardized success count.").
+lang(de, zratio, "mit ~m für die standardisierten Erfolge.").
 
 intermediate(normal_z/1).
-
 expert(X, Y, probability, []) :-
     X = normal_z(Z),
     Y = 1 - pnorm(Z).
-
 
 % Mistakes
 

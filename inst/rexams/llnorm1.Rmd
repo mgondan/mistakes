@@ -69,9 +69,9 @@ Under the normal approximation, we have $X \rightarrow N(\mu,\sigma^2)$
 with expected value $\mu = N\pi_0 = `r mu`$ and variance $\sigma^2 = N\pi_0(1-\pi_0) = `r round(sigma2, 2)`$,
 (standard deviation $\sigma = `r round(sd_x, 2)`$).
 
-For at least $k$ treatment successes, we obtain $P(X \geq k) \approx 1-\Phi(\frac{k-\mu}{\sigma}).$
+For at least $k$ treatment successes, we obtain $P(X \geq k) \approx 1-\Phi\left(\frac{k-\mu}{\sigma}\right).$
 
-Using the given values, we get $z=\frac{k-\mu}{\sigma}=`r round(z, 2)`$. Thus, $P(X \geq r k) \approx `r probr`$.
+Using the given values, we get $z=\dfrac{k-\mu}{\sigma}=`r round(z, 2)`$. Thus, $P(X \geq `r k`) \approx `r probr`$.
 
 ```{r solutionlist, echo=FALSE, results="asis"}
 sol <- lapply(sol, FUN=gsub, pattern="\\n", replacement="")
