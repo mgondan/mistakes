@@ -1,0 +1,110 @@
+---
+title: "Comparisons of Independent Groups"
+params:
+  lang: "en"
+---
+
+```{r, include=FALSE}
+library(exams)
+library(mathml)
+library(htmltools)
+library(mistakes)
+
+hook(s2_pool, subscript(s^2L, pool))
+hook(mu_A, subscript(mean(X), "A"))
+hook(mu_B, subscript(mean(X), "B"))
+hook(n_A, subscript(n, "A"))
+hook(n_B, subscript(n, "B"))
+
+task <- "tgroups1"
+plfile <- file.path("rexams", sprintf("%s.pl", task))
+rolog::consult(system.file(plfile, package="mistakes"))
+
+interval <- function(l, u) {
+  sprintf("$(%s, %s)$", round(l, 1), round(u, 1))
+}
+
+hook(interval(.Lower, .Upper), c(.Lower, .Upper))
+
+## DATA GENERATION
+repeat
+{
+  n_A <- sample(20:50, 1)
+  n_B <- n_A + sample(-10:10, 1)
+
+  mu_A <- round(runif(1, 25, 45), 1)
+  mu_B <- round(runif(1, 20, 40), 1)
+
+  s_A <- round(runif(1, 5, 12), 1)
+  s_B <- round(runif(1, 5, 12), 1)
+
+  if(n_A == n_B)
+    next
+
+  s2_pool <- ((n_A - 1) * s_A^2 + (n_B - 1) * s_B^2) / (n_A + n_B - 2)
+
+  tratio <- (mu_A - mu_B) / sqrt(s2_pool * (1/n_A + 1/n_B))
+
+  if(abs(tratio) < 0.5 || abs(tratio) > 1.5)
+    next
+
+  Q <- quote(search(tgroups1, tgroups(n_A, mu_A, n_B, mu_B, s2_pool), .S, .R, .P, .E))
+  S <- findall(Q, options = list(preproc = as.rolog), env = environment())
+
+  if(problems(S))
+    next
+
+  break
+}
+
+tab <- data.frame(
+  "Therapy A" = c(sprintf("%.0f", n_A), sprintf("%.2f", mu_A)), 
+  "Therapy B" = c(sprintf("%.0f", n_B), sprintf("%.2f", mu_B)),
+  check.names = FALSE
+)
+
+row.names(tab) <- c("Sample size", "Mean symptom score on CAPS-5")
+
+
+t <- prepare(task=task, S)
+sol <- format_feedback(
+  t$correct, t$explanations, t$praise, t$blame, t$extra
+)
+```
+
+
+Question
+========
+In a clinical trial, patients diagnosed with post-traumatic stress disorder (PTSD) 
+were randomly assigned to Cognitive Behavioral Therapy (Therapy A) or Cognitive Behavioral Therapy 
+combined with weekly Eye Movement Desensitization and Reprocessing (EMDR) sessions (Therapy B). 
+PTSD symptom severity was assessed after treatment on the Clinician-Administered PTSD Scale for DSM-5 (CAPS-5), 
+with higher scores indicating more severe symptoms. Consider the following data:
+
+````{r, echo=FALSE}
+knitr::kable(tab, align=c("c", "c", "l"))
+````
+
+The pooled sample variance is $s^2_{pool}$ = `r round(s2_pool, 2)`.
+Assuming equal population variances, 
+calculate the $t$-statistic for the difference between Therapy A and Therapy B.
+
+
+```{r questionlist, echo = FALSE, results = "asis"}
+answerlist(t$alternatives, markup="markdown")
+```
+
+Solution
+========
+The $t$-statistic is calculated by: `r t$solution`
+
+```{r solutionlist, echo = FALSE, results = "asis"}
+sol <- lapply(sol, FUN=gsub, pattern="\\n", replacement="")
+answerlist(sol, markup="markdown")
+```
+
+Meta-information
+================
+extype: schoice
+exsolution: `r mchoice2string(t$correct, single=TRUE)`
+exname: tgroups1
