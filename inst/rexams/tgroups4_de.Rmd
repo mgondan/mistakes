@@ -1,0 +1,108 @@
+---
+title: "Randomisierte Studie zur Verkehrsreduktion"
+params:
+  lang: "de"
+---
+
+```{r, include=FALSE}
+library(exams)
+library(mathml)
+library(htmltools)
+library(mistakes)
+
+hook(s2_pool, subscript(s^2L, pool))
+hook(mu_A, subscript(mean(X), "A"))
+hook(mu_B, subscript(mean(X), "B"))
+hook(n_A, subscript(n, "A"))
+hook(n_B, subscript(n, "B"))
+hook(s_A, subscript(s, "A"))
+hook(s_B, subscript(s, "B"))
+
+task <- "tgroups4"
+plfile <- file.path("rexams", sprintf("%s.pl", task))
+rolog::consult(system.file(plfile, package="mistakes"))
+
+
+## DATA GENERATION
+repeat
+{
+  n_A <- sample(20:50, 1)
+  n_B <- n_A + sample(-10:10, 1)
+
+  mu_A <- round(runif(1, 150, 250), 1)
+  mu_B <- round(runif(1, 180, 300), 1)
+
+  s_A <- round(runif(1, 60, 100), 1)
+  s_B <- round(runif(1, 60, 100), 1)
+
+  if(n_A == n_B)
+    next
+
+  s2_pool <- ((n_A - 1) * s_A^2 + (n_B - 1) * s_B^2) / (n_A + n_B - 2)
+
+  tratio <- (mu_A - mu_B) / sqrt(s2_pool * (1/n_A + 1/n_B))
+
+  if(abs(tratio) < 0.5 || abs(tratio) > 3.0)
+    next
+
+  Q <- quote(search(tgroups4, tgroups(n_A, mu_A, s_A, n_B, mu_B, s_B), .S, .R, .P, .E))
+  S <- findall(Q, options = list(preproc = as.rolog), env = environment())
+
+  if(problems(S))
+    next
+
+  break
+}
+
+tab <- data.frame(
+  "Bedingung A" = c(sprintf("%.0f", n_A), sprintf("%.1f", mu_A), sprintf("%.1f", s_A)), 
+  "Bedingung B" = c(sprintf("%.0f", n_B), sprintf("%.1f", mu_B), sprintf("%.1f", s_B)),
+  check.names = FALSE
+)
+
+row.names(tab) <- c("Stichprobengröße", "Mittlere Distanz (km)", "Standardabweichung (km)")
+
+
+t <- prepare(task=task, S)
+sol <- format_feedback(t$correct, t$explanations, t$bugs, t$praise, t$blame, t$extra)
+```
+
+Question
+========
+In einer umweltpsychologischen Studie untersuchten Forschende Strategien zur
+Reduktion der Autonutzung. Die Teilnehmenden installierten eine Smartphone-App,
+die die mit dem Auto zurückgelegte Distanz erfasste. Sie wurden zufällig zwei
+Bedingungen zugewiesen. Bedingung A erhielt finanzielle Anreize für die
+Verringerung ihrer Fahrdistanz, während Bedingung B Informationen über die
+negativen Auswirkungen von Kohlendioxidemissionen auf die globale Erwärmung
+erhielt. Die insgesamt mit dem Auto zurückgelegte Distanz (in km) über vier
+Wochen wurde mithilfe der App erfasst. Betrachte folgende Daten:
+
+````{r, echo=FALSE}
+knitr::kable(tab, align=c("c", "c", "l"))
+````
+
+Berechne die $t$-Statistik für den Unterschied zwischen den Gruppenmittelwerten
+unter Annahme gleicher Populationsvarianzen.
+Eine positive $t$-Statistik ($t>0$) soll dabei eine Überlegenheit der Bedingung
+mit Informationen über Kohlendioxidemissionen anzeigen.
+
+````{r questionlist, echo = FALSE, results = "asis"}
+answerlist(t$alternatives, markup="markdown")
+````
+
+Solution
+========
+Die $t$-Statistik wird folgendermaßen berechnet: $t=$`r t$solution`
+
+```{r solutionlist, echo = FALSE, results = "asis"}
+sol <- lapply(sol, FUN=gsub, pattern="\\n", replacement="")
+answerlist(sol, markup="markdown")
+```
+
+Meta-information
+================
+extype: schoice
+exsolution: `r mchoice2string(t$correct, single=TRUE)`
+exname: tgroups4
+exshuffle: TRUE

@@ -1,6 +1,6 @@
 :- module(tgroups4, []).
 
-:- discontiguous intermediate/1, expert/4, buggy/4.
+:- discontiguous intermediate/1, expert/4, buggy/4, blame/3, praise/3.
 :- use_module(library(i18n)).
 
 % Solution of the problem
@@ -58,17 +58,19 @@ buggy(X, Y, nosqrt, []) :-
 
 % Feedback
 praise(en, s2pool, "You correctly calculated the pooled sample variance using the sample variances and their respective degrees of freedom.").
-
 praise(en, mu, "You correctly subtracted the mean of Condition B from the mean of Condition A.").
-
 praise(en, denominator, "You correctly calculated the standard error of the difference between two independent group means.").
-
 praise(en, tstat, "You correctly identified the problem as a $t$-test for independent samples.").
-
 blame(en, paired, "Careful, you used the formula of the $t$-test for paired samples.").
-
 blame(en, brackets, "Careful, you forgot to put a parenthesis around the numerator.").
-
 blame(en, wrongmu, "Careful, you subtracted the means of the two conditions in the wrong order.").
-
 blame(en, nosqrt, "Careful, you forgot to take the square root when calculating the standard error.").
+
+praise(de, s2pool, "Du hast die gepoolte Stichprobenvarianz korrekt aus den Stichprobenvarianzen und den jeweiligen Freiheitsgraden berechnet.").
+praise(de, mu, "Du hast den Mittelwert von Bedingung B korrekt vom Mittelwert von Bedingung A subtrahiert.").
+praise(de, denominator, "Du hast den Standardfehler der Differenz zweier unabhängiger Gruppenmittelwerte korrekt berechnet.").
+praise(de, tstat, "Du hast das Problem korrekt als $t$-Test für unabhängige Stichproben erkannt.").
+blame(de, paired, "Vorsicht, du hast die Formel des $t$-Tests für gepaarte Stichproben verwendet.").
+blame(de, brackets, "Vorsicht, du hast vergessen, Klammern um den Zähler zu setzen.").
+blame(de, wrongmu, "Vorsicht, du hast die Mittelwerte der beiden Bedingungen in der falschen Reihenfolge subtrahiert.").
+blame(de, nosqrt, "Vorsicht, du hast vergessen, bei der Berechnung des Standardfehlers die Wurzel zu ziehen.").

@@ -84,7 +84,8 @@ knitr::kable(tab, align=c("c", "c", "l"))
 
 Assuming equal population variances, calculate the $t$-statistic 
 for the difference between between the group averages.
-A positive $t$-statistic ($t>0$) should indicate superiority of the carbon dioxide intervention.
+A positive $t$-statistic ($t>0$) should indicate superiority of the condition with
+information about carbon dioxide.
 
 ```{r questionlist, echo = FALSE, results = "asis"}
 answerlist(t$alternatives, markup="markdown")
@@ -92,7 +93,7 @@ answerlist(t$alternatives, markup="markdown")
 
 Solution
 ========
-The $t$-statistic is calculated by: `r t$solution`
+The $t$-statistic is calculated by: $t=$`r t$solution`
 
 ```{r solutionlist, echo = FALSE, results = "asis"}
 sol <- lapply(sol, FUN=gsub, pattern="\\n", replacement="")
@@ -104,4 +105,4 @@ Meta-information
 extype: schoice
 exsolution: `r mchoice2string(t$correct, single=TRUE)`
 exname: tgroups4
- 
+exshuffle: TRUE
