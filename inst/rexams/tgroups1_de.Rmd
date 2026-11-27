@@ -1,0 +1,105 @@
+---
+title: "Randomisierte Studie zu PTBS"
+params:
+  lang: "de"
+---
+
+```{r, include=FALSE}
+library(exams)
+library(mathml)
+library(htmltools)
+library(mistakes)
+
+hook(s2_pool, subscript(s^2L, pool))
+hook(mu_A, subscript(mean(X), "A"))
+hook(mu_B, subscript(mean(X), "B"))
+hook(n_A, subscript(n, "A"))
+hook(n_B, subscript(n, "B"))
+
+task <- "tgroups1"
+plfile <- file.path("rexams", sprintf("%s.pl", task))
+rolog::consult(system.file(plfile, package="mistakes"))
+
+## DATA GENERATION
+repeat
+{
+  n_A <- sample(20:50, 1)
+  n_B <- n_A + sample(-10:10, 1)
+
+  mu_A <- round(runif(1, 25, 45), 1)
+  mu_B <- round(runif(1, 20, 40), 1)
+
+  s_A <- round(runif(1, 5, 12), 1)
+  s_B <- round(runif(1, 5, 12), 1)
+
+  if(n_A == n_B)
+    next
+
+  s2_pool <- ((n_A - 1) * s_A^2 + (n_B - 1) * s_B^2) / (n_A + n_B - 2)
+  s2_pool <- round(s2_pool, 1)
+
+  tratio <- (mu_A - mu_B) / sqrt(s2_pool * (1/n_A + 1/n_B))
+
+  if(abs(tratio) < 0.5 || abs(tratio) > 1.5)
+    next
+
+  Q <- quote(search(tgroups1, tgroups(n_A, mu_A, n_B, mu_B, s2_pool), .S, .R, .P, .E))
+  S <- findall(Q, options = list(preproc = as.rolog), env = environment())
+
+  if(problems(S))
+    next
+
+  break
+}
+
+tab <- data.frame(
+  "Therapie A" = c(sprintf("%.0f", n_A), sprintf("%.1f", mu_A), sprintf("%.1f", s_A)), 
+  "Therapie B" = c(sprintf("%.0f", n_B), sprintf("%.1f", mu_B), sprintf("%.1f", s_B)),
+  check.names = FALSE
+)
+
+row.names(tab) <- c("Stichprobengröße", "Mittlere Symptomlast in CAPS-5", "Standardabweichung")
+
+
+t <- prepare(task=task, S)
+sol <- format_feedback(t$correct, t$explanations, t$bugs, t$praise, t$blame, t$extra)
+```
+
+
+Question
+========
+In einer klinischen Studie wurden Patient:innen mit der Diagnose einer posttraumatischen Belastungsstörung (PTBS) 
+zufällig entweder einer kognitiven Verhaltenstherapie (Therapie A) oder einer kognitiven Verhaltenstherapie 
+in Kombination mit wöchentlichen Sitzungen in Eye Movement Desensitization and Reprocessing (EMDR) (Therapie B) zugewiesen. 
+Der Schweregrad der PTBS-Symptome wurde nach der Behandlung mit der Clinician-Administered PTSD Scale for DSM-5 (CAPS-5) erfasst, 
+wobei höhere Werte eine größere Symptomlast anzeigen. Betrachte folgende Daten:
+
+````{r, echo=FALSE}
+knitr::kable(tab, align=c("c", "c", "l"))
+````
+
+Die gepoolte Stichprobenvarianz beträgt $s^2_\mathrm{pool}$ = `r s2_pool`.
+Berechne die $t$-Statistik für den Unterschied zwischen den Gruppenmittelwerten
+unter der Annahme gleicher Populationsvarianzen.
+Eine positive $t$-Statistik ($t>0$) soll dabei eine Überlegenheit der EMDR-Gruppe anzeigen.
+
+
+````{r questionlist, echo = FALSE, results = "asis"}
+answerlist(t$alternatives, markup="markdown")
+````
+
+Solution
+========
+Die $t$-Statistik wird folgendermaßen berechnet: $t=$`r t$solution`
+
+```{r solutionlist, echo = FALSE, results = "asis"}
+sol <- lapply(sol, FUN=gsub, pattern="\\n", replacement="")
+answerlist(sol, markup="markdown")
+```
+
+Meta-information
+================
+extype: schoice
+exsolution: `r mchoice2string(t$correct, single=TRUE)`
+exname: tgroups1
+exshuffle: TRUE
