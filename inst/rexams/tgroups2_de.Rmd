@@ -1,0 +1,106 @@
+---
+title: "Randomisierte Studie zu Gesundheitscoaching"
+params:
+  lang: "de"
+---
+
+```{r, include=FALSE}
+library(exams)
+library(mathml)
+library(htmltools)
+library(mistakes)
+
+hook(s2_pool, subscript(s^2L, pool))
+hook(mu_A, subscript(mean(X), "A"))
+hook(mu_B, subscript(mean(X), "B"))
+hook(n_A, subscript(n, "A"))
+hook(n_B, subscript(n, "B"))
+hook(s_A, subscript(s, "A"))
+hook(s_B, subscript(s, "B"))
+
+task <- "tgroups2"
+plfile <- file.path("rexams", sprintf("%s.pl", task))
+rolog::consult(system.file(plfile, package="mistakes"))
+
+
+## DATA GENERATION
+repeat
+{
+  n_A <- sample(20:50, 1)
+  mu_A <- round(runif(1, 0, 18), 1)
+  s_A <- round(runif(1, 2, 5), 1)
+  
+  n_B <- n_A + sample(-10:10, 1)
+  mu_B <- round(runif(1, 0, 16), 1)
+  s_B <- round(runif(1, 2, 5), 1)
+  
+  if(n_A == n_B)
+    next
+
+
+  s2_pool <- ((n_A - 1) * s_A^2 + (n_B -1) * s_B^2) / (n_A + n_B - 2)
+  
+  tratio <- (mu_A - mu_B) / sqrt(s2_pool * (1/n_A  + 1/n_B))
+    
+  if(abs(tratio)<0.5 || abs(tratio)>1.5)
+    next
+  
+  Q <- quote(search(tgroups2, tgroups(n_A, s_A, n_B, s_B),
+                    .S, .R, .P, .E))
+  S <- findall(Q, options=list(preproc=as.rolog), env=environment())
+
+  if(problems(S))
+    next
+
+  break
+}
+
+tab <- data.frame(
+  "Therapie A" = c(sprintf("%.0f", n_A), sprintf("%.1f", mu_A), sprintf("%.1f", s_A)), 
+  "Therapie B" = c(sprintf("%.0f", n_B), sprintf("%.1f", mu_B), sprintf("%.1f", s_B)),
+  check.names = FALSE
+)
+
+row.names(tab) <- c("Stichprobengröße", "Mittelwert des WHO-5", "Standardabweichung")
+
+
+t <- prepare(task=task, S)
+sol <- format_feedback(t$correct, t$explanations, t$bugs, t$praise, t$blame, t$extra)
+```
+
+
+Question
+========
+Wir betrachten eine Interventionsstudie zur Wirkung von Gesundheitscoaching auf
+das allgemeine Wohlbefinden in einer nicht-klinischen Stichprobe. Die
+Teilnehmenden werden zufällig einer aktiven Gruppe A (wöchentliche Termine mit
+einem Gesundheitscoach) und einer Kontrollgruppe B (allgemeine Gesundheitstipps
+per E-Mail) zugewiesen. Am Ende der Intervention wird das allgemeine
+Wohlbefinden mit dem Well-Being-Index (WHO-5, gemessen von 0 = geringstes bis 25
+= höchstes Wohlbefinden) erfasst. Das Signifikanzniveau liegt bei $\alpha=.05$
+zweiseitig. Betrachte folgende Daten:
+
+````{r, echo=FALSE}
+knitr::kable(tab, align=c("c", "c", "l"))
+````
+
+Berechne die gepoolte Stichprobenvarianz $s^2_\mathrm{pool}$.
+
+````{r questionlist, echo = FALSE, results = "asis"}
+answerlist(t$alternatives, markup="markdown")
+````
+
+Solution
+========
+Die gepoolte Varianz wird folgendermaßen berechnet: $s^2_\mathrm{pool}=$`r t$solution`
+
+````{r solutionlist, echo = FALSE, results = "asis"}
+sol <- lapply(sol, FUN=gsub, pattern="\\n", replacement="")
+answerlist(sol, markup="markdown")
+````
+Meta-information
+================
+extype: schoice
+exsolution: `r mchoice2string(t$correct, single=TRUE)`
+exname: tgroups2
+exshuffle: TRUE
